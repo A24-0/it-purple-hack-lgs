@@ -29,5 +29,14 @@ services:
       - .:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    depends_on:
+      - api
+    env_file: .env
+    restart: unless-stopped
+
 volumes:
   pg_data:

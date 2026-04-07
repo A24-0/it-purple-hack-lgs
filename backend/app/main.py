@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.redis import close_redis, init_redis
-from app.routers import ai, auth, games, leaderboard, quizzes, scenarios
+from app.routers import ai, auth, games, leaderboard, quizzes, scenarios, users
 
 
 @asynccontextmanager
@@ -29,6 +29,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(users.router)
 app.include_router(scenarios.router)
 app.include_router(quizzes.router)
 app.include_router(leaderboard.router)
