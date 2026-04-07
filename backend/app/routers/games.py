@@ -28,7 +28,7 @@ async def save_game(
         game_type=body.game_type,
         score=body.score,
         xp_earned=xp_earned,
-        metadata=body.metadata,
+        game_metadata=body.metadata,
     )
     db.add(game)
     await db.flush()

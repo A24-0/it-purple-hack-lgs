@@ -14,7 +14,7 @@ class Game(Base):
     game_type: Mapped[str] = mapped_column(String(64), nullable=False)
     score: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     xp_earned: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    metadata: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    game_metadata: Mapped[dict | None] = mapped_column("metadata", JSON, nullable=True)
     played_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
     )
