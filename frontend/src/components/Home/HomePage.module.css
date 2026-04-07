@@ -1,0 +1,510 @@
+.page {
+  background: var(--white);
+}
+.hero {
+  background: var(--hero-gradient);
+  padding: 48px var(--content-padding) 28px;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  color: var(--text-white);
+}
+
+.heroTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.greeting {
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.appName {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-white);
+}
+
+.profileBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s;
+}
+
+.profileBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.pointsSection {
+  margin-bottom: 16px;
+}
+
+.pointsLabel {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.pointsRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pointsValue {
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.todayBadge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.barLabel {
+  font-size: 12px;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.barTrack {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.barError {
+  background: var(--error);
+  border-radius: 4px 0 0 4px;
+  transition: width 0.5s ease;
+}
+
+.barSuccess {
+  background: var(--success);
+  border-radius: 0 4px 4px 0;
+  transition: width 0.5s ease;
+}
+.statsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px var(--content-padding);
+  background: var(--white);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: pre-line;
+  line-height: 1.3;
+}
+
+.statDivider {
+  width: 1px;
+  height: 40px;
+  background: var(--gray-200);
+}
+.section {
+  padding: 20px var(--content-padding);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+.scenarioList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scenarioCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  text-align: left;
+  transition: all 0.2s ease;
+  width: 100%;
+  animation: cardSlideIn 0.4s ease both;
+}
+
+.scenarioCard:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.scenarioCard:active {
+  transform: scale(0.98);
+}
+
+.scenarioIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.scenarioInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.scenarioTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.scenarioDesc {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.scenarioRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.scenarioXp {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.scenarioXpInactive {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-500);
+}
+
+.scenarioStatus {
+  font-size: 12px;
+  color: var(--success);
+  font-weight: 600;
+}
+
+.scenarioStart {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.weeklyChart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 140px;
+  padding: 8px 0;
+}
+
+.chartColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.chartBarWrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.chartBar {
+  width: 70%;
+  min-height: 8px;
+  border-radius: 6px 6px 4px 4px;
+  animation: barGrow 0.6s ease both;
+}
+
+.chartLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.quickActions {
+  display: flex;
+  gap: 12px;
+}
+
+.quickBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+}
+
+.quickBtn:hover {
+  background: var(--gray-200);
+  transform: translateY(-1px);
+}
+
+.quickBtn:active {
+  transform: scale(0.97);
+}
+
+.quickIcon {
+  font-size: 24px;
+}
+
+.quickLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+@media (min-width: 768px) {
+  .hero {
+    padding: 56px var(--content-padding) 36px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  .appName {
+    font-size: 34px;
+  }
+
+  .pointsValue {
+    font-size: 48px;
+  }
+
+  .barTrack {
+    height: 10px;
+    max-width: 500px;
+  }
+
+  .statsRow {
+    padding: 28px var(--content-padding);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .statValue {
+    font-size: 30px;
+  }
+
+  .statLabel {
+    font-size: 13px;
+  }
+
+  .scenarioList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .scenarioCard {
+    padding: 20px;
+  }
+
+  .scenarioIcon {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+
+  .weeklyChart {
+    height: 180px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .quickActions {
+    max-width: 500px;
+  }
+
+  .quickBtn {
+    padding: 20px;
+  }
+}
+@media (min-width: 1024px) {
+  .hero {
+    padding: 40px var(--content-padding) 32px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  .pointsRow { gap: 24px; }
+  .barTrack { max-width: 100%; }
+
+  .statsRow { padding: 32px var(--content-padding); }
+  .statValue { font-size: 32px; }
+  .sectionTitle { font-size: 20px; }
+
+  .scenarioList { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .scenarioCard { padding: 24px; }
+  .scenarioIcon { width: 60px; height: 60px; font-size: 30px; }
+  .scenarioTitle { font-size: 16px; }
+  .scenarioDesc { font-size: 14px; }
+
+  .weeklyChart { height: 200px; }
+  .chartBar { width: 60%; border-radius: 8px 8px 4px 4px; }
+
+  .quickActions { gap: 16px; }
+  .quickBtn { padding: 20px; }
+  .quickIcon { font-size: 28px; }
+  .quickLabel { font-size: 15px; }
+
+  .profileBtn { display: none; }
+}
+
+@media (min-width: 1440px) {
+  .hero { padding: 44px var(--content-padding) 36px; }
+  .appName { font-size: 36px; }
+  .pointsValue { font-size: 52px; }
+  .greeting { font-size: 18px; }
+  .todayBadge { padding: 10px 20px; font-size: 15px; }
+
+  .statsRow { padding: 36px var(--content-padding); }
+  .statValue { font-size: 34px; }
+  .statLabel { font-size: 14px; }
+  .sectionTitle { font-size: 22px; margin-bottom: 20px; }
+
+  .scenarioList { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .scenarioCard { padding: 26px; }
+  .scenarioIcon { width: 64px; height: 64px; font-size: 32px; }
+  .scenarioTitle { font-size: 17px; }
+
+  .weeklyChart { height: 220px; gap: 12px; }
+  .quickBtn { padding: 22px; }
+}
+
+@media (min-width: 1920px) {
+  .hero { padding: 52px var(--content-padding) 44px; }
+  .appName { font-size: 44px; }
+  .greeting { font-size: 20px; }
+  .pointsValue { font-size: 64px; }
+  .pointsLabel { font-size: 17px; }
+  .todayBadge { padding: 12px 24px; font-size: 17px; }
+  .barLabel { font-size: 14px; }
+  .barTrack { height: 12px; }
+
+  .statsRow { padding: 40px var(--content-padding); }
+  .statValue { font-size: 40px; }
+  .statLabel { font-size: 16px; }
+  .statDivider { height: 52px; }
+
+  .sectionTitle { font-size: 26px; margin-bottom: 24px; }
+
+  .scenarioList { grid-template-columns: 1fr 1fr 1fr; gap: 28px; }
+  .scenarioCard { padding: 32px; gap: 16px; }
+  .scenarioIcon { width: 76px; height: 76px; font-size: 38px; }
+  .scenarioTitle { font-size: 19px; }
+  .scenarioDesc { font-size: 15px; }
+  .scenarioXp { font-size: 16px; }
+  .scenarioXpInactive { font-size: 16px; }
+  .scenarioStatus { font-size: 14px; }
+  .scenarioStart { font-size: 14px; }
+
+  .weeklyChart { height: 280px; gap: 16px; }
+  .chartLabel { font-size: 14px; }
+
+  .quickActions { gap: 24px; }
+  .quickBtn { padding: 28px; gap: 16px; }
+  .quickIcon { font-size: 32px; }
+  .quickLabel { font-size: 18px; }
+}
+
+@media (min-width: 2560px) {
+  .hero { padding: 68px var(--content-padding) 56px; }
+  .appName { font-size: 56px; }
+  .greeting { font-size: 24px; }
+  .pointsValue { font-size: 84px; }
+  .pointsLabel { font-size: 20px; }
+  .todayBadge { padding: 16px 32px; font-size: 20px; }
+  .barLabel { font-size: 16px; }
+  .barTrack { height: 16px; }
+
+  .statsRow { padding: 52px var(--content-padding); }
+  .statValue { font-size: 52px; }
+  .statLabel { font-size: 18px; }
+  .statDivider { height: 64px; }
+
+  .sectionTitle { font-size: 32px; margin-bottom: 32px; }
+
+  .scenarioList { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 32px; }
+  .scenarioCard { padding: 36px; gap: 20px; }
+  .scenarioIcon { width: 96px; height: 96px; font-size: 48px; border-radius: var(--radius-lg); }
+  .scenarioTitle { font-size: 22px; }
+  .scenarioDesc { font-size: 17px; }
+  .scenarioXp { font-size: 18px; }
+  .scenarioXpInactive { font-size: 18px; }
+  .scenarioStatus { font-size: 16px; }
+  .scenarioStart { font-size: 16px; }
+
+  .weeklyChart { height: 360px; gap: 24px; }
+  .chartBar { width: 55%; border-radius: 10px 10px 6px 6px; }
+  .chartLabel { font-size: 16px; }
+
+  .quickActions { gap: 32px; }
+  .quickBtn { padding: 36px; gap: 20px; border-radius: var(--radius-xl); }
+  .quickIcon { font-size: 40px; }
+  .quickLabel { font-size: 22px; }
+}
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes barGrow {
+  from { height: 0 !important; }
+}

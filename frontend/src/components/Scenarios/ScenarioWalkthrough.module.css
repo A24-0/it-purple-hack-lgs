@@ -1,0 +1,843 @@
+.page {
+  background: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+  color: var(--text-secondary);
+}
+
+.notFound button {
+  padding: 10px 20px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+}
+.header {
+  background: var(--hero-gradient);
+  padding: 48px 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.headerInfo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headerIcon {
+  font-size: 20px;
+}
+
+.headerTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.stepCounter {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+.progressTrack {
+  height: 4px;
+  background: var(--gray-200);
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--success);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 2px 2px 0;
+}
+.content {
+  flex: 1;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fadeIn {
+  animation: fadeSlideIn 0.35s ease forwards;
+}
+
+.fadeOut {
+  animation: fadeSlideOut 0.3s ease forwards;
+}
+.situationCard {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 24px;
+  animation: slideDown 0.4s ease;
+}
+
+.situationText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.choicesSection {
+  flex: 1;
+}
+
+.choicesLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.choicesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choiceBtn {
+  width: 100%;
+  padding: 16px 18px;
+  padding-left: 50px;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: left;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+  position: relative;
+  animation: choiceAppear 0.4s ease both;
+}
+
+.choiceNumber {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.choiceBtn:hover {
+  border-color: var(--primary);
+  background: rgba(41, 121, 255, 0.04);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.choiceBtn:hover .choiceNumber {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.choiceBtn:active {
+  transform: translateY(0) scale(0.99);
+}
+.consequenceSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  animation: fadeSlideIn 0.4s ease;
+}
+
+.consequenceCard {
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.consequenceOptimal {
+  background: var(--success-light);
+  border: 2px solid var(--success);
+}
+
+.consequenceSuboptimal {
+  background: #FFF8E1;
+  border: 2px solid var(--warning);
+}
+
+.consequenceBadge {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.consequenceText {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+
+.rewardRow {
+  display: flex;
+  gap: 8px;
+}
+
+.rewardBadge {
+  padding: 4px 12px;
+  background: rgba(41, 121, 255, 0.1);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rewardPop {
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.continueBtn {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: auto;
+}
+
+.continueBtn:hover {
+  background: var(--primary-dark);
+}
+
+.continueBtn:active {
+  transform: scale(0.98);
+}
+.completedSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  animation: fadeSlideIn 0.5s ease;
+}
+
+.completedIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: celebrateIcon 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.completedTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.completedSubtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+.statsGrid {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.statBox {
+  flex: 1;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.statBox:nth-child(2) { animation-delay: 0.1s; }
+.statBox:nth-child(3) { animation-delay: 0.2s; }
+
+.statBoxValue {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.statBoxLabel {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.completedActions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.shareBtn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #7C4DFF 0%, #536DFE 100%);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 700;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.shareBtn:hover {
+  opacity: 0.9;
+}
+
+.shareBtn:active {
+  transform: scale(0.98);
+}
+
+.replayBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.replayBtn:hover {
+  background: var(--gray-200);
+}
+
+.homeBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.homeBtn:hover {
+  background: var(--primary-dark);
+}
+.hintFab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7C4DFF 0%, #536DFE 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(124, 77, 255, 0.4);
+  z-index: 50;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fabPulse 2s ease-in-out infinite;
+}
+
+.hintFab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(124, 77, 255, 0.5);
+}
+
+.hintFab:active {
+  transform: scale(0.95);
+}
+.hintOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+  animation: overlayIn 0.2s ease;
+}
+
+.hintModal {
+  width: 100%;
+  max-width: 600px;
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 20px;
+  animation: modalSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hintHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hintClose {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  font-size: 16px;
+  color: var(--gray-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hintBody {
+  min-height: 80px;
+  margin-bottom: 16px;
+}
+
+.hintLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.hintTextContent {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.hintChatBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  transition: background 0.2s;
+}
+
+.hintChatBtn:hover {
+  background: var(--gray-200);
+}
+.typing {
+  display: flex;
+  gap: 4px;
+}
+
+.typing span {
+  width: 8px;
+  height: 8px;
+  background: var(--gray-400);
+  border-radius: 50%;
+  animation: typingDot 1.4s ease-in-out infinite;
+}
+
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-16px); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes choiceAppear {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes celebrateIcon {
+  0% { transform: scale(0) rotate(-20deg); }
+  60% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes fabPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(124, 77, 255, 0.4); }
+  50% { box-shadow: 0 4px 28px rgba(124, 77, 255, 0.6); }
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+@media (min-width: 768px) {
+  .header {
+    padding: 48px var(--content-padding) 20px;
+  }
+
+  .content {
+    padding: 28px var(--content-padding);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .situationCard {
+    padding: 28px;
+  }
+
+  .situationText {
+    font-size: 18px;
+  }
+
+  .choiceBtn {
+    padding: 20px 22px 20px 56px;
+    font-size: 16px;
+  }
+
+  .completedIcon {
+    font-size: 80px;
+  }
+
+  .completedTitle {
+    font-size: 28px;
+  }
+
+  .statsGrid {
+    max-width: 500px;
+  }
+
+  .hintFab {
+    width: 64px;
+    height: 64px;
+    bottom: 32px;
+    right: 32px;
+  }
+
+  .hintModal {
+    border-radius: var(--radius-xl);
+    margin-bottom: 20px;
+    padding: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  .header {
+    padding: 32px 48px 20px;
+  }
+
+  .content {
+    max-width: 900px;
+    padding: 36px var(--content-padding);
+  }
+
+  .heroImage {
+    width: 100%;
+  }
+
+  .choiceBtn {
+    padding: 22px 24px 22px 60px;
+    font-size: 17px;
+  }
+
+  .consequenceCard {
+    padding: 28px;
+  }
+
+  .hintOverlay {
+    align-items: center;
+  }
+
+  .hintModal {
+    border-radius: var(--radius-xl);
+    margin-bottom: 0;
+    max-width: 500px;
+  }
+}
+@media (min-width: 1440px) {
+  .content {
+    max-width: 1000px;
+    padding: 40px var(--content-padding);
+  }
+
+  .situationCard {
+    padding: 36px;
+  }
+
+  .situationText {
+    font-size: 20px;
+  }
+
+  .choiceBtn {
+    padding: 26px 26px 26px 64px;
+    font-size: 18px;
+  }
+
+  .choiceNumber {
+    width: 27px;
+    height: 27px;
+    font-size: 14px;
+    left: 18px;
+  }
+
+  .consequenceCard {
+    padding: 32px;
+  }
+
+  .completedIcon {
+    font-size: 88px;
+  }
+
+  .completedTitle {
+    font-size: 30px;
+  }
+
+  .statBoxValue {
+    font-size: 25px;
+  }
+
+  .hintFab {
+    width: 68px;
+    height: 68px;
+  }
+
+  .hintModal {
+    max-width: 530px;
+    padding: 30px;
+  }
+}
+@media (min-width: 1920px) {
+  .header {
+    padding: 40px 80px 24px;
+  }
+
+  .content {
+    max-width: 1200px;
+    padding: 44px 80px;
+  }
+
+  .situationCard {
+    padding: 44px;
+  }
+
+  .situationText {
+    font-size: 22px;
+  }
+
+  .choiceBtn {
+    padding: 30px 28px 30px 68px;
+    font-size: 20px;
+  }
+
+  .choiceNumber {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    left: 20px;
+  }
+
+  .consequenceCard {
+    padding: 36px;
+  }
+
+  .consequenceText {
+    font-size: 19px;
+  }
+
+  .completedIcon {
+    font-size: 110px;
+  }
+
+  .completedTitle {
+    font-size: 36px;
+  }
+
+  .statBoxValue {
+    font-size: 32px;
+  }
+
+  .hintFab {
+    width: 80px;
+    height: 80px;
+    bottom: 40px;
+    right: 40px;
+  }
+
+  .hintModal {
+    max-width: 640px;
+    padding: 36px;
+  }
+
+  .hintTextContent {
+    font-size: 19px;
+  }
+}
+@media (min-width: 2560px) {
+  .header {
+    padding: 48px 100px 28px;
+  }
+
+  .content {
+    max-width: 1500px;
+    padding: 56px 100px;
+  }
+
+  .headerTitle {
+    font-size: 24px;
+  }
+
+  .situationCard {
+    padding: 56px;
+  }
+
+  .situationText {
+    font-size: 26px;
+  }
+
+  .choiceBtn {
+    padding: 36px 36px 36px 76px;
+    font-size: 24px;
+    border-width: 3px;
+  }
+
+  .choiceNumber {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    left: 24px;
+  }
+
+  .consequenceCard {
+    padding: 44px;
+  }
+
+  .consequenceText {
+    font-size: 22px;
+  }
+
+  .rewardBadge {
+    font-size: 18px;
+    padding: 6px 16px;
+  }
+
+  .continueBtn {
+    padding: 26px;
+    font-size: 22px;
+  }
+
+  .completedIcon {
+    font-size: 140px;
+  }
+
+  .completedTitle {
+    font-size: 44px;
+  }
+
+  .completedSubtitle {
+    font-size: 22px;
+  }
+
+  .statBox {
+    padding: 28px;
+  }
+
+  .statBoxValue {
+    font-size: 40px;
+  }
+
+  .statBoxLabel {
+    font-size: 16px;
+  }
+
+  .shareBtn,
+  .replayBtn,
+  .homeBtn {
+    font-size: 20px;
+    padding: 20px;
+  }
+
+  .hintFab {
+    width: 96px;
+    height: 96px;
+    bottom: 48px;
+    right: 48px;
+  }
+
+  .hintModal {
+    max-width: 800px;
+    padding: 44px;
+  }
+
+  .hintTextContent {
+    font-size: 22px;
+  }
+
+  .hintChatBtn {
+    font-size: 18px;
+  }
+}

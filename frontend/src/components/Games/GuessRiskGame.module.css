@@ -1,0 +1,334 @@
+.page {
+  background: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--hero-gradient);
+  padding: 48px 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerTitle {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.counter {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.progressTrack {
+  height: 4px;
+  background: var(--gray-200);
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--success);
+  transition: width 0.4s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+.content {
+  flex: 1;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.situationCard {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.situationText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.choicesLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.optionBtn {
+  width: 100%;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.optionBtn:not(:disabled):hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.correct {
+  border-color: var(--success) !important;
+  background: var(--success-light);
+}
+
+.incorrect {
+  border-color: var(--error) !important;
+  background: var(--error-light);
+}
+
+.dimmed {
+  opacity: 0.5;
+}
+
+.explanationCard {
+  background: #F3F0FF;
+  border: 2px solid #7C4DFF;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.explanationText {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.nextBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.nextBtn:hover {
+  background: var(--primary-dark);
+}
+
+.resultSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.resultIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.resultTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.resultScore {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.resultPercent {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.resultRewards {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.rewardBadge {
+  padding: 8px 16px;
+  background: rgba(41, 121, 255, 0.1);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.resultActions {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.primaryBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.primaryBtn:hover {
+  background: var(--primary-dark);
+}
+
+.secondaryBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.secondaryBtn:hover {
+  background: var(--gray-200);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 48px var(--content-padding) 20px;
+  }
+
+  .content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 28px var(--content-padding);
+  }
+
+  .situationCard { padding: 28px; }
+  .situationText { font-size: 18px; }
+  .optionBtn { padding: 20px 22px; font-size: 16px; }
+  .explanationCard { padding: 28px; }
+  .explanationText { font-size: 15px; }
+  .resultActions { max-width: 400px; }
+  .resultIcon { font-size: 80px; }
+  .resultTitle { font-size: 28px; }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    padding: 32px 48px 20px;
+  }
+
+  .content { max-width: 900px; padding: 32px 48px; }
+}
+
+@media (min-width: 1440px) {
+  .content { max-width: 1000px; }
+  .header { padding: 36px 64px 20px; }
+  .headerTitle { font-size: 20px; }
+  .situationCard { padding: 32px; }
+  .situationText { font-size: 20px; }
+  .optionBtn { padding: 24px; font-size: 18px; }
+  .explanationCard { padding: 32px; }
+  .explanationText { font-size: 17px; }
+}
+
+@media (min-width: 1920px) {
+  .content {
+    max-width: 1200px;
+    padding: 40px 80px;
+  }
+
+  .header { padding: 40px 80px 24px; }
+  .headerTitle { font-size: 24px; }
+  .counter { font-size: 16px; padding: 6px 14px; }
+  .situationCard { padding: 40px; }
+  .situationText { font-size: 24px; }
+  .choicesLabel { font-size: 16px; }
+  .optionBtn { padding: 28px 30px; font-size: 20px; border-width: 2.5px; }
+  .explanationCard { padding: 40px; }
+  .explanationText { font-size: 19px; }
+  .nextBtn { padding: 20px; font-size: 19px; }
+  .resultIcon { font-size: 110px; }
+  .resultTitle { font-size: 36px; }
+  .resultScore { font-size: 64px; }
+  .resultPercent { font-size: 20px; }
+  .rewardBadge { padding: 12px 24px; font-size: 18px; }
+  .resultActions { max-width: 480px; }
+  .primaryBtn { padding: 20px; font-size: 19px; }
+  .secondaryBtn { padding: 20px; font-size: 19px; }
+}
+
+@media (min-width: 2560px) {
+  .content {
+    max-width: 1500px;
+    padding: 56px 100px;
+  }
+
+  .header { padding: 48px 100px 28px; }
+  .headerTitle { font-size: 28px; }
+  .counter { font-size: 18px; }
+  .situationCard { padding: 52px; }
+  .situationText { font-size: 28px; }
+  .choicesLabel { font-size: 18px; }
+  .optionBtn { padding: 36px; font-size: 24px; border-width: 3px; }
+  .explanationCard { padding: 52px; }
+  .explanationText { font-size: 22px; }
+  .nextBtn { padding: 26px; font-size: 22px; }
+  .resultIcon { font-size: 140px; }
+  .resultTitle { font-size: 44px; }
+  .resultScore { font-size: 80px; }
+  .resultPercent { font-size: 24px; }
+  .rewardBadge { padding: 16px 32px; font-size: 20px; }
+  .resultActions { max-width: 560px; }
+  .primaryBtn { padding: 26px; font-size: 22px; }
+  .secondaryBtn { padding: 26px; font-size: 22px; }
+}

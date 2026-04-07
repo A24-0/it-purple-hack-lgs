@@ -1,0 +1,425 @@
+.page {
+  background: var(--bg-secondary);
+  min-height: 100vh;
+  max-width: 100%;
+}
+
+.hero {
+  background: var(--hero-gradient);
+  padding: 48px var(--content-padding) 28px;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.backBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: -20px var(--content-padding) 0;
+  padding: 18px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 2;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(41, 121, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profileInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profileName {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.profileLevel {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.editBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(41, 121, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.editBtn:hover {
+  background: rgba(41, 121, 255, 0.2);
+}
+
+.sectionsGrid {
+  display: flex;
+  flex-direction: column;
+}
+
+.settingsSection {
+  padding: 20px var(--content-padding) 0;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.settingsGroup {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.settingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.settingRow:hover {
+  background: var(--gray-50);
+}
+
+.settingInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.settingIcon {
+  font-size: 22px;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.settingTitle {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.settingDesc {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--gray-100);
+  margin: 0 16px;
+}
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gray-300);
+  border-radius: 14px;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle input:checked + .slider {
+  background: var(--primary);
+}
+
+.toggle input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+.footer {
+  padding: 24px var(--content-padding) 32px;
+  text-align: center;
+  color: var(--gray-400);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ───── Tablet ───── */
+@media (min-width: 768px) {
+  .page { max-width: 700px; margin: 0 auto; }
+
+  .hero { padding: 52px var(--content-padding) 32px; }
+  .title { font-size: 22px; }
+
+  .profileCard { padding: 24px; gap: 16px; }
+  .avatar { width: 64px; height: 64px; }
+  .profileName { font-size: 20px; }
+  .profileLevel { font-size: 14px; }
+
+  .settingRow { padding: 18px 20px; }
+  .settingTitle { font-size: 16px; }
+  .settingDesc { font-size: 13px; }
+}
+
+/* ───── Small desktop ───── */
+@media (min-width: 1024px) {
+  .page { max-width: 100%; padding: 0; }
+
+  .hero {
+    padding: 40px 48px 32px;
+    border-radius: 0;
+  }
+
+  .heroTop { max-width: 1100px; margin: 0 auto; }
+
+  .profileCard {
+    max-width: 1100px;
+    margin: -24px auto 0;
+    padding: 28px 32px;
+    gap: 20px;
+    border-radius: var(--radius-xl);
+  }
+
+  .avatar { width: 72px; height: 72px; }
+  .profileName { font-size: 24px; }
+  .profileLevel { font-size: 16px; }
+  .editBtn { width: 48px; height: 48px; }
+
+  .sectionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .settingsSection { padding: 24px 0 0; }
+  .sectionLabel { font-size: 14px; margin-bottom: 10px; }
+  .settingsGroup { border-radius: var(--radius-lg); }
+
+  .settingRow { padding: 20px 24px; }
+  .settingInfo { gap: 16px; }
+  .settingIcon { font-size: 26px; width: 38px; }
+  .settingTitle { font-size: 17px; }
+  .settingDesc { font-size: 14px; }
+  .divider { margin: 0 24px; }
+
+  .toggle { width: 52px; height: 30px; }
+  .slider::before { width: 24px; height: 24px; }
+  .toggle input:checked + .slider::before { transform: translateX(22px); }
+
+  .footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-size: 13px;
+    padding: 32px 48px 40px;
+  }
+}
+
+/* ───── Large desktop ───── */
+@media (min-width: 1440px) {
+  .heroTop { max-width: 1280px; }
+  .hero { padding: 44px 64px 36px; }
+  .title { font-size: 26px; }
+
+  .profileCard {
+    max-width: 1280px;
+    padding: 32px 40px;
+    gap: 24px;
+  }
+
+  .avatar { width: 80px; height: 80px; }
+  .profileName { font-size: 26px; }
+  .profileLevel { font-size: 17px; }
+
+  .sectionsGrid {
+    max-width: 1280px;
+    padding: 0 64px;
+    gap: 0 40px;
+  }
+
+  .settingsSection { padding: 28px 0 0; }
+  .sectionLabel { font-size: 15px; margin-bottom: 12px; }
+
+  .settingRow { padding: 22px 28px; }
+  .settingIcon { font-size: 28px; width: 42px; }
+  .settingTitle { font-size: 18px; }
+  .settingDesc { font-size: 15px; }
+  .divider { margin: 0 28px; }
+
+  .toggle { width: 56px; height: 32px; }
+  .slider::before { width: 26px; height: 26px; }
+  .toggle input:checked + .slider::before { transform: translateX(24px); }
+
+  .footer { max-width: 1280px; padding: 36px 64px 48px; font-size: 14px; }
+}
+
+/* ───── 2K ───── */
+@media (min-width: 1920px) {
+  .heroTop { max-width: 1500px; }
+  .hero { padding: 52px 80px 40px; }
+  .backBtn { width: 52px; height: 52px; }
+  .title { font-size: 30px; }
+
+  .profileCard {
+    max-width: 1500px;
+    padding: 36px 48px;
+    gap: 28px;
+    margin-top: -28px;
+  }
+
+  .avatar { width: 92px; height: 92px; }
+  .profileName { font-size: 30px; }
+  .profileLevel { font-size: 18px; }
+  .editBtn { width: 56px; height: 56px; }
+
+  .sectionsGrid {
+    max-width: 1500px;
+    padding: 0 80px;
+    gap: 0 56px;
+  }
+
+  .settingsSection { padding: 32px 0 0; }
+  .sectionLabel { font-size: 17px; margin-bottom: 14px; letter-spacing: 0.8px; }
+  .settingsGroup { border-radius: var(--radius-xl); box-shadow: var(--shadow-md); }
+
+  .settingRow { padding: 28px 36px; }
+  .settingInfo { gap: 20px; }
+  .settingIcon { font-size: 32px; width: 48px; }
+  .settingTitle { font-size: 21px; }
+  .settingDesc { font-size: 16px; margin-top: 3px; }
+  .divider { margin: 0 36px; }
+
+  .toggle { width: 64px; height: 36px; }
+  .slider { border-radius: 18px; }
+  .slider::before { width: 30px; height: 30px; }
+  .toggle input:checked + .slider::before { transform: translateX(28px); }
+
+  .footer { max-width: 1500px; padding: 40px 80px 52px; font-size: 16px; }
+}
+
+/* ───── 4K ───── */
+@media (min-width: 2560px) {
+  .heroTop { max-width: 1900px; }
+  .hero { padding: 64px 100px 48px; }
+  .backBtn { width: 64px; height: 64px; }
+  .title { font-size: 38px; }
+
+  .profileCard {
+    max-width: 1900px;
+    padding: 48px 64px;
+    gap: 36px;
+    margin-top: -36px;
+  }
+
+  .avatar { width: 110px; height: 110px; }
+  .profileName { font-size: 36px; }
+  .profileLevel { font-size: 22px; }
+  .editBtn { width: 68px; height: 68px; }
+
+  .sectionsGrid {
+    max-width: 1900px;
+    padding: 0 100px;
+    gap: 0 72px;
+  }
+
+  .settingsSection { padding: 40px 0 0; }
+  .sectionLabel { font-size: 20px; margin-bottom: 18px; }
+
+  .settingRow { padding: 36px 44px; }
+  .settingInfo { gap: 28px; }
+  .settingIcon { font-size: 40px; width: 56px; }
+  .settingTitle { font-size: 26px; }
+  .settingDesc { font-size: 20px; margin-top: 4px; }
+  .divider { margin: 0 44px; }
+
+  .toggle { width: 80px; height: 44px; }
+  .slider { border-radius: 22px; }
+  .slider::before { width: 38px; height: 38px; }
+  .toggle input:checked + .slider::before { transform: translateX(36px); }
+
+  .footer { max-width: 1900px; padding: 52px 100px 64px; font-size: 18px; }
+}

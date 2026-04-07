@@ -1,0 +1,342 @@
+.page {
+  background: var(--white);
+}
+
+.hero {
+  background: var(--hero-gradient);
+  padding: 48px var(--content-padding) 36px;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  color: var(--text-white);
+}
+
+.subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-white);
+}
+.searchWrap {
+  position: relative;
+  padding: 16px var(--content-padding) 0;
+}
+
+.searchIcon {
+  position: absolute;
+  left: calc(var(--content-padding) + 12px);
+  top: 28px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 12px 12px 42px;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  outline: none;
+  background: var(--gray-50);
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+
+.searchInput::placeholder {
+  color: var(--gray-400);
+}
+
+.searchInput:focus {
+  border-color: var(--primary);
+}
+.chips {
+  display: flex;
+  gap: 8px;
+  padding: 12px var(--content-padding);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.chipActive {
+  background: var(--primary);
+  color: var(--white);
+}
+.termsList {
+  padding: 0 var(--content-padding) var(--content-padding);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.termCard {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  text-align: left;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.termCard:hover {
+  border-color: var(--primary);
+}
+
+.expanded {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.termHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.termName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.termCategory {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(41, 121, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.termDefinition {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.termDetail {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.termExamples {
+  background: var(--gray-50);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.exampleList {
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.relatedTerms {
+  display: flex;
+  flex-direction: column;
+}
+
+.relatedChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.relatedChip {
+  padding: 3px 10px;
+  background: rgba(41, 121, 255, 0.08);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  color: var(--gray-500);
+  padding: 32px 0;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .hero {
+    padding: 56px var(--content-padding) 44px;
+  }
+
+  .title {
+    font-size: 34px;
+  }
+
+  .searchInput {
+    max-width: 500px;
+    padding: 14px 14px 14px 46px;
+    font-size: 16px;
+  }
+
+  .termsList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .termCard {
+    padding: 18px 20px;
+  }
+
+  .chip {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+}
+@media (min-width: 1024px) {
+  .hero {
+    padding: 40px var(--content-padding) 36px;
+  }
+
+  .searchInput {
+    max-width: 600px;
+  }
+
+  .termsList {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .termCard {
+    padding: 20px 24px;
+  }
+
+  .termName {
+    font-size: 16px;
+  }
+
+  .termDefinition {
+    font-size: 15px;
+  }
+}
+@media (min-width: 1440px) {
+  .searchInput {
+    max-width: 650px;
+  }
+
+  .termsList {
+    gap: 18px;
+  }
+
+  .termCard {
+    padding: 22px 26px;
+  }
+}
+@media (min-width: 1920px) {
+  .title {
+    font-size: 40px;
+  }
+
+  .exampleList { font-size: 15px; }
+  .detailLabel { font-size: 13px; }
+  .relatedChip { font-size: 14px; padding: 4px 14px; }
+
+  .searchInput {
+    max-width: 700px;
+    padding: 16px 16px 16px 50px;
+    font-size: 17px;
+  }
+
+  .termsList {
+    gap: 20px;
+  }
+
+  .termCard {
+    padding: 24px 28px;
+  }
+
+  .termName {
+    font-size: 18px;
+  }
+
+  .termCategory {
+    font-size: 13px;
+    padding: 4px 12px;
+  }
+
+  .termDefinition {
+    font-size: 16px;
+  }
+}
+@media (min-width: 2560px) {
+  .title {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+  }
+
+  .exampleList { font-size: 16px; }
+  .detailLabel { font-size: 15px; }
+  .relatedChip { font-size: 16px; padding: 6px 18px; }
+  .termExamples { padding: 16px 20px; }
+
+  .termsList {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+  }
+
+  .termCard {
+    padding: 32px;
+  }
+
+  .termName {
+    font-size: 22px;
+  }
+
+  .termCategory {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
+
+  .termDefinition {
+    font-size: 18px;
+    margin-top: 14px;
+  }
+
+  .chip {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+
+  .searchInput {
+    max-width: 900px;
+    padding: 20px 20px 20px 56px;
+    font-size: 18px;
+  }
+}
