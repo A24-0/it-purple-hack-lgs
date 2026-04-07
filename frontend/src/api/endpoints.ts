@@ -56,8 +56,8 @@ export interface LeaderboardEntry {
 }
 
 export const leaderboardApi = {
-  getTop: (limit = 20) =>
-    apiClient.get<LeaderboardEntry[]>(`/api/leaderboard?limit=${limit}`),
+  getTop: (limit = 20, period?: string) =>
+    apiClient.get<LeaderboardEntry[]>(`/api/leaderboard?limit=${limit}${period ? `&period=${period}` : ''}`),
 };
 
 export interface AiChatMessage {
@@ -81,4 +81,9 @@ export const aiApi = {
 export const achievementsApi = {
   getAll: () =>
     apiClient.get<Achievement[]>('/api/achievements'),
+};
+
+export const gamesApi = {
+  saveResult: (data: { gameType: string; score: number; xpEarned: number; coinsEarned: number }) =>
+    apiClient.post<void>('/api/games/save', data),
 };

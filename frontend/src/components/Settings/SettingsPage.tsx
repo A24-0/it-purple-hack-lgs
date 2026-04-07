@@ -54,6 +54,7 @@ export default function SettingsPage() {
         </button>
       </div>
 
+      <div className={styles.sectionsGrid}>
       <div className={styles.settingsSection}>
         <h3 className={styles.sectionLabel}>Уведомления</h3>
         <div className={styles.settingsGroup}>
@@ -243,6 +244,7 @@ export default function SettingsPage() {
             </svg>
           </button>
         </div>
+      </div>
       </div>
 
       <div className={styles.footer}>

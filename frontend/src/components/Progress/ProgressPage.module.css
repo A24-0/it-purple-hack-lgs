@@ -260,118 +260,105 @@
     padding: 20px 24px;
   }
 }
-@media (min-width: 1920px) {
+@media (min-width: 1440px) {
   .hero {
-    padding: 48px var(--content-padding) 44px;
+    padding: 44px var(--content-padding) 40px;
   }
 
   .title {
-    font-size: 40px;
+    font-size: 37px;
   }
 
   .ringContainer {
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
   }
 
   .ringBold {
-    font-size: 24px;
+    font-size: 21px;
   }
 
   .ringLight {
-    font-size: 18px;
-  }
-
-  .sectionTitle {
-    font-size: 22px;
-  }
-
-  .legendName {
-    font-size: 18px;
-  }
-
-  .legendValue {
     font-size: 16px;
   }
 
-  .achievementIcon {
-    width: 56px;
-    height: 56px;
-    font-size: 28px;
+  .sectionTitle {
+    font-size: 21px;
   }
 
-  .achievementTitle {
+  .legendName {
     font-size: 17px;
   }
 
-  .achievementDesc {
-    font-size: 15px;
-  }
-}
-@media (min-width: 2560px) {
-  .hero {
-    padding: 64px var(--content-padding) 56px;
-  }
-
-  .title {
-    font-size: 48px;
-  }
-
-  .subtitle {
-    font-size: 20px;
-  }
-
-  .ringContainer {
-    width: 380px;
-    height: 380px;
-  }
-
-  .ringBold {
-    font-size: 30px;
-  }
-
-  .ringLight {
-    font-size: 22px;
-  }
-
-  .dot {
-    width: 16px;
-    height: 16px;
-  }
-
-  .legendName {
-    font-size: 20px;
-  }
-
   .legendValue {
-    font-size: 18px;
-  }
-
-  .sectionTitle {
-    font-size: 26px;
-    margin-bottom: 28px;
-  }
-
-  .achievementList {
-    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 15px;
   }
 
   .achievementCard {
-    padding: 28px 32px;
-    gap: 16px;
+    padding: 22px 26px;
   }
 
   .achievementIcon {
-    width: 68px;
-    height: 68px;
-    font-size: 34px;
+    width: 52px;
+    height: 52px;
+    font-size: 26px;
   }
 
   .achievementTitle {
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .achievementDesc {
-    font-size: 16px;
+    font-size: 14px;
   }
+}
+@media (min-width: 1920px) {
+  .hero { padding: 52px var(--content-padding) 48px; }
+  .title { font-size: 44px; }
+  .subtitle { font-size: 20px; }
+
+  .section { padding: 32px var(--content-padding); }
+  .section:first-of-type { gap: 40px; }
+  .sectionTitle { font-size: 26px; margin-bottom: 24px; }
+
+  .ringContainer { width: 340px; height: 340px; }
+  .ringBold { font-size: 28px; }
+  .ringLight { font-size: 20px; }
+
+  .legend { gap: 20px; }
+  .legendName { font-size: 20px; }
+  .legendValue { font-size: 18px; }
+  .dot { width: 14px; height: 14px; }
+  .legendItem { padding: 4px 0; }
+
+  .achievementList { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+  .achievementCard { padding: 24px 28px; gap: 16px; }
+  .achievementIcon { width: 64px; height: 64px; font-size: 32px; }
+  .achievementTitle { font-size: 19px; }
+  .achievementDesc { font-size: 15px; }
+}
+
+@media (min-width: 2560px) {
+  .hero { padding: 68px var(--content-padding) 60px; }
+  .title { font-size: 56px; }
+  .subtitle { font-size: 24px; }
+
+  .section { padding: 40px var(--content-padding); }
+  .section:first-of-type { gap: 56px; }
+  .sectionTitle { font-size: 32px; margin-bottom: 32px; }
+
+  .ringContainer { width: 440px; height: 440px; }
+  .ringBold { font-size: 36px; }
+  .ringLight { font-size: 26px; }
+
+  .legend { gap: 28px; }
+  .legendName { font-size: 24px; }
+  .legendValue { font-size: 22px; }
+  .dot { width: 18px; height: 18px; }
+
+  .achievementList { grid-template-columns: 1fr 1fr 1fr; }
+  .achievementCard { padding: 32px 36px; gap: 20px; }
+  .achievementIcon { width: 80px; height: 80px; font-size: 40px; border-radius: var(--radius-md); }
+  .achievementTitle { font-size: 22px; }
+  .achievementDesc { font-size: 17px; }
 }

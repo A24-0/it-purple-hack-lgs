@@ -107,6 +107,11 @@
   font-weight: 500;
 }
 
+@media (min-width: 1440px) {
+  .navItem { padding: 13px 17px; }
+  .navLabel { font-size: 15px; }
+}
+
 @media (min-width: 1920px) {
   .navItem { padding: 14px 18px; }
   .navIcon { font-size: 22px; }

@@ -214,6 +214,19 @@
     font-size: 18px;
   }
 }
+@media (min-width: 1440px) {
+  .formCard {
+    width: 500px;
+  }
+
+  .appName {
+    font-size: 48px;
+  }
+
+  .logo {
+    font-size: 88px;
+  }
+}
 @media (min-width: 1920px) {
   .formCard {
     width: 540px;

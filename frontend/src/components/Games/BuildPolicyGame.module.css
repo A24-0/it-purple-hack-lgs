@@ -1,0 +1,441 @@
+.page {
+  background: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--hero-gradient);
+  padding: 48px 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerTitle {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.counter {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.content {
+  flex: 1;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.challengeCard {
+  margin-bottom: 20px;
+}
+
+.challengeTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.challengeDesc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.budgetBar, .coverageBar {
+  margin-bottom: 16px;
+}
+
+.budgetInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.budgetLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.budgetValue {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.barTrack {
+  height: 8px;
+  background: var(--gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.barOver {
+  background: var(--error);
+}
+
+.coverageFill {
+  height: 100%;
+  background: var(--success);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.optionCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  text-align: left;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.optionCard:not(:disabled):hover {
+  border-color: var(--primary);
+}
+
+.selected {
+  border-color: var(--primary) !important;
+  background: rgba(41, 121, 255, 0.05);
+}
+
+.disabled {
+  opacity: 0.4;
+}
+
+.optionCheck {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.selected .optionCheck {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.optionInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.optionName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.optionDesc {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.optionCost {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.resultCard {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.resultBadge {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.resultText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.nextBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.nextBtn:hover {
+  background: var(--primary-dark);
+}
+
+.resultSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.resultIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.resultTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.resultScore {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.resultSubtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.resultRewards {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.rewardBadge {
+  padding: 8px 16px;
+  background: rgba(41, 121, 255, 0.1);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.resultActions {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.primaryBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.primaryBtn:hover { background: var(--primary-dark); }
+
+.secondaryBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.secondaryBtn:hover { background: var(--gray-200); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 48px var(--content-padding) 20px;
+  }
+
+  .content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 28px var(--content-padding);
+  }
+
+  .challengeTitle { font-size: 24px; }
+  .challengeDesc { font-size: 15px; }
+  .optionCard { padding: 18px 20px; }
+  .optionName { font-size: 15px; }
+  .optionDesc { font-size: 13px; }
+  .resultActions { max-width: 400px; }
+  .resultIcon { font-size: 80px; }
+  .resultTitle { font-size: 28px; }
+  .barTrack { height: 10px; }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    padding: 32px 48px 20px;
+  }
+
+  .content { max-width: 900px; padding: 32px 48px; }
+}
+
+@media (min-width: 1440px) {
+  .content { max-width: 1000px; }
+  .header { padding: 36px 64px 20px; }
+  .headerTitle { font-size: 20px; }
+  .challengeTitle { font-size: 26px; }
+  .challengeDesc { font-size: 16px; }
+  .optionCard { padding: 22px 26px; }
+  .optionName { font-size: 16px; }
+  .optionDesc { font-size: 14px; }
+  .optionCost { font-size: 16px; }
+  .barTrack { height: 10px; }
+  .budgetLabel { font-size: 15px; }
+  .budgetValue { font-size: 15px; }
+}
+
+@media (min-width: 1920px) {
+  .content {
+    max-width: 1200px;
+    padding: 40px 80px;
+  }
+
+  .header { padding: 40px 80px 24px; }
+  .headerTitle { font-size: 24px; }
+  .challengeTitle { font-size: 32px; }
+  .challengeDesc { font-size: 18px; }
+  .barTrack { height: 14px; }
+  .budgetLabel { font-size: 17px; }
+  .budgetValue { font-size: 17px; }
+  .optionCard { padding: 28px 32px; gap: 20px; }
+  .optionCheck { width: 36px; height: 36px; }
+  .optionName { font-size: 19px; }
+  .optionDesc { font-size: 16px; }
+  .optionCost { font-size: 19px; }
+  .submitBtn { padding: 22px; font-size: 20px; }
+  .resultCard { padding: 36px; }
+  .resultBadge { font-size: 20px; }
+  .resultText { font-size: 18px; }
+  .nextBtn { padding: 20px; font-size: 19px; }
+  .resultIcon { font-size: 110px; }
+  .resultTitle { font-size: 36px; }
+  .resultScore { font-size: 64px; }
+  .resultSubtitle { font-size: 20px; }
+  .rewardBadge { padding: 12px 24px; font-size: 18px; }
+  .resultActions { max-width: 480px; }
+  .primaryBtn { padding: 20px; font-size: 19px; }
+  .secondaryBtn { padding: 20px; font-size: 19px; }
+}
+
+@media (min-width: 2560px) {
+  .content {
+    max-width: 1500px;
+    padding: 56px 100px;
+  }
+
+  .header { padding: 48px 100px 28px; }
+  .headerTitle { font-size: 28px; }
+  .challengeTitle { font-size: 38px; }
+  .challengeDesc { font-size: 22px; }
+  .barTrack { height: 18px; }
+  .budgetLabel { font-size: 20px; }
+  .budgetValue { font-size: 20px; }
+  .optionCard { padding: 36px 40px; gap: 28px; }
+  .optionCheck { width: 44px; height: 44px; font-size: 20px; }
+  .optionName { font-size: 24px; }
+  .optionDesc { font-size: 19px; }
+  .optionCost { font-size: 24px; }
+  .submitBtn { padding: 28px; font-size: 24px; }
+  .resultCard { padding: 48px; }
+  .resultBadge { font-size: 24px; }
+  .resultText { font-size: 22px; }
+  .nextBtn { padding: 26px; font-size: 22px; }
+  .resultIcon { font-size: 140px; }
+  .resultTitle { font-size: 44px; }
+  .resultScore { font-size: 80px; }
+  .resultSubtitle { font-size: 24px; }
+  .rewardBadge { padding: 16px 32px; font-size: 20px; }
+  .resultActions { max-width: 560px; }
+  .primaryBtn { padding: 26px; font-size: 22px; }
+  .secondaryBtn { padding: 26px; font-size: 22px; }
+}

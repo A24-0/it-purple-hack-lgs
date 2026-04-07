@@ -1,0 +1,368 @@
+.page {
+  background: var(--bg-secondary);
+  min-height: 100vh;
+}
+
+.hero {
+  background: var(--hero-gradient);
+  padding: 48px var(--content-padding) 40px;
+  text-align: center;
+  position: relative;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.backBtn {
+  position: absolute;
+  top: 48px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.userName {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-white);
+  margin-bottom: 4px;
+}
+
+.userLevel {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.xpCard {
+  margin: -20px var(--content-padding) 16px;
+  padding: 18px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 2;
+}
+
+.xpHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.xpLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.xpValue {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.xpTrack {
+  height: 10px;
+  background: var(--gray-200);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.xpFill {
+  height: 100%;
+  background: var(--primary-gradient);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+.xpHint {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.statsRow {
+  display: flex;
+  gap: 10px;
+  padding: 0 var(--content-padding);
+  margin-bottom: 20px;
+}
+
+.statCard {
+  flex: 1;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.statIcon {
+  font-size: 24px;
+}
+
+.statValue {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.statLabel {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.section {
+  padding: 0 var(--content-padding) 24px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.sectionSub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.badgeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.badgeCard {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+.badgeLocked {
+  opacity: 0.5;
+}
+
+.badgeCompleted {
+  border: 2px solid var(--success);
+}
+
+.badgeIcon {
+  font-size: 28px;
+}
+
+.badgeName {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.badgeDesc {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.badgeLock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+}
+
+.statsList {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.statsItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.statsItem:last-child {
+  border-bottom: none;
+}
+
+.statsItemLabel {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.statsItemValue {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+@media (min-width: 768px) {
+  .page { max-width: 700px; margin: 0 auto; }
+
+  .hero {
+    padding: 56px var(--content-padding) 48px;
+  }
+
+  .avatar { width: 96px; height: 96px; }
+  .userName { font-size: 28px; }
+  .userLevel { font-size: 15px; }
+
+  .xpCard { padding: 24px; }
+  .xpLabel { font-size: 15px; }
+  .xpValue { font-size: 15px; }
+  .xpTrack { height: 12px; }
+
+  .statsRow { gap: 16px; }
+  .statCard { padding: 20px 14px; }
+  .statValue { font-size: 26px; }
+  .statLabel { font-size: 12px; }
+
+  .badgeGrid { grid-template-columns: 1fr 1fr 1fr; }
+  .badgeCard { padding: 20px 16px; }
+  .badgeIcon { font-size: 32px; }
+  .badgeName { font-size: 14px; }
+  .badgeDesc { font-size: 12px; }
+
+  .statsItem { padding: 18px 20px; }
+  .statsItemLabel { font-size: 15px; }
+  .statsItemValue { font-size: 15px; }
+}
+
+@media (min-width: 1024px) {
+  .page { max-width: 100%; }
+
+  .hero {
+    width: 100%;
+    border-radius: 0;
+    padding: 40px 48px 44px;
+  }
+
+  .xpCard { max-width: 1100px; margin: -24px auto 16px; padding: 28px 32px; }
+  .statsRow { max-width: 1100px; margin: 0 auto 24px; padding: 0 48px; gap: 20px; }
+  .section { max-width: 1100px; margin: 0 auto; padding: 0 48px 28px; }
+
+  .badgeGrid { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .userName { font-size: 28px; }
+  .sectionTitle { font-size: 22px; }
+  .statValue { font-size: 28px; }
+}
+
+@media (min-width: 1440px) {
+  .xpCard { max-width: 1280px; padding: 28px 64px; }
+  .statsRow { max-width: 1280px; padding: 0 64px; }
+  .section { max-width: 1280px; padding: 0 64px 28px; }
+
+  .badgeGrid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  .avatar { width: 108px; height: 108px; }
+  .userName { font-size: 32px; }
+  .statValue { font-size: 32px; }
+}
+
+@media (min-width: 1920px) {
+  .hero {
+    padding: 56px 80px 52px;
+  }
+
+  .xpCard { max-width: 1500px; padding: 28px 80px; }
+  .statsRow { max-width: 1500px; padding: 0 80px; }
+  .section { max-width: 1500px; padding: 0 80px 28px; }
+
+  .badgeGrid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+  .avatar { width: 120px; height: 120px; }
+  .userName { font-size: 36px; }
+  .userLevel { font-size: 20px; }
+
+  .statCard { padding: 28px; }
+  .statIcon { font-size: 32px; }
+  .statValue { font-size: 36px; }
+
+  .badgeIcon { font-size: 42px; }
+  .badgeName { font-size: 18px; }
+  .badgeDesc { font-size: 15px; }
+
+  .statsItem { padding: 24px 32px; }
+  .statsItemLabel { font-size: 19px; }
+  .statsItemValue { font-size: 19px; }
+
+  .xpTrack { height: 16px; }
+
+  .sectionTitle { font-size: 24px; }
+}
+
+@media (min-width: 2560px) {
+  .hero {
+    padding: 72px 100px 64px;
+  }
+
+  .xpCard { max-width: 1900px; padding: 36px 100px; }
+  .xpLabel { font-size: 20px; }
+  .xpValue { font-size: 20px; }
+  .xpTrack { height: 20px; border-radius: 10px; }
+  .xpHint { font-size: 18px; }
+
+  .statsRow { max-width: 1900px; padding: 0 100px; }
+  .section { max-width: 1900px; padding: 0 100px 28px; }
+
+  .badgeGrid { grid-template-columns: repeat(4, 1fr); gap: 28px; }
+
+  .backBtn { width: 56px; height: 56px; }
+  .avatar { width: 150px; height: 150px; border-width: 5px; }
+  .userName { font-size: 44px; }
+  .userLevel { font-size: 24px; }
+
+  .statCard { padding: 36px; }
+  .statIcon { font-size: 40px; }
+  .statValue { font-size: 44px; }
+  .statLabel { font-size: 18px; }
+
+  .badgeCard { padding: 36px; }
+  .badgeIcon { font-size: 52px; }
+  .badgeName { font-size: 22px; }
+  .badgeDesc { font-size: 17px; }
+
+  .statsItem { padding: 30px 40px; }
+  .statsItemLabel { font-size: 22px; }
+  .statsItemValue { font-size: 22px; }
+
+  .sectionTitle { font-size: 30px; }
+  .sectionSub { font-size: 18px; }
+}

@@ -26,7 +26,7 @@ export default function HomePage() {
           </div>
           <button
             className={styles.profileBtn}
-            onClick={() => navigate('/settings')}
+            onClick={() => navigate('/profile')}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path
@@ -111,6 +111,20 @@ export default function HomePage() {
               </button>
             );
           })}
+        </div>
+      </div>
+
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Мини-игры 🎮</h2>
+        <div className={styles.quickActions}>
+          <button className={styles.quickBtn} onClick={() => navigate('/game/guess-risk')}>
+            <span className={styles.quickIcon}>🎯</span>
+            <span className={styles.quickLabel}>Угадай риск</span>
+          </button>
+          <button className={styles.quickBtn} onClick={() => navigate('/game/build-policy')}>
+            <span className={styles.quickIcon}>📋</span>
+            <span className={styles.quickLabel}>Собери полис</span>
+          </button>
         </div>
       </div>
 

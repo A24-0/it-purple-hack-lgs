@@ -13,7 +13,7 @@ import {
   userProgress as mockProgress,
   achievements as mockAchievements,
 } from '../data/mockData';
-import { scenariosApi, progressApi, leaderboardApi, aiApi, achievementsApi, authApi } from '../api/endpoints';
+import { scenariosApi, progressApi, leaderboardApi, aiApi, achievementsApi, authApi, gamesApi } from '../api/endpoints';
 import { apiClient } from '../api/client';
 import { isTelegramWebApp, getTelegramInitData, getTelegramUser } from '../api/telegram';
 
@@ -137,12 +137,13 @@ interface AppContextType {
     logout: () => void;
     loadScenarios: () => Promise<void>;
     loadProgress: () => Promise<void>;
-    loadLeaderboard: () => Promise<void>;
+    loadLeaderboard: (period?: string) => Promise<void>;
     loadAchievements: () => Promise<void>;
     sendChatMessage: (text: string, context?: string) => Promise<void>;
     getHint: (scenarioId: string, stepId: string) => Promise<string>;
     earnReward: (xp: number, coins: number) => void;
     completeScenario: (scenarioId: string) => void;
+    saveGameResult: (gameType: string, score: number, xp: number, coins: number) => void;
     clearError: () => void;
   };
 }
@@ -259,7 +260,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [state.useMockData]);
 
-  const loadLeaderboard = useCallback(async () => {
+  const loadLeaderboard = useCallback(async (period?: string) => {
     if (state.useMockData) {
       dispatch({
         type: 'SET_LEADERBOARD',
@@ -278,7 +279,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
     dispatch({ type: 'SET_LEADERBOARD_LOADING', payload: true });
     try {
-      const data = await leaderboardApi.getTop();
+      const data = await leaderboardApi.getTop(20, period);
       dispatch({ type: 'SET_LEADERBOARD', payload: data });
     } catch (e) {
       dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
@@ -354,6 +355,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'COMPLETE_SCENARIO', payload: scenarioId });
   }, []);
 
+  const saveGameResult = useCallback((gameType: string, score: number, xp: number, coins: number) => {
+    if (!state.useMockData) {
+      gamesApi.saveResult({ gameType, score, xpEarned: xp, coinsEarned: coins }).catch(() => {});
+    }
+  }, [state.useMockData]);
+
   const clearError = useCallback(() => {
     dispatch({ type: 'SET_ERROR', payload: null });
   }, []);
@@ -374,6 +381,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           getHint,
           earnReward,
           completeScenario,
+          saveGameResult,
           clearError,
         },
       }}

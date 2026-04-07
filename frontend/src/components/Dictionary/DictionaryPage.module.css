@@ -132,6 +132,55 @@
   line-height: 1.5;
 }
 
+.termDetail {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.termExamples {
+  background: var(--gray-50);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.exampleList {
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.relatedTerms {
+  display: flex;
+  flex-direction: column;
+}
+
+.relatedChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.relatedChip {
+  padding: 3px 10px;
+  background: rgba(41, 121, 255, 0.08);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .empty {
   text-align: center;
   color: var(--gray-500);
@@ -194,10 +243,27 @@
     font-size: 15px;
   }
 }
+@media (min-width: 1440px) {
+  .searchInput {
+    max-width: 650px;
+  }
+
+  .termsList {
+    gap: 18px;
+  }
+
+  .termCard {
+    padding: 22px 26px;
+  }
+}
 @media (min-width: 1920px) {
   .title {
     font-size: 40px;
   }
+
+  .exampleList { font-size: 15px; }
+  .detailLabel { font-size: 13px; }
+  .relatedChip { font-size: 14px; padding: 4px 14px; }
 
   .searchInput {
     max-width: 700px;
@@ -234,6 +300,11 @@
   .subtitle {
     font-size: 20px;
   }
+
+  .exampleList { font-size: 16px; }
+  .detailLabel { font-size: 15px; }
+  .relatedChip { font-size: 16px; padding: 6px 18px; }
+  .termExamples { padding: 16px 20px; }
 
   .termsList {
     grid-template-columns: 1fr 1fr 1fr 1fr;

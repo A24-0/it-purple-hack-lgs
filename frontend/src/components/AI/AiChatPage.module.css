@@ -299,99 +299,64 @@
     max-width: 800px;
   }
 }
+@media (min-width: 1440px) {
+  .messages {
+    max-width: 950px;
+  }
+
+  .suggestions {
+    max-width: 950px;
+  }
+
+  .inputBar {
+    max-width: 950px;
+  }
+}
 @media (min-width: 1920px) {
   .messages {
-    max-width: 900px;
-    padding: 32px;
+    max-width: 1100px;
+    padding: 40px;
   }
 
   .bubbleContent {
-    padding: 20px 24px;
-    font-size: 17px;
-  }
-
-  .bubbleAvatar {
-    font-size: 24px;
-  }
-
-  .headerTitle {
+    padding: 24px 28px;
     font-size: 18px;
   }
 
-  .emptyIcon {
-    font-size: 64px;
-  }
-
-  .emptyTitle {
-    font-size: 22px;
-  }
-
-  .emptyText {
-    font-size: 16px;
-  }
-
-  .input {
-    padding: 16px 24px;
-    font-size: 17px;
-  }
-
-  .sendBtn {
-    width: 52px;
-    height: 52px;
-  }
-
-  .suggestionChip {
-    padding: 12px 22px;
-    font-size: 16px;
-  }
-}
-@media (min-width: 2560px) {
-  .messages {
-    max-width: 1100px;
-    padding: 44px;
-    gap: 20px;
-  }
-
-  .bubbleContent {
-    padding: 24px 32px;
-    font-size: 20px;
-    border-radius: var(--radius-xl);
-  }
-
   .bubbleAvatar {
-    font-size: 32px;
-  }
-
-  .bubbleTime {
-    font-size: 14px;
-  }
-
-  .input {
-    padding: 20px 28px;
-    font-size: 20px;
-  }
-
-  .sendBtn {
-    width: 60px;
-    height: 60px;
-  }
-
-  .emptyIcon {
-    font-size: 80px;
-  }
-
-  .emptyTitle {
     font-size: 28px;
   }
 
-  .emptyText {
+  .headerTitle {
     font-size: 20px;
-    max-width: 400px;
+  }
+
+  .emptyIcon {
+    font-size: 72px;
+  }
+
+  .emptyTitle {
+    font-size: 24px;
+  }
+
+  .emptyText {
+    font-size: 18px;
+    max-width: 360px;
+  }
+
+  .input {
+    padding: 18px 28px;
+    font-size: 18px;
+  }
+
+  .sendBtn {
+    width: 56px;
+    height: 56px;
   }
 
   .suggestionChip {
-    padding: 16px 28px;
-    font-size: 18px;
+    padding: 14px 24px;
+    font-size: 17px;
   }
 
   .suggestions {
@@ -400,6 +365,76 @@
 
   .inputBar {
     max-width: 1100px;
-    padding: 20px 44px;
+    padding: 20px 40px;
+  }
+}
+@media (min-width: 2560px) {
+  .header {
+    padding: 48px 40px 20px;
+  }
+
+  .messages {
+    max-width: 1400px;
+    padding: 52px;
+    gap: 24px;
+  }
+
+  .bubbleContent {
+    padding: 28px 36px;
+    font-size: 22px;
+    border-radius: var(--radius-xl);
+  }
+
+  .bubbleAvatar {
+    font-size: 36px;
+  }
+
+  .bubbleTime {
+    font-size: 16px;
+  }
+
+  .headerTitle {
+    font-size: 24px;
+  }
+
+  .aiAvatar {
+    font-size: 36px;
+  }
+
+  .emptyIcon {
+    font-size: 96px;
+  }
+
+  .emptyTitle {
+    font-size: 32px;
+  }
+
+  .emptyText {
+    font-size: 22px;
+    max-width: 500px;
+  }
+
+  .input {
+    padding: 24px 32px;
+    font-size: 22px;
+  }
+
+  .sendBtn {
+    width: 68px;
+    height: 68px;
+  }
+
+  .suggestionChip {
+    padding: 18px 32px;
+    font-size: 20px;
+  }
+
+  .suggestions {
+    max-width: 1400px;
+  }
+
+  .inputBar {
+    max-width: 1400px;
+    padding: 24px 52px;
   }
 }

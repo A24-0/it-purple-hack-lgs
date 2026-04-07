@@ -79,7 +79,29 @@ export default function DictionaryPage() {
               <span className={styles.termCategory}>{t.category}</span>
             </div>
             {expandedId === t.id && (
-              <p className={styles.termDefinition}>{t.definition}</p>
+              <div className={styles.termDetail}>
+                <p className={styles.termDefinition}>{t.definition}</p>
+                {t.examples && t.examples.length > 0 && (
+                  <div className={styles.termExamples}>
+                    <span className={styles.detailLabel}>Примеры:</span>
+                    <ul className={styles.exampleList}>
+                      {t.examples.map((ex, i) => (
+                        <li key={i}>{ex}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {t.relatedTerms && t.relatedTerms.length > 0 && (
+                  <div className={styles.relatedTerms}>
+                    <span className={styles.detailLabel}>Связанные:</span>
+                    <div className={styles.relatedChips}>
+                      {t.relatedTerms.map((rt) => (
+                        <span key={rt} className={styles.relatedChip}>{rt}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </button>
         ))}

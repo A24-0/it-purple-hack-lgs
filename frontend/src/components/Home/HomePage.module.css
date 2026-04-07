@@ -383,223 +383,122 @@
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   }
 
-  .heroTop {
-    max-width: 900px;
-  }
+  .pointsRow { gap: 24px; }
+  .barTrack { max-width: 100%; }
 
-  .pointsRow {
-    gap: 24px;
-  }
+  .statsRow { padding: 32px var(--content-padding); }
+  .statValue { font-size: 32px; }
+  .sectionTitle { font-size: 20px; }
 
-  .barTrack {
-    max-width: 600px;
-  }
+  .scenarioList { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .scenarioCard { padding: 24px; }
+  .scenarioIcon { width: 60px; height: 60px; font-size: 30px; }
+  .scenarioTitle { font-size: 16px; }
+  .scenarioDesc { font-size: 14px; }
 
-  .statsRow {
-    max-width: 700px;
-    padding: 32px var(--content-padding);
-  }
+  .weeklyChart { height: 200px; }
+  .chartBar { width: 60%; border-radius: 8px 8px 4px 4px; }
 
-  .statValue {
-    font-size: 32px;
-  }
+  .quickActions { gap: 16px; }
+  .quickBtn { padding: 20px; }
+  .quickIcon { font-size: 28px; }
+  .quickLabel { font-size: 15px; }
 
-  .sectionTitle {
-    font-size: 20px;
-  }
-
-  .scenarioList {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .scenarioCard {
-    padding: 24px;
-  }
-
-  .scenarioIcon {
-    width: 60px;
-    height: 60px;
-    font-size: 30px;
-  }
-
-  .scenarioTitle {
-    font-size: 16px;
-  }
-
-  .scenarioDesc {
-    font-size: 14px;
-  }
-
-  .weeklyChart {
-    height: 200px;
-    max-width: 700px;
-  }
-
-  .chartBar {
-    width: 60%;
-    border-radius: 8px 8px 4px 4px;
-  }
-
-  .profileBtn {
-    display: none;
-  }
+  .profileBtn { display: none; }
 }
+
 @media (min-width: 1440px) {
-  .scenarioList {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+  .hero { padding: 44px var(--content-padding) 36px; }
+  .appName { font-size: 36px; }
+  .pointsValue { font-size: 52px; }
+  .greeting { font-size: 18px; }
+  .todayBadge { padding: 10px 20px; font-size: 15px; }
 
-  .quickActions {
-    max-width: 600px;
-  }
+  .statsRow { padding: 36px var(--content-padding); }
+  .statValue { font-size: 34px; }
+  .statLabel { font-size: 14px; }
+  .sectionTitle { font-size: 22px; margin-bottom: 20px; }
+
+  .scenarioList { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .scenarioCard { padding: 26px; }
+  .scenarioIcon { width: 64px; height: 64px; font-size: 32px; }
+  .scenarioTitle { font-size: 17px; }
+
+  .weeklyChart { height: 220px; gap: 12px; }
+  .quickBtn { padding: 22px; }
 }
+
 @media (min-width: 1920px) {
-  .hero {
-    padding: 48px var(--content-padding) 40px;
-  }
+  .hero { padding: 52px var(--content-padding) 44px; }
+  .appName { font-size: 44px; }
+  .greeting { font-size: 20px; }
+  .pointsValue { font-size: 64px; }
+  .pointsLabel { font-size: 17px; }
+  .todayBadge { padding: 12px 24px; font-size: 17px; }
+  .barLabel { font-size: 14px; }
+  .barTrack { height: 12px; }
 
-  .appName {
-    font-size: 40px;
-  }
+  .statsRow { padding: 40px var(--content-padding); }
+  .statValue { font-size: 40px; }
+  .statLabel { font-size: 16px; }
+  .statDivider { height: 52px; }
 
-  .pointsValue {
-    font-size: 56px;
-  }
+  .sectionTitle { font-size: 26px; margin-bottom: 24px; }
 
-  .todayBadge {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
+  .scenarioList { grid-template-columns: 1fr 1fr 1fr; gap: 28px; }
+  .scenarioCard { padding: 32px; gap: 16px; }
+  .scenarioIcon { width: 76px; height: 76px; font-size: 38px; }
+  .scenarioTitle { font-size: 19px; }
+  .scenarioDesc { font-size: 15px; }
+  .scenarioXp { font-size: 16px; }
+  .scenarioXpInactive { font-size: 16px; }
+  .scenarioStatus { font-size: 14px; }
+  .scenarioStart { font-size: 14px; }
 
-  .statsRow {
-    max-width: 800px;
-    padding: 36px var(--content-padding);
-  }
+  .weeklyChart { height: 280px; gap: 16px; }
+  .chartLabel { font-size: 14px; }
 
-  .statValue {
-    font-size: 36px;
-  }
-
-  .sectionTitle {
-    font-size: 22px;
-    margin-bottom: 20px;
-  }
-
-  .scenarioList {
-    gap: 24px;
-  }
-
-  .scenarioCard {
-    padding: 28px;
-  }
-
-  .scenarioIcon {
-    width: 68px;
-    height: 68px;
-    font-size: 34px;
-  }
-
-  .scenarioTitle {
-    font-size: 18px;
-  }
-
-  .weeklyChart {
-    height: 240px;
-    max-width: 800px;
-    gap: 16px;
-  }
+  .quickActions { gap: 24px; }
+  .quickBtn { padding: 28px; gap: 16px; }
+  .quickIcon { font-size: 32px; }
+  .quickLabel { font-size: 18px; }
 }
+
 @media (min-width: 2560px) {
-  .hero {
-    padding: 64px var(--content-padding) 48px;
-  }
+  .hero { padding: 68px var(--content-padding) 56px; }
+  .appName { font-size: 56px; }
+  .greeting { font-size: 24px; }
+  .pointsValue { font-size: 84px; }
+  .pointsLabel { font-size: 20px; }
+  .todayBadge { padding: 16px 32px; font-size: 20px; }
+  .barLabel { font-size: 16px; }
+  .barTrack { height: 16px; }
 
-  .appName {
-    font-size: 48px;
-  }
+  .statsRow { padding: 52px var(--content-padding); }
+  .statValue { font-size: 52px; }
+  .statLabel { font-size: 18px; }
+  .statDivider { height: 64px; }
 
-  .pointsValue {
-    font-size: 68px;
-  }
+  .sectionTitle { font-size: 32px; margin-bottom: 32px; }
 
-  .todayBadge {
-    padding: 14px 28px;
-    font-size: 18px;
-  }
+  .scenarioList { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 32px; }
+  .scenarioCard { padding: 36px; gap: 20px; }
+  .scenarioIcon { width: 96px; height: 96px; font-size: 48px; border-radius: var(--radius-lg); }
+  .scenarioTitle { font-size: 22px; }
+  .scenarioDesc { font-size: 17px; }
+  .scenarioXp { font-size: 18px; }
+  .scenarioXpInactive { font-size: 18px; }
+  .scenarioStatus { font-size: 16px; }
+  .scenarioStart { font-size: 16px; }
 
-  .barTrack {
-    height: 14px;
-    max-width: 800px;
-  }
+  .weeklyChart { height: 360px; gap: 24px; }
+  .chartBar { width: 55%; border-radius: 10px 10px 6px 6px; }
+  .chartLabel { font-size: 16px; }
 
-  .statsRow {
-    max-width: 1000px;
-    padding: 44px var(--content-padding);
-  }
-
-  .statValue {
-    font-size: 44px;
-  }
-
-  .statLabel {
-    font-size: 16px;
-  }
-
-  .statDivider {
-    height: 56px;
-  }
-
-  .sectionTitle {
-    font-size: 26px;
-    margin-bottom: 28px;
-  }
-
-  .scenarioList {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 28px;
-  }
-
-  .scenarioCard {
-    padding: 32px;
-  }
-
-  .scenarioIcon {
-    width: 80px;
-    height: 80px;
-    font-size: 40px;
-  }
-
-  .scenarioTitle {
-    font-size: 20px;
-  }
-
-  .scenarioDesc {
-    font-size: 16px;
-  }
-
-  .weeklyChart {
-    height: 300px;
-    max-width: 1000px;
-    gap: 20px;
-  }
-
-  .quickActions {
-    max-width: 800px;
-    gap: 24px;
-  }
-
-  .quickBtn {
-    padding: 28px;
-  }
-
-  .quickIcon {
-    font-size: 32px;
-  }
-
-  .quickLabel {
-    font-size: 18px;
-  }
+  .quickActions { gap: 32px; }
+  .quickBtn { padding: 36px; gap: 20px; border-radius: var(--radius-xl); }
+  .quickIcon { font-size: 40px; }
+  .quickLabel { font-size: 22px; }
 }
 @keyframes cardSlideIn {
   from { opacity: 0; transform: translateY(12px); }

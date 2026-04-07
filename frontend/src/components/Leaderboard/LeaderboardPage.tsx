@@ -1,17 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../store/AppContext';
 import styles from './LeaderboardPage.module.css';
 
 const medals = ['🥇', '🥈', '🥉'];
+const periods = [
+  { key: 'week', label: 'Неделя' },
+  { key: 'month', label: 'Месяц' },
+  { key: 'all', label: 'Всё время' },
+] as const;
+
+type Period = typeof periods[number]['key'];
 
 export default function LeaderboardPage() {
   const navigate = useNavigate();
   const { state, actions } = useApp();
+  const [period, setPeriod] = useState<Period>('week');
 
   useEffect(() => {
-    actions.loadLeaderboard();
-  }, [actions]);
+    actions.loadLeaderboard(period);
+  }, [actions, period]);
 
   const top3 = state.leaderboard.slice(0, 3);
   const rest = state.leaderboard.slice(3);
@@ -27,6 +35,18 @@ export default function LeaderboardPage() {
           </button>
           <h1 className={styles.title}>Лидерборд</h1>
           <div style={{ width: 44 }} />
+        </div>
+
+        <div className={styles.periodTabs}>
+          {periods.map((p) => (
+            <button
+              key={p.key}
+              className={`${styles.periodTab} ${period === p.key ? styles.periodActive : ''}`}
+              onClick={() => setPeriod(p.key)}
+            >
+              {p.label}
+            </button>
+          ))}
         </div>
 
         {top3.length >= 3 && (

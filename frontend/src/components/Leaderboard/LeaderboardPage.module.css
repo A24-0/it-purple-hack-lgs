@@ -31,6 +31,28 @@
   font-weight: 700;
   color: var(--text-white);
 }
+.periodTabs {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 0 16px 16px;
+}
+
+.periodTab {
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s;
+}
+
+.periodActive {
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--text-white);
+}
+
 .podium {
   display: flex;
   align-items: flex-end;
@@ -225,20 +247,53 @@
 }
 @media (min-width: 1024px) {
   .hero {
-    padding: 40px var(--content-padding) 0;
+    border-radius: 0;
+    padding: 48px 48px 0;
   }
 
   .podium {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
   }
 
+  .podiumAvatar {
+    width: 64px;
+    height: 64px;
+    font-size: 23px;
+  }
+
+  .podiumMedal { font-size: 30px; }
+
+  .periodTab {
+    padding: 7px 18px;
+    font-size: 14px;
+  }
+
+  .barGold { height: 105px; }
+  .barSilver { height: 78px; }
+  .barBronze { height: 58px; }
+
   .list {
-    max-width: 700px;
+    max-width: 900px;
+    margin: 0 auto;
   }
 }
-@media (min-width: 1920px) {
+
+@media (min-width: 1440px) {
+  .hero {
+    padding: 50px 60px 0;
+  }
+
   .title { font-size: 24px; }
+
+  .periodTab {
+    padding: 8px 20px;
+    font-size: 15px;
+  }
+
+  .podium {
+    max-width: 700px;
+  }
 
   .podiumAvatar {
     width: 72px;
@@ -248,56 +303,138 @@
 
   .podiumName { font-size: 17px; }
   .podiumXp { font-size: 15px; }
-  .podiumMedal { font-size: 34px; }
+  .podiumMedal { font-size: 33px; }
   .barGold { height: 120px; }
   .barSilver { height: 90px; }
   .barBronze { height: 65px; }
 
-  .list { max-width: 800px; }
+  .list {
+    max-width: 1000px;
+    padding: 28px 60px;
+  }
+
+  .listItem {
+    padding: 20px 28px;
+  }
+
+  .listAvatar {
+    width: 50px;
+    height: 50px;
+    font-size: 19px;
+  }
+
   .listName { font-size: 17px; }
   .listXp { font-size: 16px; }
+  .listLevel { font-size: 13px; }
+  .rank { font-size: 15px; }
 }
-@media (min-width: 2560px) {
-  .title { font-size: 30px; }
+
+@media (min-width: 1920px) {
+  .hero {
+    padding: 52px 80px 0;
+  }
+
+  .title { font-size: 28px; }
+
+  .periodTab {
+    padding: 10px 24px;
+    font-size: 16px;
+  }
 
   .podium {
-    max-width: 700px;
-    gap: 16px;
+    max-width: 800px;
   }
 
   .podiumAvatar {
-    width: 90px;
-    height: 90px;
-    font-size: 32px;
-    border-width: 4px;
+    width: 84px;
+    height: 84px;
+    font-size: 30px;
   }
 
-  .podiumName { font-size: 20px; }
-  .podiumXp { font-size: 17px; }
-  .podiumMedal { font-size: 40px; }
-  .barGold { height: 150px; }
-  .barSilver { height: 110px; }
-  .barBronze { height: 80px; }
+  .podiumName { font-size: 19px; }
+  .podiumXp { font-size: 16px; }
+  .podiumMedal { font-size: 38px; }
+  .barGold { height: 140px; }
+  .barSilver { height: 105px; }
+  .barBronze { height: 75px; }
 
   .list {
-    max-width: 1000px;
-    gap: 12px;
+    max-width: 1200px;
+    padding: 32px 80px;
   }
 
   .listItem {
     padding: 24px 32px;
-    gap: 20px;
   }
 
-  .rank { font-size: 18px; }
   .listAvatar {
-    width: 60px;
-    height: 60px;
-    font-size: 22px;
+    width: 56px;
+    height: 56px;
+    font-size: 21px;
   }
 
-  .listName { font-size: 20px; }
+  .rank { font-size: 17px; }
+  .listName { font-size: 19px; }
+  .listXp { font-size: 18px; }
   .listLevel { font-size: 15px; }
-  .listXp { font-size: 20px; }
-  .listScenarios { font-size: 14px; }
+}
+
+@media (min-width: 2560px) {
+  .hero {
+    padding: 64px 100px 0;
+  }
+
+  .title { font-size: 36px; }
+
+  .periodTab {
+    padding: 14px 32px;
+    font-size: 19px;
+  }
+
+  .podium {
+    max-width: 1000px;
+    gap: 24px;
+  }
+
+  .podiumAvatar {
+    width: 100px;
+    height: 100px;
+    font-size: 36px;
+    border-width: 4px;
+  }
+
+  .podiumName { font-size: 22px; }
+  .podiumXp { font-size: 19px; }
+  .podiumMedal { font-size: 46px; }
+  .barGold { height: 180px; }
+  .barSilver { height: 135px; }
+  .barBronze { height: 100px; }
+
+  .list {
+    max-width: 1600px;
+    padding: 40px 100px;
+    gap: 12px;
+  }
+
+  .listItem {
+    padding: 32px 44px;
+    gap: 24px;
+  }
+
+  .backBtn {
+    width: 56px;
+    height: 56px;
+  }
+
+  .rank { font-size: 20px; }
+  .listAvatar {
+    width: 72px;
+    height: 72px;
+    font-size: 26px;
+  }
+
+  .listName { font-size: 24px; }
+  .listLevel { font-size: 17px; }
+  .listXp { font-size: 22px; }
+  .listScenarios { font-size: 16px; }
 }
