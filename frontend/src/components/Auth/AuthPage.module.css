@@ -1,0 +1,281 @@
+.page {
+  min-height: 100vh;
+  background: var(--hero-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.hero {
+  padding: 60px 20px 32px;
+  text-align: center;
+  color: var(--text-white);
+}
+
+.logo {
+  font-size: 56px;
+  margin-bottom: 12px;
+  animation: bounceIn 0.6s ease;
+}
+
+.appName {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--text-white);
+  margin-bottom: 6px;
+}
+
+.tagline {
+  font-size: 15px;
+  opacity: 0.85;
+}
+.formCard {
+  flex: 1;
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 24px 20px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.tabActive {
+  background: var(--white);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.input {
+  padding: 14px 16px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--gray-50);
+}
+
+.input::placeholder {
+  color: var(--gray-400);
+}
+
+.input:focus {
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.error {
+  font-size: 13px;
+  color: var(--error);
+  font-weight: 500;
+  text-align: center;
+}
+
+.submitBtn {
+  padding: 16px;
+  background: var(--primary);
+  color: var(--white);
+  border-radius: var(--radius-lg);
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 8px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.submitBtn:hover {
+  background: var(--primary-dark);
+}
+
+.submitBtn:active {
+  transform: scale(0.98);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.skipBtn {
+  margin-top: auto;
+  padding: 14px;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  transition: color 0.2s;
+}
+
+.skipBtn:hover {
+  color: var(--primary);
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@media (min-width: 768px) {
+  .page {
+    justify-content: center;
+  }
+
+  .hero {
+    padding: 40px 20px 24px;
+  }
+
+  .formCard {
+    border-radius: var(--radius-xl);
+    max-width: 480px;
+    margin: 0 auto;
+    flex: unset;
+    padding: 32px;
+  }
+
+  .appName {
+    font-size: 38px;
+  }
+
+  .logo {
+    font-size: 64px;
+  }
+}
+@media (min-width: 1024px) {
+  .page {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .formCard {
+    flex: unset;
+    width: 480px;
+    min-height: 100vh;
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .appName {
+    font-size: 44px;
+  }
+
+  .logo {
+    font-size: 80px;
+  }
+
+  .tagline {
+    font-size: 18px;
+  }
+}
+@media (min-width: 1920px) {
+  .formCard {
+    width: 540px;
+    padding: 40px;
+  }
+
+  .appName {
+    font-size: 52px;
+  }
+
+  .logo {
+    font-size: 96px;
+  }
+
+  .input {
+    padding: 18px 20px;
+    font-size: 17px;
+  }
+
+  .submitBtn {
+    padding: 20px;
+    font-size: 18px;
+  }
+}
+@media (min-width: 2560px) {
+  .formCard {
+    width: 640px;
+    padding: 56px;
+  }
+
+  .appName {
+    font-size: 64px;
+  }
+
+  .logo {
+    font-size: 120px;
+  }
+
+  .tagline {
+    font-size: 24px;
+  }
+
+  .label {
+    font-size: 16px;
+  }
+
+  .input {
+    padding: 22px 24px;
+    font-size: 20px;
+  }
+
+  .tab {
+    padding: 14px;
+    font-size: 18px;
+  }
+
+  .submitBtn {
+    padding: 24px;
+    font-size: 22px;
+  }
+
+  .skipBtn {
+    font-size: 18px;
+  }
+}

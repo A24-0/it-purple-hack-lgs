@@ -1,0 +1,405 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background: var(--bg-secondary);
+}
+.header {
+  background: var(--hero-gradient);
+  padding: 48px 16px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.backBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerCenter {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aiAvatar {
+  font-size: 28px;
+}
+
+.headerTitle {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.headerStatus {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.emptyTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 280px;
+}
+.bubble {
+  display: flex;
+  gap: 8px;
+  animation: slideUp 0.3s ease;
+}
+
+.userBubble {
+  justify-content: flex-end;
+}
+
+.aiBubble {
+  justify-content: flex-start;
+}
+
+.bubbleAvatar {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.bubbleContent {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.userContent {
+  background: var(--primary);
+  color: var(--text-white);
+  border-bottom-right-radius: 4px;
+}
+
+.aiContent {
+  background: var(--white);
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.bubbleTime {
+  display: block;
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 4px;
+  text-align: right;
+}
+.typing {
+  display: flex;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.typing span {
+  width: 8px;
+  height: 8px;
+  background: var(--gray-400);
+  border-radius: 50%;
+  animation: typingDot 1.4s ease-in-out infinite;
+}
+
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+.suggestions {
+  padding: 0 16px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestionChip {
+  padding: 8px 14px;
+  background: var(--white);
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-full);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.suggestionChip:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+.inputBar {
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: var(--radius-full);
+  font-size: 15px;
+  outline: none;
+  background: var(--gray-50);
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+
+.input::placeholder {
+  color: var(--gray-400);
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+.sendBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.sendBtn:hover {
+  background: var(--primary-dark);
+}
+
+.sendBtn:active {
+  transform: scale(0.93);
+}
+
+.sendBtn:disabled {
+  background: var(--gray-300);
+  cursor: not-allowed;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+@media (min-width: 768px) {
+  .messages {
+    padding: 24px;
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .bubbleContent {
+    max-width: 70%;
+    padding: 16px 20px;
+    font-size: 15px;
+  }
+
+  .suggestions {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 24px 16px;
+  }
+
+  .inputBar {
+    padding: 16px 24px;
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .input {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+
+  .sendBtn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .suggestionChip {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+}
+@media (min-width: 1024px) {
+  .messages {
+    max-width: 800px;
+  }
+
+  .bubbleContent {
+    max-width: 60%;
+  }
+
+  .suggestions {
+    max-width: 800px;
+  }
+
+  .inputBar {
+    max-width: 800px;
+  }
+}
+@media (min-width: 1920px) {
+  .messages {
+    max-width: 900px;
+    padding: 32px;
+  }
+
+  .bubbleContent {
+    padding: 20px 24px;
+    font-size: 17px;
+  }
+
+  .bubbleAvatar {
+    font-size: 24px;
+  }
+
+  .headerTitle {
+    font-size: 18px;
+  }
+
+  .emptyIcon {
+    font-size: 64px;
+  }
+
+  .emptyTitle {
+    font-size: 22px;
+  }
+
+  .emptyText {
+    font-size: 16px;
+  }
+
+  .input {
+    padding: 16px 24px;
+    font-size: 17px;
+  }
+
+  .sendBtn {
+    width: 52px;
+    height: 52px;
+  }
+
+  .suggestionChip {
+    padding: 12px 22px;
+    font-size: 16px;
+  }
+}
+@media (min-width: 2560px) {
+  .messages {
+    max-width: 1100px;
+    padding: 44px;
+    gap: 20px;
+  }
+
+  .bubbleContent {
+    padding: 24px 32px;
+    font-size: 20px;
+    border-radius: var(--radius-xl);
+  }
+
+  .bubbleAvatar {
+    font-size: 32px;
+  }
+
+  .bubbleTime {
+    font-size: 14px;
+  }
+
+  .input {
+    padding: 20px 28px;
+    font-size: 20px;
+  }
+
+  .sendBtn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .emptyIcon {
+    font-size: 80px;
+  }
+
+  .emptyTitle {
+    font-size: 28px;
+  }
+
+  .emptyText {
+    font-size: 20px;
+    max-width: 400px;
+  }
+
+  .suggestionChip {
+    padding: 16px 28px;
+    font-size: 18px;
+  }
+
+  .suggestions {
+    max-width: 1100px;
+  }
+
+  .inputBar {
+    max-width: 1100px;
+    padding: 20px 44px;
+  }
+}
