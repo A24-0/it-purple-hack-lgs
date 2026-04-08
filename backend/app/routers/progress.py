@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -62,6 +62,20 @@ async def get_progress(
         correct_answers=correct_answers,
         completed_scenario_ids=completed_ids,
     )
+
+
+@router.delete("/reset")
+async def reset_progress(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    uid = current_user.id
+    await db.execute(delete(UserProgress).where(UserProgress.user_id == uid))
+    await db.execute(delete(Game).where(Game.user_id == uid))
+    await db.execute(delete(LeaderboardEntry).where(LeaderboardEntry.user_id == uid))
+    await db.execute(update(User).where(User.id == uid).values(streak_days=0))
+    await db.commit()
+    return {"ok": True}
 
 
 @router.post("/reward")

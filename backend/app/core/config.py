@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     TELEGRAM_BOT_TOKEN: str = ""
     OPENAI_API_KEY: str = ""
+    GIGACHAT_CREDENTIALS: str = ""
     ML_SERVICE_URL: str = "http://localhost:8001"
 
     LEADERBOARD_CACHE_TTL: int = 60  # seconds
