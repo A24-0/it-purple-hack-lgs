@@ -34,7 +34,7 @@ export default function AuthPage() {
   return (
     <div className={styles.page}>
       <div className={styles.hero}>
-        <div className={styles.logo}>🛡️</div>
+        <div className={styles.logo}>SG</div>
         <h1 className={styles.appName}>СтрахоГид</h1>
         <p className={styles.tagline}>Учись страхованию играючи</p>
       </div>
@@ -93,9 +93,9 @@ export default function AuthPage() {
           </button>
         </form>
 
-        <button className={styles.skipBtn} onClick={() => navigate('/')}>
-          Продолжить без входа
-        </button>
+        <p className={styles.hint}>
+          Нужен запущенный backend на порту <strong>8000</strong> и миграции БД (<code>alembic upgrade head</code>).
+        </p>
       </div>
     </div>
   );

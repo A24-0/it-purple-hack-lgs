@@ -1,134 +1,134 @@
-# IT Purple / СтрахоГид — монорепозиторий
+# IT Purple / СтрахоГид
 
-В **`main`** собраны ветки:
+## Запуск всего проекта
 
-| Папка | Назначение |
-|--------|------------|
-| `backend/` | FastAPI API, PostgreSQL, Redis, Alembic, **Telegram-бот** |
-| `ml_service/` | Python-сервис ИИ (чат, квизы), порт **8001** |
-| `frontend/` | React + Vite — **веб** (ПК, планшеты, телефоны в браузере) |
-
-Отдельного мобильного приложения (Flutter) в этих ветках не было; если появится каталог `mobile/` или `app/` — запуск см. раздел «Мобильное приложение».
-
----
-
-## Что нужно установить
-
-- **Docker Desktop** (или Docker + Compose) — для API, БД, Redis, бота  
-- **Python 3.12+** — если запускаете сервисы без Docker  
-- **Node.js 20+** и **npm** — для `frontend/`  
-
----
-
-## Быстрый старт (всё через Docker)
-
-### 1. Backend + БД + Redis + Telegram-бот
+Из корня репозитория:
 
 ```bash
-cd backend
-cp .env.example .env
-# Заполните TELEGRAM_BOT_TOKEN, при необходимости OPENAI_API_KEY, WEBAPP_URL (URL вашего фронта)
-docker compose up --build
+npm run start
 ```
 
-- API: **http://localhost:8000** (документация: `/docs`)  
-- БД: `localhost:5432`, Redis: `localhost:6379`  
+Команда поднимает:
+- backend (API + PostgreSQL + Redis + bot) через Docker
+- `ml_service` через Docker
+- frontend (Vite) на `http://localhost:5173`
 
-Бот в контейнере `bot` ходит к API по `http://api:8000`. Для локальной отладки без Docker смотрите `.env.example`.
-
-### 2. ML-сервис (отдельно)
+Самый быстрый режим повторного запуска (без ML):
 
 ```bash
-cd ml_service
-cp .env.example .env
-# Задайте GIGACHAT_AUTH_KEY или переменные из README сервиса
-pip install -r requirements.txt
-uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+npm run start:ultrafast
 ```
 
-Проверка: **http://localhost:8001/docs** (если включён в FastAPI).
+Запуск без Telegram-бота (если бот тормозит из-за сети/таймаутов):
 
-Backend ожидает ML по адресу из `ML_SERVICE_URL` в `backend/.env` (по умолчанию `http://localhost:8001`).
+```bash
+npm run start:nobot
+```
 
-### 3. Веб-фронтенд (React)
+## Ссылки после запуска
+
+- Frontend: `http://localhost:5173`
+- Backend docs: `http://localhost:8000/docs`
+- ML docs: `http://localhost:8001/docs`
+
+## Если нужно только фронт
 
 ```bash
 cd frontend
-npm install
-```
-
-Создайте файл **`frontend/.env`** (или `.env.local`):
-
-```env
-VITE_API_URL=http://localhost:8000
-```
-
-Запуск dev-сервера:
-
-```bash
 npm run dev
 ```
 
-Vite по умолчанию откроет **http://localhost:5173** — откройте в браузере на ПК, планшете или телефоне в той же Wi‑Fi сети (для телефона подставьте IP компьютера вместо `localhost`, например `http://192.168.1.10:5173`).
-
-Сборка для продакшена:
+## Если миграции не применены
 
 ```bash
-npm run build
-npm run preview
+cd backend
+alembic upgrade head
 ```
 
-Статику из `frontend/dist` можно раздавать через Nginx или любой хостинг; **HTTPS** нужен для некоторых сценариев (Telegram WebApp).
+## Нативные приложения
 
----
+### Desktop (Tauri)
 
-## Где что запускается
-
-| Клиент | Как пользоваться |
-|--------|-------------------|
-| **ПК (Windows/macOS/Linux)** | Браузер → `http://localhost:5173` + API на порту 8000 |
-| **Планшет / телефон (браузер)** | Тот же dev-сервер по IP в локальной сети или задеплоенный URL |
-| **Telegram-бот** | Контейнер `bot` в `backend/docker-compose`; токен в `.env` |
-| **Telegram WebApp / Mini App** | В `backend/.env` укажите `WEBAPP_URL` на HTTPS-адрес вашего фронта (после деплоя) |
-
----
-
-## Telegram-бот
-
-1. Создайте бота у [@BotFather](https://t.me/BotFather), получите токен.  
-2. В `backend/.env`: `TELEGRAM_BOT_TOKEN=...`  
-3. `docker compose up` из папки `backend` — поднимется контейнер `bot`.  
-
-`WEBAPP_URL` — публичный URL веб-приложения (после деплоя фронта), чтобы кнопки «открыть приложение» работали.
-
----
-
-## Полезные команды
+Запуск desktop-версии:
 
 ```bash
-# Только миграции БД (если API уже запущен локально)
-cd backend && alembic upgrade head
-
-# Проверка здоровья API
-curl http://localhost:8000/health
+npm run desktop
 ```
 
----
+Сборка установщика:
 
-## Структура репозитория после слияния
-
-```
-backend/          # API + docker-compose + bot
-ml_service/       # ML / AI микросервис
-frontend/         # React веб-клиент
+```bash
+npm run desktop:build
 ```
 
-Конфликт слияния **`.gitignore`** разрешён вручную: объединены правила для Node, Python и `ml_service/.env`.
+Требуется:
+- Rust (`rustup`)
+- на macOS: Xcode Command Line Tools
 
----
+### Mobile (Capacitor: Android/iOS)
 
-## Устранение проблем
+1) Синхронизировать web-сборку с нативными проектами:
 
-- **CORS / сеть**: фронт обращается к API по `VITE_API_URL`; при другом хосте/порте обновите переменную и перезапустите `npm run dev`.  
-- **Бот не видит API**: в Docker проверьте `BACKEND_URL=http://api:8000` в compose.  
-- **Ошибки macOS `._*` файлов**: в корневом `.gitignore` добавлены `._*`; при копировании на не-Mac диски не коммитьте эти файлы.
+```bash
+npm run mobile:sync
+```
+
+2) Открыть нативный проект:
+
+```bash
+npm run mobile:open:android
+npm run mobile:open:ios
+```
+
+Требуется:
+- Android Studio (Android)
+- Xcode (iOS, только macOS)
+
+### Важно для API в нативных приложениях
+
+Для телефона/эмулятора не используйте `localhost` в API URL.  
+Укажите IP вашего компьютера в `frontend/.env`:
+
+```env
+VITE_API_URL=http://<YOUR_LOCAL_IP>:8000
+```
+
+После изменения `.env` снова выполните:
+
+```bash
+npm run mobile:sync
+```
+
+## Telegram Mini App
+
+1) Запустите проект:
+
+```bash
+npm run start
+```
+
+2) Подготовьте публичный HTTPS URL для фронта (`localhost` Telegram не откроет):
+- деплой фронта **или**
+- туннель (`ngrok` / `cloudflared`)
+
+3) Укажите URL в `backend/.env`:
+
+```env
+WEBAPP_URL=https://<YOUR_HTTPS_URL>
+```
+
+4) Перезапустите backend и bot:
+
+```bash
+npm run start
+```
+
+5) В `@BotFather`:
+- открыть настройки бота
+- `Menu Button` → `Web App`
+- вставить тот же `WEBAPP_URL`
+
+6) Проверка:
+- открыть бота в Telegram
+- нажать кнопку открытия Mini App
+- убедиться, что открывается фронт и работают запросы к API

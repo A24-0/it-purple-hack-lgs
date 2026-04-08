@@ -9,7 +9,7 @@ router = APIRouter(prefix="/api/users", tags=["users"])
 
 class UserProfile(BaseModel):
     id: int
-    telegram_id: int
+    telegram_id: int | None = None
     username: str | None
     first_name: str | None
     last_name: str | None

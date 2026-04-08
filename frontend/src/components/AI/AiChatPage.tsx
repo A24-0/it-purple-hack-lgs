@@ -35,16 +35,21 @@ export default function AiChatPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <button className={styles.backBtn} onClick={() => navigate(-1)}>
+        <button type="button" className={styles.backBtn} onClick={() => navigate(-1)} aria-label="Назад">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M15 18L9 12L15 6"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
         <div className={styles.headerCenter}>
-          <span className={styles.aiAvatar}>🤖</span>
           <div>
-            <span className={styles.headerTitle}>AI-Помощник</span>
-            <span className={styles.headerStatus}>Онлайн</span>
+            <span className={styles.headerTitle}>Справка</span>
+            <span className={styles.headerStatus}>вопросы по страхованию</span>
           </div>
         </div>
         <div style={{ width: 44 }} />
@@ -53,10 +58,11 @@ export default function AiChatPage() {
       <div className={styles.messages}>
         {state.chatMessages.length === 0 && (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>💬</div>
-            <h3 className={styles.emptyTitle}>Спроси меня о страховании!</h3>
+            <div className={styles.emptyBadge} aria-hidden />
+            <h3 className={styles.emptyTitle}>Задай вопрос своими словами</h3>
             <p className={styles.emptyText}>
-              Я помогу разобраться в терминах, объясню как работает страхование и дам подсказки по сценариям.
+              Коротко опиши ситуацию или термин — подсказка придёт с сервера. Это не «чат с нейросетью» в
+              стиле мессенджера, а помощник по материалам курса.
             </p>
           </div>
         )}
@@ -64,19 +70,10 @@ export default function AiChatPage() {
         {state.chatMessages.map((msg) => (
           <div
             key={msg.id}
-            className={`${styles.bubble} ${
-              msg.role === 'user' ? styles.userBubble : styles.aiBubble
-            }`}
+            className={`${styles.row} ${msg.role === 'user' ? styles.rowUser : styles.rowAssistant}`}
           >
-            {msg.role === 'assistant' && (
-              <span className={styles.bubbleAvatar}>🤖</span>
-            )}
-            <div
-              className={`${styles.bubbleContent} ${
-                msg.role === 'user' ? styles.userContent : styles.aiContent
-              }`}
-            >
-              <p>{msg.text}</p>
+            <div className={msg.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}>
+              <p className={styles.bubbleText}>{msg.text}</p>
               <span className={styles.bubbleTime}>
                 {new Date(msg.timestamp).toLocaleTimeString('ru-RU', {
                   hour: '2-digit',
@@ -88,11 +85,12 @@ export default function AiChatPage() {
         ))}
 
         {state.chatLoading && (
-          <div className={`${styles.bubble} ${styles.aiBubble}`}>
-            <span className={styles.bubbleAvatar}>🤖</span>
-            <div className={`${styles.bubbleContent} ${styles.aiContent}`}>
+          <div className={`${styles.row} ${styles.rowAssistant}`}>
+            <div className={styles.bubbleAssistant}>
               <div className={styles.typing}>
-                <span /><span /><span />
+                <span />
+                <span />
+                <span />
               </div>
             </div>
           </div>
@@ -104,11 +102,7 @@ export default function AiChatPage() {
       {state.chatMessages.length === 0 && (
         <div className={styles.suggestions}>
           {state.suggestions.map((s) => (
-            <button
-              key={s}
-              className={styles.suggestionChip}
-              onClick={() => handleSuggestion(s)}
-            >
+            <button key={s} type="button" className={styles.suggestionChip} onClick={() => handleSuggestion(s)}>
               {s}
             </button>
           ))}
@@ -119,15 +113,17 @@ export default function AiChatPage() {
         <input
           ref={inputRef}
           className={styles.input}
-          placeholder="Задай вопрос..."
+          placeholder="Например: что такое франшиза?"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         <button
+          type="button"
           className={styles.sendBtn}
           onClick={handleSend}
           disabled={!input.trim() || state.chatLoading}
+          aria-label="Отправить"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor" />

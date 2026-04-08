@@ -21,6 +21,7 @@ export interface Scenario {
   description: string;
   icon: string;
   maxXp: number;
+  category?: string;
   steps: ScenarioStep[];
 }
 

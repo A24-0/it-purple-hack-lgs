@@ -1,0 +1,16 @@
+# macOS AppleDouble / resource forks (ломают build на внешних томах: xattr operation not permitted)
+._*
+**/_._*
+.DS_Store
+
+.git
+.gitignore
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+*.egg-info/
+.env.example

@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userProgress } from '../../data/mockData';
+import { useApp } from '../../store/AppContext';
+import { isTelegramWebApp } from '../../api/telegram';
 import styles from './SettingsPage.module.css';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
+  const { state, actions } = useApp();
+  const userProgress = state.progress;
   const [notifications, setNotifications] = useState(true);
   const [dailyReminder, setDailyReminder] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
@@ -39,7 +42,7 @@ export default function SettingsPage() {
           </svg>
         </div>
         <div className={styles.profileInfo}>
-          <span className={styles.profileName}>Артём</span>
+          <span className={styles.profileName}>{state.user?.name || 'Игрок'}</span>
           <span className={styles.profileLevel}>
             Уровень {userProgress.level} · {userProgress.xp} XP
           </span>
@@ -56,11 +59,48 @@ export default function SettingsPage() {
 
       <div className={styles.sectionsGrid}>
       <div className={styles.settingsSection}>
+        <h3 className={styles.sectionLabel}>Аккаунт</h3>
+        <div className={styles.settingsGroup}>
+          <div className={styles.settingRow}>
+            <div className={styles.settingInfo}>
+              <span className={styles.settingIcon}>T</span>
+              <div>
+                <span className={styles.settingTitle}>Telegram</span>
+                <span className={styles.settingDesc}>
+                  {state.user?.telegramLinked ? 'Уже привязан к этому профилю' : 'Не привязан'}
+                </span>
+              </div>
+            </div>
+            {isTelegramWebApp() && !state.user?.telegramLinked && (
+              <button
+                className={styles.editBtn}
+                type="button"
+                onClick={() => void actions.linkTelegram()}
+                title="Привязать Telegram"
+              >
+                Link
+              </button>
+            )}
+          </div>
+          <div className={styles.divider} />
+          <button className={styles.settingRow} onClick={() => navigate('/telegram')}>
+            <div className={styles.settingInfo}>
+              <span className={styles.settingIcon}>G</span>
+              <div>
+                <span className={styles.settingTitle}>Гид по Telegram</span>
+                <span className={styles.settingDesc}>Пошагово: бот, mini app и привязка</span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div className={styles.settingsSection}>
         <h3 className={styles.sectionLabel}>Уведомления</h3>
         <div className={styles.settingsGroup}>
           <div className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>🔔</span>
+              <span className={styles.settingIcon}>N</span>
               <div>
                 <span className={styles.settingTitle}>Push-уведомления</span>
                 <span className={styles.settingDesc}>
@@ -82,7 +122,7 @@ export default function SettingsPage() {
 
           <div className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>⏰</span>
+              <span className={styles.settingIcon}>R</span>
               <div>
                 <span className={styles.settingTitle}>Ежедневное напоминание</span>
                 <span className={styles.settingDesc}>
@@ -107,7 +147,7 @@ export default function SettingsPage() {
         <div className={styles.settingsGroup}>
           <div className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>🔊</span>
+              <span className={styles.settingIcon}>S</span>
               <div>
                 <span className={styles.settingTitle}>Звуковые эффекты</span>
                 <span className={styles.settingDesc}>
@@ -129,7 +169,7 @@ export default function SettingsPage() {
 
           <button className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>🌍</span>
+              <span className={styles.settingIcon}>L</span>
               <div>
                 <span className={styles.settingTitle}>Язык</span>
                 <span className={styles.settingDesc}>Русский</span>
@@ -153,7 +193,7 @@ export default function SettingsPage() {
         <div className={styles.settingsGroup}>
           <button className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>📊</span>
+              <span className={styles.settingIcon}>D</span>
               <div>
                 <span className={styles.settingTitle}>Экспорт прогресса</span>
                 <span className={styles.settingDesc}>
@@ -176,7 +216,7 @@ export default function SettingsPage() {
 
           <button className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>🗑️</span>
+              <span className={styles.settingIcon}>X</span>
               <div>
                 <span className={styles.settingTitle}>Сбросить прогресс</span>
                 <span className={styles.settingDesc}>
@@ -202,7 +242,7 @@ export default function SettingsPage() {
         <div className={styles.settingsGroup}>
           <button className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>ℹ️</span>
+              <span className={styles.settingIcon}>I</span>
               <div>
                 <span className={styles.settingTitle}>О СтрахоГиде</span>
                 <span className={styles.settingDesc}>Версия 1.0.0</span>
@@ -223,7 +263,7 @@ export default function SettingsPage() {
 
           <button className={styles.settingRow}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>📝</span>
+              <span className={styles.settingIcon}>P</span>
               <div>
                 <span className={styles.settingTitle}>
                   Политика конфиденциальности

@@ -4,9 +4,18 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.core.config import settings
 from app.core.deps import get_current_user
 from app.models.user import User
+from pydantic import BaseModel, Field
+
 from app.schemas.ai import AIChatRequest, AIChatResponse
 
 router = APIRouter(prefix="/api/ai", tags=["ai"])
+
+
+class HintBody(BaseModel):
+    scenario_id: str = Field(alias="scenarioId")
+    step_id: str = Field(alias="stepId")
+
+    model_config = {"populate_by_name": True}
 
 
 @router.post("/chat", response_model=AIChatResponse)
@@ -28,8 +37,17 @@ async def ai_chat(
         except (httpx.HTTPError, KeyError):
             pass  # fallback to OpenAI
 
-    if not settings.OPENAI_API_KEY:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="AI service not configured")
+    def _fallback_reply() -> AIChatResponse:
+        return AIChatResponse(
+            reply=(
+                "Давай просто: франшиза — это часть суммы, которую ты платишь сам при страховом случае. "
+                "Остальное покрывает страховая по договору. Хочешь, объясню на примере с телефоном или велосипедом?"
+            ),
+            model="local-fallback",
+        )
+
+    if not settings.OPENAI_API_KEY or settings.OPENAI_API_KEY.startswith("your-"):
+        return _fallback_reply()
 
     messages = [{"role": m.role, "content": m.content} for m in body.messages]
     if body.context:
@@ -42,8 +60,31 @@ async def ai_chat(
             json={"model": "gpt-4o-mini", "messages": messages},
         )
         if resp.status_code != 200:
-            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="OpenAI error")
+            return _fallback_reply()
 
         data = resp.json()
-        reply = data["choices"][0]["message"]["content"]
-        return AIChatResponse(reply=reply, model="gpt-4o-mini")
+        try:
+            reply = data["choices"][0]["message"]["content"]
+            return AIChatResponse(reply=reply, model="gpt-4o-mini")
+        except Exception:
+            return _fallback_reply()
+
+
+@router.post("/hint")
+async def ai_hint(
+    body: HintBody,
+    _user: User = Depends(get_current_user),
+):
+    return {
+        "hint": "Сравни варианты: что сильнее защищает от неожиданных расходов? Часто верный ответ связан с полисом или обращением к страховой.",
+    }
+
+
+@router.get("/suggestions")
+async def ai_suggestions(_user: User = Depends(get_current_user)):
+    return [
+        "Что такое франшиза?",
+        "Как работает КАСКО?",
+        "Что такое страховой случай?",
+        "Зачем нужно ОСАГО?",
+    ]

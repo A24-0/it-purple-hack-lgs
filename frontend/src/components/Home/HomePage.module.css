@@ -280,9 +280,40 @@
   color: var(--text-secondary);
   font-weight: 500;
 }
-.quickActions {
+.gamesRow {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
+  flex-wrap: wrap;
+}
+
+.allGamesBtn {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: transparent;
+  padding: 8px 4px;
+  min-height: 44px;
+}
+
+.gamesTeaser {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: -4px 0 14px;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .quickActions {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .quickBtn {
@@ -306,7 +337,38 @@
 }
 
 .quickIcon {
-  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.quickIcon[data-variant='orange'] {
+  background: linear-gradient(145deg, #fb923c, #ea580c);
+}
+
+.quickIcon[data-variant='teal'] {
+  background: linear-gradient(145deg, #2dd4bf, #0d9488);
+}
+
+.quickIcon[data-variant='slate'] {
+  background: linear-gradient(145deg, #64748b, #334155);
+}
+
+.quickIcon[data-variant='violet'] {
+  background: linear-gradient(145deg, #a78bfa, #7c3aed);
+}
+
+.quickIcon[data-variant='mint'] {
+  background: linear-gradient(145deg, #6ee7b7, #059669);
+}
+
+.quickIcon[data-variant='help'] {
+  background: linear-gradient(145deg, #38bdf8, #0284c7);
+}
+
+.quickIcon[data-variant='cup'] {
+  background: linear-gradient(145deg, #fcd34d, #d97706);
 }
 
 .quickLabel {
@@ -401,7 +463,7 @@
 
   .quickActions { gap: 16px; }
   .quickBtn { padding: 20px; }
-  .quickIcon { font-size: 28px; }
+  .quickIcon { width: 44px; height: 44px; }
   .quickLabel { font-size: 15px; }
 
   .profileBtn { display: none; }
@@ -460,7 +522,7 @@
 
   .quickActions { gap: 24px; }
   .quickBtn { padding: 28px; gap: 16px; }
-  .quickIcon { font-size: 32px; }
+  .quickIcon { width: 48px; height: 48px; }
   .quickLabel { font-size: 18px; }
 }
 
@@ -497,7 +559,7 @@
 
   .quickActions { gap: 32px; }
   .quickBtn { padding: 36px; gap: 20px; border-radius: var(--radius-xl); }
-  .quickIcon { font-size: 40px; }
+  .quickIcon { width: 52px; height: 52px; }
   .quickLabel { font-size: 22px; }
 }
 @keyframes cardSlideIn {

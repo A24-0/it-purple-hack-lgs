@@ -4,21 +4,37 @@ import {
   useReducer,
   useCallback,
   useEffect,
+  useRef,
   type ReactNode,
 } from 'react';
 import type { Scenario, UserProgress, Achievement } from '../types';
 import type { AiChatMessage, LeaderboardEntry } from '../api/endpoints';
 import {
-  scenarios as mockScenarios,
-  userProgress as mockProgress,
-  achievements as mockAchievements,
-} from '../data/mockData';
-import { scenariosApi, progressApi, leaderboardApi, aiApi, achievementsApi, authApi, gamesApi } from '../api/endpoints';
+  scenariosApi,
+  progressApi,
+  leaderboardApi,
+  aiApi,
+  achievementsApi,
+  authApi,
+  gamesApi,
+} from '../api/endpoints';
 import { apiClient } from '../api/client';
-import { isTelegramWebApp, getTelegramInitData, getTelegramUser } from '../api/telegram';
+import { isTelegramWebApp, getTelegramInitData } from '../api/telegram';
+
+const EMPTY_PROGRESS: UserProgress = {
+  xp: 0,
+  coins: 0,
+  todayXp: 0,
+  level: 1,
+  streak: 0,
+  totalAnswers: 1,
+  correctAnswers: 0,
+  completedScenarioIds: [],
+};
 
 interface AppState {
-  user: { id: string; name: string; email: string } | null;
+  bootstrapped: boolean;
+  user: { id: string; name: string; email: string; telegramLinked?: boolean } | null;
   isAuthenticated: boolean;
   scenarios: Scenario[];
   scenariosLoading: boolean;
@@ -31,15 +47,15 @@ interface AppState {
   leaderboardLoading: boolean;
   achievements: Achievement[];
   error: string | null;
-  useMockData: boolean;
 }
 
 const initialState: AppState = {
+  bootstrapped: false,
   user: null,
-  isAuthenticated: apiClient.isAuthenticated(),
-  scenarios: mockScenarios,
+  isAuthenticated: false,
+  scenarios: [],
   scenariosLoading: false,
-  progress: mockProgress,
+  progress: EMPTY_PROGRESS,
   progressLoading: false,
   chatMessages: [],
   chatLoading: false,
@@ -51,12 +67,12 @@ const initialState: AppState = {
   ],
   leaderboard: [],
   leaderboardLoading: false,
-  achievements: mockAchievements,
+  achievements: [],
   error: null,
-  useMockData: true,
 };
 
 type Action =
+  | { type: 'SET_BOOTSTRAPPED'; payload: boolean }
   | { type: 'SET_USER'; payload: AppState['user'] }
   | { type: 'LOGOUT' }
   | { type: 'SET_SCENARIOS'; payload: Scenario[] }
@@ -71,15 +87,25 @@ type Action =
   | { type: 'SET_ACHIEVEMENTS'; payload: Achievement[] }
   | { type: 'EARN_REWARD'; payload: { xp: number; coins: number } }
   | { type: 'COMPLETE_SCENARIO'; payload: string }
-  | { type: 'SET_ERROR'; payload: string | null }
-  | { type: 'SET_MOCK_MODE'; payload: boolean };
+  | { type: 'SET_ERROR'; payload: string | null };
 
 function appReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
+    case 'SET_BOOTSTRAPPED':
+      return { ...state, bootstrapped: action.payload };
     case 'SET_USER':
       return { ...state, user: action.payload, isAuthenticated: !!action.payload };
     case 'LOGOUT':
-      return { ...state, user: null, isAuthenticated: false };
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        scenarios: [],
+        progress: EMPTY_PROGRESS,
+        achievements: [],
+        chatMessages: [],
+        leaderboard: [],
+      };
     case 'SET_SCENARIOS':
       return { ...state, scenarios: action.payload };
     case 'SET_SCENARIOS_LOADING':
@@ -122,8 +148,6 @@ function appReducer(state: AppState, action: Action): AppState {
       };
     case 'SET_ERROR':
       return { ...state, error: action.payload };
-    case 'SET_MOCK_MODE':
-      return { ...state, useMockData: action.payload };
     default:
       return state;
   }
@@ -143,91 +167,122 @@ interface AppContextType {
     getHint: (scenarioId: string, stepId: string) => Promise<string>;
     earnReward: (xp: number, coins: number) => void;
     completeScenario: (scenarioId: string) => void;
-    saveGameResult: (gameType: string, score: number, xp: number, coins: number) => void;
+    saveGameResult: (gameType: string, score: number, metadata?: Record<string, unknown>) => Promise<void>;
     clearError: () => void;
+    refreshSessionData: () => Promise<void>;
+    linkTelegram: () => Promise<void>;
   };
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
-const mockAiResponses: Record<string, string> = {
-  'франшиза': 'Франшиза — это часть убытка, которую ты оплачиваешь сам. Например, если франшиза 1000 руб., а ущерб 5000 руб., страховая заплатит 4000 руб. Бывает условная (если убыток больше франшизы — платят всё) и безусловная (всегда вычитают).',
-  'каско': 'КАСКО — добровольное страхование автомобиля. Покрывает повреждения, угон, стихийные бедствия. В отличие от ОСАГО, защищает именно твою машину, а не чужую.',
-  'осаго': 'ОСАГО — обязательное страхование автогражданской ответственности. Если ты виноват в ДТП, ОСАГО оплатит ремонт чужой машины. Без ОСАГО нельзя ездить по закону!',
-  'страховой случай': 'Страховой случай — это событие, при котором страховая обязана заплатить. Оно должно быть предусмотрено в договоре. Например: поломка телефона, если он застрахован от повреждений.',
-  'полис': 'Страховой полис — документ, подтверждающий твою страховку. В нём указано: что застраховано, на какую сумму, от каких рисков и на какой срок.',
-  'премия': 'Страховая премия — это плата за страховку. Ты платишь её страховой компании, а взамен получаешь защиту. Чем больше рисков покрываешь — тем выше премия.',
-};
-
-function getMockAiResponse(text: string): string {
-  const lower = text.toLowerCase();
-  for (const [key, response] of Object.entries(mockAiResponses)) {
-    if (lower.includes(key)) return response;
+async function loadSessionData(dispatch: React.Dispatch<Action>) {
+  dispatch({ type: 'SET_SCENARIOS_LOADING', payload: true });
+  dispatch({ type: 'SET_PROGRESS_LOADING', payload: true });
+  try {
+    const [sc, pr, ach, sug] = await Promise.all([
+      scenariosApi.getAll(),
+      progressApi.get(),
+      achievementsApi.getAll().catch(() => [] as Achievement[]),
+      aiApi.getSuggestions().catch(() => null),
+    ]);
+    dispatch({ type: 'SET_SCENARIOS', payload: sc });
+    dispatch({ type: 'SET_PROGRESS', payload: pr });
+    dispatch({ type: 'SET_ACHIEVEMENTS', payload: ach });
+    if (sug?.length) dispatch({ type: 'SET_SUGGESTIONS', payload: sug });
+  } catch (e) {
+    dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
+  } finally {
+    dispatch({ type: 'SET_SCENARIOS_LOADING', payload: false });
+    dispatch({ type: 'SET_PROGRESS_LOADING', payload: false });
   }
-  return 'Страхование — это способ защитить себя от финансовых потерь. Ты платишь небольшую сумму (премию), а если случится что-то плохое (страховой случай) — страховая компания компенсирует убытки. Задай мне конкретный вопрос о страховании!';
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
+  const dispatchRef = useRef(dispatch);
+  dispatchRef.current = dispatch;
+  const chatMessagesRef = useRef(state.chatMessages);
+  chatMessagesRef.current = state.chatMessages;
 
-  useEffect(() => {
-    if (isTelegramWebApp()) {
-      const initData = getTelegramInitData();
-      const tgUser = getTelegramUser();
-      if (initData && tgUser) {
-        apiClient
-          .post<{ token: string; user: { id: string; name: string; email: string } }>(
-            '/api/auth/telegram',
-            { init_data: initData }
-          )
-          .then((res) => {
-            apiClient.setToken(res.token);
-            dispatch({ type: 'SET_USER', payload: res.user });
-            dispatch({ type: 'SET_MOCK_MODE', payload: false });
-          })
-          .catch(() => {
-            dispatch({
-              type: 'SET_USER',
-              payload: {
-                id: String(tgUser.id),
-                name: tgUser.first_name,
-                email: '',
-              },
-            });
-          });
-      }
-    }
+  const refreshSessionData = useCallback(async () => {
+    await loadSessionData(dispatchRef.current);
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
-    try {
-      if (state.useMockData) {
-        dispatch({ type: 'SET_USER', payload: { id: '1', name: 'Артём', email } });
+  useEffect(() => {
+    let dead = false;
+    (async () => {
+      const tgInit = isTelegramWebApp() ? getTelegramInitData() : null;
+      if (tgInit) {
+        try {
+          const res = await authApi.telegramAuth(tgInit);
+          if (dead) return;
+          apiClient.setToken(res.access_token);
+          const me = await authApi.me();
+          dispatch({ type: 'SET_USER', payload: mapUser(me) });
+          await loadSessionData(dispatch);
+        } catch {
+          dispatch({
+            type: 'SET_ERROR',
+            payload: 'Не удалось войти через Telegram. Войди по email на сайте.',
+          });
+        } finally {
+          if (!dead) dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
+        }
         return;
       }
-      const res = await authApi.login(email, password);
-      apiClient.setToken(res.token);
-      dispatch({ type: 'SET_USER', payload: res.user });
-    } catch (e) {
-      dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
-      throw e;
-    }
-  }, [state.useMockData]);
+
+      if (!apiClient.isAuthenticated()) {
+        if (!dead) dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
+        return;
+      }
+      try {
+        const me = await authApi.me();
+        if (dead) return;
+        dispatch({ type: 'SET_USER', payload: mapUser(me) });
+        await loadSessionData(dispatch);
+      } catch {
+        apiClient.clearToken();
+        dispatch({ type: 'LOGOUT' });
+      } finally {
+        if (!dead) dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
+      }
+    })();
+    return () => {
+      dead = true;
+    };
+  }, []);
+
+  const mapUser = (u: { id: string; name: string; email: string; telegram_linked?: boolean }) => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    telegramLinked: !!u.telegram_linked,
+  });
+
+  const login = useCallback(async (email: string, password: string) => {
+    const res = await authApi.login(email, password);
+    apiClient.setToken(res.token);
+    dispatch({ type: 'SET_USER', payload: mapUser(res.user) });
+    await loadSessionData(dispatch);
+  }, []);
 
   const register = useCallback(async (name: string, email: string, password: string) => {
-    try {
-      if (state.useMockData) {
-        dispatch({ type: 'SET_USER', payload: { id: '1', name, email } });
-        return;
-      }
-      const res = await authApi.register(name, email, password);
-      apiClient.setToken(res.token);
-      dispatch({ type: 'SET_USER', payload: res.user });
-    } catch (e) {
-      dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
-      throw e;
+    const res = await authApi.register(name, email, password);
+    apiClient.setToken(res.token);
+    dispatch({ type: 'SET_USER', payload: mapUser(res.user) });
+    await loadSessionData(dispatch);
+  }, []);
+
+  const linkTelegram = useCallback(async () => {
+    const initData = getTelegramInitData();
+    if (!initData) {
+      dispatch({ type: 'SET_ERROR', payload: 'Открыть Telegram Mini App и повторить привязку' });
+      return;
     }
-  }, [state.useMockData]);
+    const user = await authApi.linkTelegram(initData);
+    dispatch({ type: 'SET_USER', payload: mapUser(user) });
+  }, []);
 
   const logout = useCallback(() => {
     authApi.logout();
@@ -235,7 +290,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadScenarios = useCallback(async () => {
-    if (state.useMockData) return;
     dispatch({ type: 'SET_SCENARIOS_LOADING', payload: true });
     try {
       const data = await scenariosApi.getAll();
@@ -245,10 +299,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } finally {
       dispatch({ type: 'SET_SCENARIOS_LOADING', payload: false });
     }
-  }, [state.useMockData]);
+  }, []);
 
   const loadProgress = useCallback(async () => {
-    if (state.useMockData) return;
     dispatch({ type: 'SET_PROGRESS_LOADING', payload: true });
     try {
       const data = await progressApi.get();
@@ -258,25 +311,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } finally {
       dispatch({ type: 'SET_PROGRESS_LOADING', payload: false });
     }
-  }, [state.useMockData]);
+  }, []);
 
   const loadLeaderboard = useCallback(async (period?: string) => {
-    if (state.useMockData) {
-      dispatch({
-        type: 'SET_LEADERBOARD',
-        payload: [
-          { rank: 1, userId: '1', name: 'Артём', xp: 1240, level: 8, completedScenarios: 4 },
-          { rank: 2, userId: '2', name: 'Мария', xp: 980, level: 6, completedScenarios: 3 },
-          { rank: 3, userId: '3', name: 'Дмитрий', xp: 870, level: 5, completedScenarios: 3 },
-          { rank: 4, userId: '4', name: 'Анна', xp: 650, level: 4, completedScenarios: 2 },
-          { rank: 5, userId: '5', name: 'Иван', xp: 420, level: 3, completedScenarios: 2 },
-          { rank: 6, userId: '6', name: 'Елена', xp: 310, level: 2, completedScenarios: 1 },
-          { rank: 7, userId: '7', name: 'Павел', xp: 180, level: 1, completedScenarios: 1 },
-          { rank: 8, userId: '8', name: 'Ольга', xp: 90, level: 1, completedScenarios: 0 },
-        ],
-      });
-      return;
-    }
     dispatch({ type: 'SET_LEADERBOARD_LOADING', payload: true });
     try {
       const data = await leaderboardApi.getTop(20, period);
@@ -286,21 +323,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } finally {
       dispatch({ type: 'SET_LEADERBOARD_LOADING', payload: false });
     }
-  }, [state.useMockData]);
+  }, []);
 
   const loadAchievements = useCallback(async () => {
-    if (state.useMockData) return;
     try {
       const data = await achievementsApi.getAll();
       dispatch({ type: 'SET_ACHIEVEMENTS', payload: data });
     } catch (e) {
       dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
     }
-  }, [state.useMockData]);
+  }, []);
 
   const sendChatMessage = useCallback(async (text: string, context?: string) => {
     const userMsg: AiChatMessage = {
-      id: Date.now().toString(),
+      id: `${Date.now()}-u`,
       role: 'user',
       text,
       timestamp: new Date().toISOString(),
@@ -309,57 +345,41 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'SET_CHAT_LOADING', payload: true });
 
     try {
-      if (state.useMockData) {
-        await new Promise((r) => setTimeout(r, 800));
-        const aiMsg: AiChatMessage = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          text: getMockAiResponse(text),
-          timestamp: new Date().toISOString(),
-        };
-        dispatch({ type: 'ADD_CHAT_MESSAGE', payload: aiMsg });
-      } else {
-        const aiMsg = await aiApi.sendMessage(text, context);
-        dispatch({ type: 'ADD_CHAT_MESSAGE', payload: aiMsg });
-      }
+      const history = [...chatMessagesRef.current, userMsg].map((m) => ({
+        role: m.role,
+        content: m.text,
+      }));
+      const aiMsg = await aiApi.sendMessage(history, context);
+      dispatch({ type: 'ADD_CHAT_MESSAGE', payload: aiMsg });
     } catch (e) {
       dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
     } finally {
       dispatch({ type: 'SET_CHAT_LOADING', payload: false });
     }
-  }, [state.useMockData]);
+  }, []);
 
   const getHint = useCallback(async (scenarioId: string, stepId: string): Promise<string> => {
-    if (state.useMockData) {
-      await new Promise((r) => setTimeout(r, 600));
-      const scenario = state.scenarios.find((s) => s.id === scenarioId);
-      const step = scenario?.steps.find((s) => s.id === stepId);
-      const optimal = step?.choices.find((c) => c.isOptimal);
-      if (optimal) {
-        return `Подсказка: обрати внимание на вариант, связанный с ${optimal.text.toLowerCase().slice(0, 40)}... Подумай, какое действие наиболее ответственное и практичное.`;
-      }
-      return 'Подсказка: подумай, какой вариант лучше защитит тебя финансово. Страхование — это про предусмотрительность!';
-    }
     const res = await aiApi.getHint(scenarioId, stepId);
     return res.hint;
-  }, [state.useMockData, state.scenarios]);
+  }, []);
 
   const earnReward = useCallback((xp: number, coins: number) => {
     dispatch({ type: 'EARN_REWARD', payload: { xp, coins } });
-    if (!state.useMockData) {
-      progressApi.addReward(xp, coins).catch(() => {});
-    }
-  }, [state.useMockData]);
+    progressApi.addReward(xp, coins).catch(() => {});
+  }, []);
 
   const completeScenario = useCallback((scenarioId: string) => {
     dispatch({ type: 'COMPLETE_SCENARIO', payload: scenarioId });
   }, []);
 
-  const saveGameResult = useCallback((gameType: string, score: number, xp: number, coins: number) => {
-    if (!state.useMockData) {
-      gamesApi.saveResult({ gameType, score, xpEarned: xp, coinsEarned: coins }).catch(() => {});
+  const saveGameResult = useCallback(async (gameType: string, score: number, metadata?: Record<string, unknown>) => {
+    try {
+      await gamesApi.saveResult(gameType, score, metadata);
+      await loadProgress();
+    } catch (e) {
+      dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
     }
-  }, [state.useMockData]);
+  }, [loadProgress]);
 
   const clearError = useCallback(() => {
     dispatch({ type: 'SET_ERROR', payload: null });
@@ -383,6 +403,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
           completeScenario,
           saveGameResult,
           clearError,
+          refreshSessionData,
+          linkTelegram,
         },
       }}
     >

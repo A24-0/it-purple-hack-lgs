@@ -1,0 +1,278 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: calc(12px + env(safe-area-inset-top, 0)) var(--content-padding)
+    calc(24px + env(safe-area-inset-bottom, 0));
+}
+
+.hero {
+  margin-bottom: 28px;
+}
+
+.kicker {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.sectionHint {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.pathTrack {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pathNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+  position: relative;
+}
+
+.pathCircle {
+  width: min(52px, 14vw);
+  height: min(52px, 14vw);
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 1rem;
+  border: 3px solid var(--gray-300);
+  background: var(--white);
+  color: var(--gray-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.pathCircle:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.pathDone {
+  border-color: var(--success);
+  background: var(--success-light);
+  color: #1b5e20;
+}
+
+.pathLock {
+  opacity: 0.85;
+}
+
+.pathLabel {
+  font-size: 0.72rem;
+  margin-top: 8px;
+  text-align: center;
+  color: var(--text-secondary);
+  max-width: 72px;
+  line-height: 1.2;
+}
+
+.pathLine {
+  display: none;
+}
+
+.dailyMark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, #fb923c, #ea580c);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+}
+
+.dailyCta {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 2px solid rgba(249, 115, 22, 0.45);
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.dailyCta:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.dailyCta strong {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.dailySub {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.dailyArrow {
+  margin-left: auto;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px;
+  min-height: 120px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--gray-200);
+  background: var(--white);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.card:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.toneViolet {
+  border-color: rgba(124, 58, 237, 0.35);
+  background: linear-gradient(160deg, #f3e8ff 0%, #fff 55%);
+}
+
+.toneTeal {
+  border-color: rgba(13, 148, 136, 0.4);
+  background: linear-gradient(160deg, #ccfbf1 0%, #fff 55%);
+}
+
+.toneOrange {
+  border-color: rgba(249, 115, 22, 0.4);
+  background: linear-gradient(160deg, #ffedd5 0%, #fff 55%);
+}
+
+.toneSlate {
+  border-color: rgba(71, 85, 105, 0.35);
+  background: linear-gradient(160deg, #f1f5f9 0%, #fff 55%);
+}
+
+.cardTag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.cardDesc {
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.soonBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  background: var(--gray-200);
+  color: var(--gray-700);
+}
+
+.tipBox {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: var(--gray-100);
+  border-left: 4px solid var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .dailyCta,
+  .pathCircle {
+    transition: none;
+  }
+}

@@ -1,0 +1,12 @@
+.page { min-height: 100vh; background: var(--bg-secondary); padding: 16px; }
+.header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.backBtn { width: 36px; height: 36px; border-radius: 50%; background: var(--white); font-size: 20px; }
+.title { font-size: 1.05rem; font-weight: 800; }
+.card { background: var(--white); border-radius: 14px; box-shadow: var(--shadow-sm); padding: 16px; margin-bottom: 12px; }
+.cardTitle { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+.cardText { font-size: .9rem; color: var(--text-secondary); margin-bottom: 12px; }
+.primaryBtn { width: 100%; padding: 12px; border-radius: 10px; background: var(--primary); color: #fff; font-weight: 700; }
+.primaryBtn:disabled { background: var(--gray-300); }
+.ok { margin-top: 8px; color: #059669; font-weight: 600; }
+.list { padding-left: 18px; display: grid; gap: 6px; font-size: .92rem; }
+.meta { margin-top: 8px; font-size: .85rem; color: var(--text-secondary); }

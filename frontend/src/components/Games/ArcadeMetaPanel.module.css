@@ -1,0 +1,120 @@
+.wrap {
+  max-width: 720px;
+  margin: 14px auto 24px;
+  padding: 0 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.block {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.block h3 {
+  margin: 0;
+  font-size: 0.96rem;
+}
+
+.sub {
+  margin: 4px 0 10px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.reward {
+  border-radius: 14px;
+  padding: 12px;
+  background: linear-gradient(140deg, #2563eb 0%, #0ea5e9 50%, #22c55e 100%);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.rewardTitle {
+  font-size: 0.78rem;
+  opacity: 0.9;
+}
+
+.rewardValue {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.pulse {
+  animation: pulseWin 0.9s ease;
+}
+
+@keyframes pulseWin {
+  0% { transform: scale(1); filter: saturate(100%); }
+  35% { transform: scale(1.03); filter: saturate(145%); }
+  100% { transform: scale(1); filter: saturate(100%); }
+}
+
+.missions {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.missions li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.missions li span {
+  display: inline-flex;
+  min-width: 42px;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 3px 6px;
+}
+
+.done span {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.topList {
+  display: grid;
+  gap: 6px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+}
+
+.rank {
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.name {
+  font-size: 0.9rem;
+}
+
+.score {
+  color: var(--primary);
+}
+
+.empty {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}

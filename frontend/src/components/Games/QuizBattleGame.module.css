@@ -1,0 +1,33 @@
+.scoreRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 16px 6px;
+}
+
+.scoreCard {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scoreCard span {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.scoreCard strong {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.status {
+  margin: 0 16px 10px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+}

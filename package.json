@@ -1,0 +1,19 @@
+{
+  "name": "it-purple-lgs",
+  "private": true,
+  "description": "СтрахоГид — монорепозиторий (backend + ML + frontend)",
+  "scripts": {
+    "start": "bash scripts/start-all.sh",
+    "dev": "bash scripts/start-all.sh",
+    "start:ultrafast": "QUICK_REUSE=1 SKIP_ML=1 bash scripts/start-all.sh",
+    "start:nobot": "SKIP_BOT=1 bash scripts/start-all.sh",
+    "start:build": "DOCKER_BUILD=1 bash scripts/start-all.sh",
+    "start:lean": "SKIP_ML=1 bash scripts/start-all.sh",
+    "start:frontend": "cd frontend && npm run dev -- --host 0.0.0.0 --port 5173",
+    "desktop": "cd frontend && npm run desktop",
+    "desktop:build": "cd frontend && npm run desktop:build",
+    "mobile:sync": "cd frontend && npm run mobile:sync",
+    "mobile:android": "cd frontend && npm run mobile:open:android",
+    "mobile:ios": "cd frontend && npm run mobile:open:ios"
+  }
+}

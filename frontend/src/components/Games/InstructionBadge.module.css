@@ -1,0 +1,25 @@
+.badge {
+  position: fixed;
+  top: 86px;
+  right: 12px;
+  z-index: 30;
+  max-width: min(300px, calc(100vw - 24px));
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--gray-300);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-sm);
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.title {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--primary);
+}

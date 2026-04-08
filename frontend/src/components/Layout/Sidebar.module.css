@@ -45,7 +45,8 @@
 }
 
 .logoIcon {
-  font-size: 28px;
+  display: flex;
+  color: var(--primary);
 }
 
 .logoText {
@@ -55,12 +56,10 @@
 }
 
 @media (min-width: 1920px) {
-  .logoIcon { font-size: 32px; }
   .logoText { font-size: 22px; }
 }
 
 @media (min-width: 2560px) {
-  .logoIcon { font-size: 38px; }
   .logoText { font-size: 26px; }
   .logo { margin-bottom: 40px; }
 }
@@ -91,15 +90,17 @@
 }
 
 .active {
-  background: rgba(41, 121, 255, 0.08);
+  background: rgba(13, 148, 136, 0.12);
   color: var(--primary);
   font-weight: 600;
 }
 
 .navIcon {
-  font-size: 20px;
   width: 28px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
 }
 
 .navLabel {
@@ -114,13 +115,12 @@
 
 @media (min-width: 1920px) {
   .navItem { padding: 14px 18px; }
-  .navIcon { font-size: 22px; }
   .navLabel { font-size: 16px; }
 }
 
 @media (min-width: 2560px) {
   .navItem { padding: 18px 22px; gap: 16px; }
-  .navIcon { font-size: 26px; width: 34px; }
+  .navIcon { width: 34px; }
   .navLabel { font-size: 18px; }
 }
 

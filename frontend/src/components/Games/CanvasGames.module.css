@@ -1,0 +1,116 @@
+.hint {
+  padding: 12px 20px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.startBtn {
+  margin: 12px auto 16px;
+  display: block;
+  max-width: 280px;
+}
+
+.canvas {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  touch-action: none;
+  box-shadow: var(--shadow-md);
+}
+
+.laneBtns {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  max-width: 360px;
+  margin: 12px auto 0;
+  padding: 0 12px;
+}
+
+.laneBtn {
+  flex: 1;
+  padding: 12px 8px;
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 2px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.laneBtn:active {
+  transform: scale(0.98);
+}
+
+.memoryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 16px;
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 560px) {
+  .memoryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.memoryCard {
+  min-height: 118px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--gray-200);
+  background: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  line-height: 1.35;
+  overflow: hidden;
+}
+
+.memoryCard:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.memoryCard:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.memoryCard.flipped {
+  background: var(--bg-secondary);
+}
+
+.memoryCard.matched {
+  border-color: var(--success);
+  background: var(--success-light);
+}
+
+.memoryText {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+}
+
+.memoryMask {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary);
+}

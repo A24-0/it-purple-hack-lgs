@@ -41,6 +41,7 @@ class ScenarioOut(BaseModel):
     category: str | None
     difficulty: int
     xp_reward: int
+    icon: str = "📋"
 
     model_config = {"from_attributes": True}
 

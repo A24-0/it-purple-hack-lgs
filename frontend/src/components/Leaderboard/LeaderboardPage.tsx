@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../store/AppContext';
 import styles from './LeaderboardPage.module.css';
 
-const medals = ['🥇', '🥈', '🥉'];
+const medals = ['#1', '#2', '#3'];
 const periods = [
   { key: 'week', label: 'Неделя' },
   { key: 'month', label: 'Месяц' },

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../store/AppContext';
 import { policyChallenges } from '../../data/mockData';
 import styles from './BuildPolicyGame.module.css';
+import InstructionBadge from './InstructionBadge';
 
 export default function BuildPolicyGame() {
   const navigate = useNavigate();
@@ -45,14 +46,11 @@ export default function BuildPolicyGame() {
     setSubmitted(true);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const newScores = [...scores, coveragePercent];
     if (challengeIdx + 1 >= total) {
       const avgScore = Math.round(newScores.reduce((a, b) => a + b, 0) / newScores.length);
-      const xp = Math.round(avgScore * 0.4);
-      const coins = Math.round(avgScore * 0.15);
-      actions.earnReward(xp, coins);
-      actions.saveGameResult('build-policy', avgScore, xp, coins);
+      await actions.saveGameResult('build-policy', avgScore);
       setScores(newScores);
       setFinished(true);
     } else {
@@ -68,9 +66,7 @@ export default function BuildPolicyGame() {
     return (
       <div className={styles.page}>
         <div className={styles.resultSection}>
-          <div className={styles.resultIcon}>
-            {avgScore >= 80 ? '🏆' : avgScore >= 50 ? '👍' : '📚'}
-          </div>
+          <div className={styles.resultIcon}>{avgScore >= 80 ? 'A' : avgScore >= 50 ? 'B' : 'C'}</div>
           <h2 className={styles.resultTitle}>Полисы собраны!</h2>
           <p className={styles.resultScore}>{avgScore}%</p>
           <p className={styles.resultSubtitle}>среднее покрытие</p>
@@ -82,7 +78,7 @@ export default function BuildPolicyGame() {
             <button className={styles.primaryBtn} onClick={() => { setChallengeIdx(0); setSelectedIds(new Set()); setSubmitted(false); setScores([]); setFinished(false); }}>
               Играть снова
             </button>
-            <button className={styles.secondaryBtn} onClick={() => navigate('/')}>
+            <button className={styles.secondaryBtn} onClick={() => navigate('/games')}>
               На главную
             </button>
           </div>
@@ -93,8 +89,9 @@ export default function BuildPolicyGame() {
 
   return (
     <div className={styles.page}>
+      <InstructionBadge text="Выбирай опции полиса так, чтобы сохранить бюджет и набрать максимум покрытия." />
       <div className={styles.header}>
-        <button className={styles.backBtn} onClick={() => navigate('/')}>
+        <button className={styles.backBtn} onClick={() => navigate('/games')}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -174,7 +171,7 @@ export default function BuildPolicyGame() {
         ) : (
           <div className={styles.resultCard}>
             <div className={styles.resultBadge}>
-              {coveragePercent >= 80 ? '✅ Отличное покрытие!' : coveragePercent >= 50 ? '👍 Неплохо!' : '⚠️ Покрытие слабое'}
+              {coveragePercent >= 80 ? 'Отличное покрытие' : coveragePercent >= 50 ? 'Неплохо' : 'Покрытие слабое'}
             </div>
             <p className={styles.resultText}>
               Ты потратил {spent.toLocaleString('ru-RU')} ₽ и получил {coveragePercent}% покрытия.

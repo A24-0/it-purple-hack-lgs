@@ -1,0 +1,13 @@
+# Корневой запуск: API + БД + Redis + бот + ML
+# Требуется Docker Compose v2.20+ (include) или используйте scripts/start-all.sh
+include:
+  - path: backend/docker-compose.yml
+
+services:
+  ml:
+    build: ./ml_service
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./ml_service/.env
+    restart: unless-stopped

@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Запуск всего (Docker + Vite)",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/start-all.sh"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {}
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Запуск без ML (Docker + Vite, быстрее)",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "SKIP_ML=1 bash ${workspaceFolder}/scripts/start-all.sh"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {}
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

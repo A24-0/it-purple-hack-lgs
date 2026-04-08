@@ -1,35 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..800;1,9..40,400..800&display=swap');
 
 :root {
   --primary: #2979FF;
   --primary-dark: #1565C0;
+  --primary-light: #E3F2FD;
+  --accent: #40C4FF;
+  --accent-soft: #E1F5FE;
   --primary-gradient: linear-gradient(135deg, #2979FF 0%, #1565C0 100%);
   --hero-gradient: linear-gradient(180deg, #2979FF 0%, #1976D2 100%);
 
-  --success: #00E676;
-  --success-light: #E8F5E9;
-  --error: #FF5252;
-  --error-light: #FFEBEE;
-  --warning: #FFD740;
-  --info: #40C4FF;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --error: #f43f5e;
+  --error-light: #ffe4e6;
+  --warning: #fbbf24;
+  --info: #06b6d4;
 
-  --white: #FFFFFF;
-  --gray-50: #FAFAFA;
-  --gray-100: #F5F5F5;
-  --gray-200: #EEEEEE;
-  --gray-300: #E0E0E0;
-  --gray-400: #BDBDBD;
-  --gray-500: #9E9E9E;
-  --gray-600: #757575;
-  --gray-700: #616161;
-  --gray-800: #424242;
-  --gray-900: #212121;
+  --white: #ffffff;
+  --gray-50: #fafaf9;
+  --gray-100: #f5f5f4;
+  --gray-200: #e7e5e4;
+  --gray-300: #d6d3d1;
+  --gray-400: #a8a29e;
+  --gray-500: #78716c;
+  --gray-600: #57534e;
+  --gray-700: #44403c;
+  --gray-800: #292524;
+  --gray-900: #1c1917;
 
-  --bg: #FFFFFF;
-  --bg-secondary: #F5F7FA;
-  --text-primary: #1A1A2E;
-  --text-secondary: #6B7280;
-  --text-white: #FFFFFF;
+  --bg: #ffffff;
+  --bg-secondary: #f5f5f4;
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --text-white: #ffffff;
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -37,11 +40,11 @@
   --radius-xl: 20px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.06);
+  --shadow-md: 0 4px 16px rgba(28, 25, 23, 0.08);
+  --shadow-lg: 0 12px 32px rgba(28, 25, 23, 0.1);
 
-  --nav-height: 70px;
+  --nav-height: 72px;
   --max-width: 100%;
   --content-padding: 16px;
   --font-scale: 1;
@@ -73,7 +76,7 @@
 
 @media (min-width: 1920px) {
   :root {
-    --font-scale: 1.1;
+    --font-scale: 1.08;
     --content-padding: 48px;
     --sidebar-width: 300px;
     --radius-lg: 22px;
@@ -83,11 +86,11 @@
 
 @media (min-width: 2560px) {
   :root {
-    --font-scale: 1.25;
+    --font-scale: 1.15;
     --content-padding: 64px;
-    --sidebar-width: 340px;
-    --radius-lg: 28px;
-    --radius-xl: 36px;
+    --sidebar-width: 320px;
+    --radius-lg: 26px;
+    --radius-xl: 32px;
   }
 }
 
@@ -101,20 +104,39 @@ html {
   font-size: calc(16px * var(--font-scale));
 }
 
-html, body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+html,
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg-secondary);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  padding-left: env(safe-area-inset-left, 0);
+  padding-right: env(safe-area-inset-right, 0);
+}
+
+body {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-top: env(safe-area-inset-top, 0);
 }
 
 #root {
   display: flex;
   justify-content: center;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg-secondary);
+}
+
+body.tg-webapp #root {
+  min-height: 100vh;
+  min-height: var(--tg-viewport-stable-height, 100dvh);
+}
+
+html.tg-dark body,
+html.tg-dark #root {
+  background: var(--tg-bg, var(--bg-secondary));
 }
 
 button {
@@ -128,6 +150,7 @@ a {
   color: inherit;
 }
 
-input, textarea {
+input,
+textarea {
   font-family: inherit;
 }

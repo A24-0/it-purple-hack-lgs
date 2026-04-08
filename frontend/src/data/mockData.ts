@@ -5,7 +5,7 @@ export const scenarios: Scenario[] = [
     id: 'phone-insurance',
     title: 'Первый смартфон',
     description: 'Купил дорогой телефон — стоит ли страховать?',
-    icon: '📱',
+    icon: 'S1',
     maxXp: 60,
     steps: [
       {
@@ -93,7 +93,7 @@ export const scenarios: Scenario[] = [
     id: 'car-accident',
     title: 'ДТП на перекрёстке',
     description: 'Разберись, как работает ОСАГО и КАСКО',
-    icon: '🚗',
+    icon: 'S2',
     maxXp: 60,
     steps: [
       {
@@ -157,7 +157,7 @@ export const scenarios: Scenario[] = [
     id: 'apartment-flood',
     title: 'Залив квартиры',
     description: 'Что делать, когда сосед сверху устроил потоп',
-    icon: '🏠',
+    icon: 'S3',
     maxXp: 60,
     steps: [
       {
@@ -278,12 +278,12 @@ export const userProgress: UserProgress = {
 };
 
 export const achievements: Achievement[] = [
-  { id: 'first-scenario', icon: '🎯', title: 'Первый шаг', description: 'Пройди первый сценарий', completed: true },
-  { id: 'perfect-score', icon: '💯', title: 'Безупречно', description: '100% верных ответов в сценарии', completed: false },
-  { id: 'streak-7', icon: '🔥', title: 'Неделя подряд', description: 'Заходи 7 дней подряд', completed: false },
+  { id: 'first-scenario', icon: 'A1', title: 'Первый шаг', description: 'Пройди первый сценарий', completed: true },
+  { id: 'perfect-score', icon: 'A2', title: 'Безупречно', description: '100% верных ответов в сценарии', completed: false },
+  { id: 'streak-7', icon: 'A3', title: 'Неделя подряд', description: 'Заходи 7 дней подряд', completed: false },
   { id: 'xp-500', icon: '⚡', title: 'Полтысячи', description: 'Набери 500 XP', completed: false },
-  { id: 'all-scenarios', icon: '🏆', title: 'Знаток', description: 'Пройди все сценарии', completed: false },
-  { id: 'first-game', icon: '🎮', title: 'Игрок', description: 'Сыграй в мини-игру', completed: false },
+  { id: 'all-scenarios', icon: 'A4', title: 'Знаток', description: 'Пройди все сценарии', completed: false },
+  { id: 'first-game', icon: 'A5', title: 'Игрок', description: 'Сыграй в мини-игру', completed: false },
 ];
 
 export const weeklyData = [
@@ -554,5 +554,111 @@ export const policyChallenges: PolicyChallenge[] = [
       { id: 'po-17', name: 'Активный отдых', description: 'Покрытие травм при спорте и экскурсиях', cost: 1800, coveragePoints: 15 },
       { id: 'po-18', name: 'Юридическая помощь', description: 'Консультация юриста за рубежом', cost: 1000, coveragePoints: 5 },
     ],
+  },
+];
+
+export const claimCards: RiskCard[] = [
+  {
+    id: 'cl-1',
+    situation: 'Произошло ДТП. Никто не пострадал. Что сделать в первую очередь?',
+    options: [
+      { id: 'cl1-a', text: 'Сразу уехать с места', isCorrect: false },
+      { id: 'cl1-b', text: 'Оформить документы и зафиксировать факты (фото, время)', isCorrect: true },
+      { id: 'cl1-c', text: 'Позвонить другу за советом', isCorrect: false },
+    ],
+    explanation: 'Сначала безопасность и доказательная база: фото, время, при необходимости ГИБДД или европротокол.',
+  },
+  {
+    id: 'cl-2',
+    situation: 'Нужно подать заявление о страховом случае. Куда обычно обращаются?',
+    options: [
+      { id: 'cl2-a', text: 'В страховую по полису (приложение / офис / звонок)', isCorrect: true },
+      { id: 'cl2-b', text: 'Только в соцсети', isCorrect: false },
+      { id: 'cl2-c', text: 'К соседям', isCorrect: false },
+    ],
+    explanation: 'Основной канал — страховщик по твоему полису: там запускается регламент рассмотрения.',
+  },
+  {
+    id: 'cl-3',
+    situation: 'Страховая задерживает ответ дольше срока по закону. Что разумно?',
+    options: [
+      { id: 'cl3-a', text: 'Зафиксировать сроки и направить претензию', isCorrect: true },
+      { id: 'cl3-b', text: 'Ждать год молча', isCorrect: false },
+      { id: 'cl3-c', text: 'Ничего не делать', isCorrect: false },
+    ],
+    explanation: 'Претензия и фиксация нарушения сроков — нормальная защита прав потребителя.',
+  },
+  {
+    id: 'cl-4',
+    situation: 'Спорят с размером выплаты. Как действовать корректно?',
+    options: [
+      { id: 'cl4-a', text: 'Запросить мотивировку и независимую экспертизу по правилам', isCorrect: true },
+      { id: 'cl4-b', text: 'Сразу угрожать в соцсетях', isCorrect: false },
+      { id: 'cl4-c', text: 'Смириться с любой суммой', isCorrect: false },
+    ],
+    explanation: 'Экспертиза и письменная мотивировка — стандартная практика разрешения споров.',
+  },
+  {
+    id: 'cl-5',
+    situation: 'Какие документы важно сохранить для выплаты?',
+    options: [
+      { id: 'cl5-a', text: 'Чеки, справки, подтверждения ущерба по полису', isCorrect: true },
+      { id: 'cl5-b', text: 'Только устные обещания', isCorrect: false },
+      { id: 'cl5-c', text: 'Ничего — «и так разберутся»', isCorrect: false },
+    ],
+    explanation: 'Доказательства ущерба и связь с полисом — основа успешного рассмотрения.',
+  },
+];
+
+export const dailyQuizCards: RiskCard[] = [
+  {
+    id: 'dq-1',
+    situation: 'Что из перечисленного чаще всего обязательно для автовладельца в РФ?',
+    options: [
+      { id: 'dq1-a', text: 'ОСАГО', isCorrect: true },
+      { id: 'dq1-b', text: 'КАСКО', isCorrect: false },
+      { id: 'dq1-c', text: 'Страховка ключа', isCorrect: false },
+    ],
+    explanation: 'ОСАГО — обязательное страхование ответственности владельцев ТС.',
+  },
+  {
+    id: 'dq-2',
+    situation: 'Что такое франшиза в страховании?',
+    options: [
+      { id: 'dq2-a', text: 'Часть убытка, которую оплачиваешь сам', isCorrect: true },
+      { id: 'dq2-b', text: 'Скидка от страховой', isCorrect: false },
+      { id: 'dq2-c', text: 'Штраф от полиции', isCorrect: false },
+    ],
+    explanation: 'Франшиза — сумма, которую ты берёшь на себя до выплаты страховой.',
+  },
+  {
+    id: 'dq-3',
+    situation: 'ГО квартиры чаще всего покрывает ущерб соседям при…',
+    options: [
+      { id: 'dq3-a', text: 'Протечке у тебя, если затопило соседей', isCorrect: true },
+      { id: 'dq3-b', text: 'Только твой ремонт всегда', isCorrect: false },
+      { id: 'dq3-c', text: 'Только моральный вред', isCorrect: false },
+    ],
+    explanation: 'Гражданская ответственность — про ущерб третьим лицам по условиям полиса.',
+  },
+  {
+    id: 'dq-4',
+    situation: 'ДМС — это в первую очередь…',
+    options: [
+      { id: 'dq4-a', text: 'Дополнительная медицина сверх ОМС', isCorrect: true },
+      { id: 'dq4-b', text: 'То же самое, что ОМС', isCorrect: false },
+      { id: 'dq4-c', text: 'Только стоматология для всех бесплатно', isCorrect: false },
+    ],
+    explanation: 'ДМС расширяет доступ к услугам; ОМС — базовая бесплатная помощь в рамках программы.',
+  },
+  {
+    id: 'dq-5',
+    situation: 'Путешествие: что чаще входит в «медицинскую» страховку поездки?',
+    options: [
+      { id: 'dq5-a', text: 'Экстренная помощь и транспорт при необходимости', isCorrect: true },
+      { id: 'dq5-b', text: 'Только сувениры', isCorrect: false },
+      { id: 'dq5-c', text: 'Только обмен валюты', isCorrect: false },
+    ],
+    explanation: 'Туристическая медстраховка обычно про острые состояния и экстренные расходы.',
   },
 ];

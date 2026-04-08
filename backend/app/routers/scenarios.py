@@ -27,10 +27,37 @@ from app.services.streak_service import touch_streak
 router = APIRouter(prefix="/api/scenarios", tags=["scenarios"])
 
 
+def _scenario_icon(category: str | None) -> str:
+    if not category:
+        return "📋"
+    k = category.lower()
+    if "авто" in k or "auto" in k or "car" in k:
+        return "🚗"
+    if "здор" in k or "мед" in k or "health" in k:
+        return "🏥"
+    if "дом" in k or "home" in k or "кварт" in k:
+        return "🏠"
+    if "жизн" in k or "life" in k or "phone" in k or "тел" in k:
+        return "📱"
+    return "📋"
+
+
 @router.get("", response_model=list[ScenarioOut])
 async def list_scenarios(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Scenario).order_by(Scenario.difficulty))
-    return result.scalars().all()
+    rows = result.scalars().all()
+    return [
+        ScenarioOut(
+            id=s.id,
+            title=s.title,
+            description=s.description,
+            category=s.category,
+            difficulty=s.difficulty,
+            xp_reward=s.xp_reward,
+            icon=_scenario_icon(s.category),
+        )
+        for s in rows
+    ]
 
 
 @router.post("/start", response_model=ScenarioStartResponse)

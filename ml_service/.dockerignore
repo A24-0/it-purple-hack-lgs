@@ -1,0 +1,8 @@
+._*
+**/_._*
+.DS_Store
+.git
+__pycache__/
+.venv/
+venv/
+.env.example

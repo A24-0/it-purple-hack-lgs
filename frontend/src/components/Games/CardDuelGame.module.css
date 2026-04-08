@@ -1,0 +1,30 @@
+.page { min-height: 100vh; background: var(--bg-secondary); }
+.header { background: var(--hero-gradient); color: #fff; padding: 18px 16px; display: flex; align-items: center; gap: 12px; }
+.backBtn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.2); color: #fff; font-size: 20px; }
+.title { flex: 1; font-size: 1rem; font-weight: 800; }
+.round { font-size: .82rem; opacity: .9; }
+
+.arena { margin: 16px; background: #fff; border-radius: 14px; padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; box-shadow: var(--shadow-sm); animation: pop .25s ease; }
+.fighterLabel { display: block; font-size: .8rem; color: var(--text-secondary); margin-bottom: 6px; }
+.hpBar { height: 10px; border-radius: 10px; background: var(--gray-200); overflow: hidden; margin-bottom: 6px; }
+.hpFill, .hpFillEnemy { height: 100%; transition: width .2s ease; }
+.hpFill { background: linear-gradient(90deg,#10b981,#059669); }
+.hpFillEnemy { background: linear-gradient(90deg,#f97316,#ea580c); }
+
+.log { margin: 0 16px 12px; font-size: .9rem; color: var(--text-secondary); min-height: 42px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 22px; }
+.card { background: #fff; border: 2px solid var(--gray-200); border-radius: 12px; padding: 12px; text-align: left; min-height: 110px; transition: transform .12s ease, box-shadow .12s ease; }
+.card:active { transform: scale(.98); }
+.card:hover { box-shadow: var(--shadow-sm); }
+.cardTitle { display: block; font-weight: 800; margin-bottom: 4px; font-size: .92rem; }
+.cardStats { display: block; font-size: .8rem; color: var(--primary); margin-bottom: 6px; }
+.cardHint { display: block; font-size: .75rem; color: var(--text-secondary); line-height: 1.35; }
+
+.result { margin: 16px; background: #fff; border-radius: 14px; padding: 18px; text-align: center; box-shadow: var(--shadow-sm); }
+.actions { display: grid; gap: 8px; margin-top: 10px; }
+.primaryBtn, .secondaryBtn { padding: 12px; border-radius: 10px; font-weight: 700; }
+.primaryBtn { background: var(--primary); color: #fff; }
+.secondaryBtn { background: var(--gray-100); color: var(--text-primary); }
+
+@keyframes pop { from { transform: scale(.98); opacity:.7; } to { transform: scale(1); opacity:1; } }
+

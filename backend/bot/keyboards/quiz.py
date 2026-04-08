@@ -1,5 +1,6 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from bot.config import bot_settings
 
 
 def question_keyboard(question: dict) -> InlineKeyboardMarkup:
@@ -46,4 +47,11 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
     builder.row(
         InlineKeyboardButton(text="🏆 Лидерборд", callback_data="menu:leaderboard"),
     )
+    if bot_settings.WEBAPP_URL and bot_settings.WEBAPP_URL.startswith("http"):
+        builder.row(
+            InlineKeyboardButton(
+                text="Открыть мини-приложение",
+                web_app=WebAppInfo(url=bot_settings.WEBAPP_URL),
+            ),
+        )
     return builder.as_markup()

@@ -1,11 +1,35 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../store/AppContext';
-import { categoryCoverage } from '../../data/mockData';
 import styles from './ProgressPage.module.css';
 
 export default function ProgressPage() {
   const navigate = useNavigate();
   const { state } = useApp();
+
+  const categoryCoverage = useMemo(() => {
+    const colors = ['#2979FF', '#00C853', '#FFD740', '#FF5252', '#7C4DFF'];
+    const byCat = new Map<string, { total: number; done: number }>();
+    const done = new Set(state.progress.completedScenarioIds);
+    state.scenarios.forEach((s) => {
+      const c = s.category || 'Общее';
+      if (!byCat.has(c)) byCat.set(c, { total: 0, done: 0 });
+      const v = byCat.get(c)!;
+      v.total += 1;
+      if (done.has(s.id)) v.done += 1;
+    });
+    const rows = [...byCat.entries()].map(([name, v], i) => ({
+      name,
+      color: colors[i % colors.length],
+      completed: v.done,
+      total: v.total,
+    }));
+    if (rows.length === 0) {
+      return [{ name: 'Сценарии', color: '#B0BEC5', completed: 0, total: 1 }];
+    }
+    return rows;
+  }, [state.scenarios, state.progress.completedScenarioIds]);
+
   const totalSegments = categoryCoverage.length;
   const segmentAngle = 360 / totalSegments;
   const gapAngle = 12;
@@ -100,8 +124,7 @@ export default function ProgressPage() {
                 <span className={styles.legendName}>{cat.name}</span>
               </div>
               <span className={styles.legendValue}>
-                {cat.completed}/{cat.total}{' '}
-                {cat.completed === cat.total && '✅'}
+                {cat.completed}/{cat.total}
               </span>
             </div>
           ))}
@@ -109,7 +132,7 @@ export default function ProgressPage() {
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Достижения 🏆</h2>
+        <h2 className={styles.sectionTitle}>Достижения</h2>
         <div className={styles.achievementList}>
           {state.achievements.map((a, i) => (
             <div
@@ -117,7 +140,7 @@ export default function ProgressPage() {
               className={styles.achievementCard}
               style={{ animationDelay: `${i * 0.08}s` }}
             >
-              <div className={styles.achievementIcon}>{a.icon}</div>
+              <div className={styles.achievementIcon}>{a.completed ? 'OK' : 'TODO'}</div>
               <div className={styles.achievementInfo}>
                 <span className={styles.achievementTitle}>{a.title}</span>
                 <span className={styles.achievementDesc}>{a.description}</span>

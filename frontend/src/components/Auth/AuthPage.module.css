@@ -133,19 +133,20 @@
   cursor: not-allowed;
 }
 
-.skipBtn {
-  margin-top: auto;
-  padding: 14px;
-  background: none;
+.hint {
+  margin-top: 16px;
+  padding: 12px 4px 0;
+  font-size: 12px;
+  line-height: 1.45;
   color: var(--text-secondary);
-  font-size: 14px;
-  font-weight: 500;
   text-align: center;
-  transition: color 0.2s;
 }
 
-.skipBtn:hover {
-  color: var(--primary);
+.hint code {
+  font-size: 11px;
+  background: var(--gray-100);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 @keyframes bounceIn {
   0% { transform: scale(0.5); opacity: 0; }
@@ -286,9 +287,5 @@
   .submitBtn {
     padding: 24px;
     font-size: 22px;
-  }
-
-  .skipBtn {
-    font-size: 18px;
   }
 }

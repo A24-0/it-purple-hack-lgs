@@ -1,0 +1,72 @@
+.intro {
+  padding: 24px var(--content-padding);
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.introText {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.play {
+  padding: 16px var(--content-padding) 32px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.timerTrack {
+  height: 6px;
+  background: var(--gray-200);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.timerFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--primary));
+  border-radius: 99px;
+  transition: width 0.05s linear;
+}
+
+.statement {
+  font-size: clamp(1.05rem, 3.5vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  min-height: 4.5em;
+}
+
+.btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.choice {
+  padding: 18px 16px;
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.choice:active {
+  transform: scale(0.98);
+}
+
+.yes {
+  background: linear-gradient(145deg, #34d399, #059669);
+  color: #fff;
+}
+
+.no {
+  background: linear-gradient(145deg, #fb7185, #e11d48);
+  color: #fff;
+}

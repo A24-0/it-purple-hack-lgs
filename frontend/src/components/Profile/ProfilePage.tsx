@@ -26,7 +26,7 @@ export default function ProfilePage() {
               <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="white" />
             </svg>
           </div>
-          <h1 className={styles.userName}>{state.user?.name || 'Артём'}</h1>
+          <h1 className={styles.userName}>{state.user?.name || 'Игрок'}</h1>
           <p className={styles.userLevel}>Уровень {progress.level}</p>
         </div>
       </div>
@@ -46,17 +46,17 @@ export default function ProfilePage() {
 
       <div className={styles.statsRow}>
         <div className={styles.statCard}>
-          <span className={styles.statIcon}>🔥</span>
+          <span className={styles.statIcon}>S</span>
           <span className={styles.statValue}>{progress.streak}</span>
           <span className={styles.statLabel}>Дней подряд</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statIcon}>⭐</span>
+          <span className={styles.statIcon}>P</span>
           <span className={styles.statValue}>{progress.coins}</span>
           <span className={styles.statLabel}>Баллы</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statIcon}>✅</span>
+          <span className={styles.statIcon}>C</span>
           <span className={styles.statValue}>{progress.completedScenarioIds.length}</span>
           <span className={styles.statLabel}>Сценарии</span>
         </div>
@@ -73,10 +73,10 @@ export default function ProfilePage() {
               key={a.id}
               className={`${styles.badgeCard} ${a.completed ? styles.badgeCompleted : styles.badgeLocked}`}
             >
-              <span className={styles.badgeIcon}>{a.icon}</span>
+              <span className={styles.badgeIcon}>{a.completed ? 'DONE' : 'NEW'}</span>
               <span className={styles.badgeName}>{a.title}</span>
               <span className={styles.badgeDesc}>{a.description}</span>
-              {!a.completed && <div className={styles.badgeLock}>🔒</div>}
+              {!a.completed && <div className={styles.badgeLock}>LOCK</div>}
             </div>
           ))}
         </div>

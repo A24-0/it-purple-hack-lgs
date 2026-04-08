@@ -5,6 +5,10 @@ class TelegramAuthRequest(BaseModel):
     init_data: str
 
 
+class TelegramLinkRequest(BaseModel):
+    init_data: str
+
+
 class BotAuthRequest(BaseModel):
     telegram_id: int
     username: str | None = None

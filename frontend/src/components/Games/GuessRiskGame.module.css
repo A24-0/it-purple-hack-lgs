@@ -163,6 +163,32 @@
 .resultIcon {
   font-size: 64px;
   margin-bottom: 16px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resultMedal {
+  display: inline-block;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+}
+
+.resultMedal[data-tier='gold'] {
+  background: linear-gradient(145deg, #fde68a, #d97706);
+  box-shadow: 0 6px 24px rgba(217, 119, 6, 0.35);
+}
+
+.resultMedal[data-tier='silver'] {
+  background: linear-gradient(145deg, #e2e8f0, #94a3b8);
+  box-shadow: 0 6px 24px rgba(148, 163, 184, 0.35);
+}
+
+.resultMedal[data-tier='bronze'] {
+  background: linear-gradient(145deg, #fdba74, #c2410c);
+  box-shadow: 0 6px 24px rgba(194, 65, 12, 0.3);
 }
 
 .resultTitle {
