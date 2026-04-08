@@ -5,7 +5,6 @@ from sqlalchemy import select, func
 from app.core.database import get_db
 from app.core.deps import get_current_user
 from app.models.game import Game
-from app.models.leaderboard import LeaderboardEntry
 from app.models.user import User
 from app.schemas.game import GameSaveRequest, GameSaveResponse, GameTopResponse, GameTopEntryOut
 from app.services.leaderboard_service import add_xp
@@ -33,12 +32,9 @@ async def save_game(
     db.add(game)
     await db.flush()
 
-    await add_xp(current_user.id, xp_earned, db, games_delta=1)
+    total_xp = await add_xp(current_user.id, xp_earned, db, games_delta=1)
 
-    result = await db.execute(select(LeaderboardEntry).where(LeaderboardEntry.user_id == current_user.id))
-    lb = result.scalar_one()
-
-    return GameSaveResponse(game_id=game.id, xp_earned=xp_earned, total_xp=lb.total_xp)
+    return GameSaveResponse(game_id=game.id, xp_earned=xp_earned, total_xp=total_xp)
 
 
 @router.get("/top", response_model=GameTopResponse)

@@ -16,11 +16,11 @@ async def add_xp(
     db: AsyncSession,
     scenarios_delta: int = 0,
     games_delta: int = 0,
-):
+) -> int:
     result = await db.execute(select(LeaderboardEntry).where(LeaderboardEntry.user_id == user_id))
     entry = result.scalar_one_or_none()
     if entry is None:
-        entry = LeaderboardEntry(user_id=user_id)
+        entry = LeaderboardEntry(user_id=user_id, total_xp=0, scenarios_completed=0, games_played=0)
         db.add(entry)
 
     entry.total_xp += xp
@@ -28,6 +28,7 @@ async def add_xp(
     entry.games_played += games_delta
     entry.updated_at = datetime.now(timezone.utc)
     await db.commit()
+    return entry.total_xp
 
 
 async def get_leaderboard(db: AsyncSession, redis=None, current_user_id: int | None = None):
