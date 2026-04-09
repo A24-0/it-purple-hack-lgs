@@ -9,6 +9,12 @@ export default defineConfig({
         manualChunks(id) {
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) return 'vendor-react';
           if (id.includes('node_modules/react-router-dom')) return 'vendor-router';
+          if (
+            id.includes('node_modules/@tensorflow') ||
+            id.includes('node_modules/@teachablemachine')
+          ) {
+            return 'vendor-ml';
+          }
           return undefined;
         },
       },

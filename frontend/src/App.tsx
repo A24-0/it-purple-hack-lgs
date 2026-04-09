@@ -27,6 +27,7 @@ import RewardsPage from './components/Rewards/RewardsPage';
 import TelegramGuidePage from './components/Telegram/TelegramGuidePage';
 
 const ClaimDetectiveGame = lazy(() => import('./components/Games/ClaimDetectiveGame'));
+const WowLabPage = lazy(() => import('./components/Wow/WowLabPage'));
 
 export default function App() {
   return (
@@ -48,6 +49,15 @@ export default function App() {
               <Route path="/telegram" element={<TelegramGuidePage />} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/help" element={<AiChatPage />} />
+              <Route
+                path="/lab"
+                element={
+                  <Suspense fallback={<div style={{ padding: 24 }}>Загрузка лаборатории...</div>}>
+                    <WowLabPage />
+                  </Suspense>
+                }
+              />
+              <Route path="/wow-lab" element={<Navigate to="/lab" replace />} />
               <Route path="/scenario/:id" element={<ScenarioWalkthrough />} />
               <Route path="/game/guess-risk" element={<GuessRiskGame />} />
               <Route path="/game/build-policy" element={<BuildPolicyGame />} />

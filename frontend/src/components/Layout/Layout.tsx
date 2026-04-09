@@ -2,12 +2,13 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Layout.module.css';
 import sidebarStyles from './Sidebar.module.css';
 import navStyles from './BottomNav.module.css';
-import { IconBook, IconChart, IconGames, IconHome, IconSettings, IconShield, IconUser } from '../ui/NavIcons';
+import { IconBook, IconChart, IconGames, IconHome, IconLab, IconSettings, IconShield, IconUser } from '../ui/NavIcons';
 
 const navItems = [
   { path: '/', Icon: IconHome, label: 'Главная' },
   { path: '/games', Icon: IconGames, label: 'Игры' },
   { path: '/progress', Icon: IconChart, label: 'Прогресс' },
+  { path: '/lab', Icon: IconLab, label: 'Лаборатория' },
   { path: '/dictionary', Icon: IconBook, label: 'Словарь' },
   { path: '/profile', Icon: IconUser, label: 'Профиль' },
 ];

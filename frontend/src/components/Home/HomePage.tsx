@@ -155,6 +155,10 @@ export default function HomePage() {
             <span className={styles.quickIcon} data-variant="slate" />
             <span className={styles.quickLabel}>Баттл с ботом</span>
           </button>
+          <button type="button" className={styles.quickBtn} onClick={() => navigate('/lab')}>
+            <span className={styles.quickIcon} data-variant="teal" />
+            <span className={styles.quickLabel}>Лаборатория рисков</span>
+          </button>
         </div>
       </div>
 

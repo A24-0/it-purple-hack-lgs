@@ -99,3 +99,12 @@ export function IconShield({ size = 28, className }: IconProps) {
     </svg>
   );
 }
+
+export function IconLab({ size = 22, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path d="M10 3h4M11 3v5l-5.5 8.8A2 2 0 007.2 20h9.6a2 2 0 001.7-3.2L13 8V3" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.5 14h7" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+    </svg>
+  );
+}
