@@ -33,6 +33,14 @@ const AR_QUALITY_PRESETS = {
   high: { inferSize: 384, inferIntervalMs: 550 },
 } as const;
 
+type SpeechRecognitionEvent = {
+  resultIndex: number;
+  results: ArrayLike<{
+    isFinal: boolean;
+    readonly [index: number]: { transcript: string };
+  }>;
+};
+
 type BrowserSpeechWindow = Window & {
   SpeechRecognition?: new () => {
     lang: string;
@@ -41,7 +49,7 @@ type BrowserSpeechWindow = Window & {
     onstart: (() => void) | null;
     onend: (() => void) | null;
     onerror: (() => void) | null;
-    onresult: ((event: { resultIndex: number; results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+    onresult: ((event: SpeechRecognitionEvent) => void) | null;
     start: () => void;
   };
   webkitSpeechRecognition?: new () => {
@@ -51,7 +59,7 @@ type BrowserSpeechWindow = Window & {
     onstart: (() => void) | null;
     onend: (() => void) | null;
     onerror: (() => void) | null;
-    onresult: ((event: { resultIndex: number; results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+    onresult: ((event: SpeechRecognitionEvent) => void) | null;
     start: () => void;
   };
 };
@@ -336,7 +344,7 @@ export default function WowLabPage() {
 
     const recognition = new SpeechCtor();
     recognition.lang = 'ru-RU';
-    recognition.interimResults = true;
+    recognition.interimResults = false; // 🔧 ИСПРАВЛЕНО: отключаем промежуточные, берём только финальные
     recognition.continuous = true;
 
     recognition.onstart = () => setVoiceListening(true);
@@ -345,12 +353,22 @@ export default function WowLabPage() {
       setVoiceListening(false);
       setVoiceError('Не удалось распознать речь. Проверь доступ к микрофону.');
     };
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      // Собираем только финальные результаты, начиная с resultIndex
       let transcript = '';
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
-        transcript += event.results[i][0]?.transcript ?? '';
+        if (event.results[i].isFinal) {
+          const result = event.results[i];
+          transcript += result[0]?.transcript ?? '';
+        }
       }
-      setVoiceDraft((prev) => `${prev} ${transcript}`.trim());
+      // Добавляем в черновик только если что-то распознали
+      if (transcript) {
+        setVoiceDraft((prev) => {
+          const trimmed = prev.trim();
+          return trimmed ? `${trimmed} ${transcript}` : transcript;
+        });
+      }
     };
 
     recognition.start();
