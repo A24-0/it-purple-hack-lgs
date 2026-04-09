@@ -1,7 +1,10 @@
 import json
+import secrets
+import string
 from urllib.parse import parse_qs, unquote
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,6 +20,19 @@ from app.models.user import User
 from app.schemas.auth import BotAuthRequest, TelegramAuthRequest, TelegramLinkRequest, TokenResponse
 from app.schemas.auth_web import UserMeOut, WebAuthResponse, WebLoginRequest, WebRegisterRequest
 from app.services.streak_service import touch_streak
+
+
+class LinkCodeResponse(BaseModel):
+    code: str
+    expires_in: int  # seconds
+
+
+class BotLinkCodeRequest(BaseModel):
+    code: str
+    telegram_id: int
+    username: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -213,3 +229,61 @@ async def link_telegram(
     await db.commit()
     await db.refresh(current_user)
     return _user_me(current_user)
+
+
+@router.post("/link-code/generate", response_model=LinkCodeResponse)
+async def generate_link_code(
+    current_user: User = Depends(get_current_user),
+    redis=Depends(get_redis),
+):
+    """Generates a 6-digit code for linking Telegram via bot command /link XXXXXX"""
+    code = "".join(secrets.choice(string.digits) for _ in range(6))
+    await redis.setex(f"tg_link:{code}", 600, str(current_user.id))
+    return LinkCodeResponse(code=code, expires_in=600)
+
+
+@router.post("/link-code/confirm")
+async def confirm_link_code(
+    body: BotLinkCodeRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    redis=Depends(get_redis),
+):
+    """Called by the Telegram bot to confirm account linking by code."""
+    bot_secret = request.headers.get("X-Bot-Secret", "")
+    if not settings.TELEGRAM_BOT_TOKEN or bot_secret != settings.TELEGRAM_BOT_TOKEN:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid bot secret")
+
+    key = f"tg_link:{body.code}"
+    user_id_raw = await redis.get(key)
+    if not user_id_raw:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Код не найден или истёк")
+
+    await redis.delete(key)
+
+    result = await db.execute(select(User).where(User.id == int(user_id_raw)))
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
+
+    existing = await db.execute(select(User).where(User.telegram_id == body.telegram_id))
+    existing_user = existing.scalar_one_or_none()
+    if existing_user and existing_user.id != user.id:
+        # If the existing account is a bot-only account (no email), detach the telegram_id
+        # so the web user (who has email) can claim it.
+        if existing_user.email:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Этот Telegram уже привязан к другому аккаунту",
+            )
+        existing_user.telegram_id = None
+
+    user.telegram_id = body.telegram_id
+    if body.username is not None:
+        user.username = body.username
+    if body.first_name is not None:
+        user.first_name = body.first_name
+    if body.last_name is not None:
+        user.last_name = body.last_name
+    await db.commit()
+    return {"ok": True, "user_id": str(user.id)}

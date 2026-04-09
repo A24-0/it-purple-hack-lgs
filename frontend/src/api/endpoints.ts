@@ -103,9 +103,17 @@ export const authApi = {
       init_data: initData,
     }),
 
+  generateLinkCode: () =>
+    apiClient.post<{ code: string; expires_in: number }>('/api/auth/link-code/generate', {}),
+
   logout: () => {
     apiClient.clearToken();
   },
+};
+
+export const usersApi = {
+  updateProfile: (name: string) =>
+    apiClient.patch<{ id: string; name: string; email: string; telegram_linked: boolean }>('/api/users/me', { name }),
 };
 
 export const scenariosApi = {

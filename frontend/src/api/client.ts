@@ -78,6 +78,20 @@ class ApiClient {
       throw wrapNetworkError(e);
     }
   }
+
+  async patch<T>(path: string, body?: unknown): Promise<T> {
+    try {
+      const res = await fetch(`${BASE_URL}${path}`, {
+        method: 'PATCH',
+        headers: this.headers(),
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      if (!res.ok) throw new Error(await readApiError(res));
+      return res.json();
+    } catch (e) {
+      throw wrapNetworkError(e);
+    }
+  }
 }
 
 export const apiClient = new ApiClient();

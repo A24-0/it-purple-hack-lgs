@@ -14,7 +14,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand
 
 from bot.config import bot_settings
-from bot.handlers import app_handler, quiz, start, streak
+from bot.handlers import app_handler, link, quiz, start, streak
 
 logging.basicConfig(
     level=logging.INFO,
@@ -28,6 +28,7 @@ BOT_COMMANDS = [
     BotCommand(command="daily_quiz", description="Квиз дня"),
     BotCommand(command="streak", description="Мой стрик"),
     BotCommand(command="app", description="Открыть приложение"),
+    BotCommand(command="link", description="Привязать аккаунт по коду"),
 ]
 
 
@@ -43,6 +44,7 @@ async def main() -> None:
 
     # Register routers (order matters for priority)
     dp.include_router(start.router)
+    dp.include_router(link.router)
     dp.include_router(quiz.router)
     dp.include_router(streak.router)
     dp.include_router(app_handler.router)

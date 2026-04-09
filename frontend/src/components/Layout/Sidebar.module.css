@@ -24,9 +24,23 @@
   }
 }
 
+/* At 1920px the container max-width jumps to 2200px → container is full-width again */
+@media (min-width: 1920px) {
+  .sidebar {
+    left: 0;
+  }
+}
+
 @media (min-width: 2200px) {
   .sidebar {
     left: calc((100vw - 2200px) / 2);
+  }
+}
+
+/* At 2560px the container max-width jumps to 2800px → container is full-width again */
+@media (min-width: 2560px) {
+  .sidebar {
+    left: 0;
   }
 }
 

@@ -33,6 +33,31 @@ class BackendClient:
             r.raise_for_status()
             return r.json()
 
+    # ----------------------------------------------------------------- link
+    async def confirm_link_code(
+        self,
+        code: str,
+        telegram_id: int,
+        username: str | None,
+        first_name: str | None,
+        last_name: str | None = None,
+    ) -> dict:
+        """POST /api/auth/link-code/confirm — links a web account to a Telegram user by code."""
+        async with httpx.AsyncClient(timeout=10) as c:
+            r = await c.post(
+                f"{self.base}/api/auth/link-code/confirm",
+                json={
+                    "code": code,
+                    "telegram_id": telegram_id,
+                    "username": username,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                },
+                headers={"X-Bot-Secret": self.bot_token},
+            )
+            r.raise_for_status()
+            return r.json()
+
     # ----------------------------------------------------------------- users
     async def get_me(self, token: str) -> dict:
         async with httpx.AsyncClient(timeout=10) as c:

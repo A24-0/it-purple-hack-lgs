@@ -226,6 +226,117 @@
   gap: 4px;
 }
 
+/* ───── Profile edit form ───── */
+.editProfileBox {
+  margin: 12px var(--content-padding) 0;
+  padding: 18px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editProfileLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.editProfileInput {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.editProfileInput:focus {
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.editProfileError {
+  font-size: 13px;
+  color: var(--error);
+}
+
+.editProfileActions {
+  display: flex;
+  gap: 10px;
+}
+
+.saveBtn {
+  padding: 10px 20px;
+  background: var(--primary);
+  color: var(--text-white);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.saveBtn:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.cancelBtn {
+  padding: 10px 20px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.cancelBtn:hover {
+  background: var(--gray-200);
+}
+
+/* ───── Telegram link code ───── */
+.linkCodeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--primary);
+  width: 100%;
+}
+
+.linkCodeValue {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.linkCodeTimer {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.linkCodeHint {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
 /* ───── Tablet ───── */
 @media (min-width: 768px) {
   .page { max-width: 700px; margin: 0 auto; }

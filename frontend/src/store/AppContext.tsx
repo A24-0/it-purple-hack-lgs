@@ -17,6 +17,7 @@ import {
   achievementsApi,
   authApi,
   gamesApi,
+  usersApi,
 } from '../api/endpoints';
 import { apiClient } from '../api/client';
 import { isTelegramWebApp, getTelegramInitData } from '../api/telegram';
@@ -171,6 +172,8 @@ interface AppContextType {
     clearError: () => void;
     refreshSessionData: () => Promise<void>;
     linkTelegram: () => Promise<void>;
+    generateLinkCode: () => Promise<{ code: string; expires_in: number }>;
+    updateProfile: (name: string) => Promise<void>;
   };
 }
 
@@ -282,6 +285,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
     const user = await authApi.linkTelegram(initData);
     dispatch({ type: 'SET_USER', payload: mapUser(user) });
+  }, []);
+
+  const generateLinkCode = useCallback(async () => {
+    return authApi.generateLinkCode();
+  }, []);
+
+  const updateProfile = useCallback(async (name: string) => {
+    const user = await usersApi.updateProfile(name);
+    dispatch({ type: 'SET_USER', payload: { id: user.id, name: user.name, email: user.email, telegramLinked: user.telegram_linked } });
   }, []);
 
   const logout = useCallback(() => {
@@ -405,6 +417,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
           clearError,
           refreshSessionData,
           linkTelegram,
+          generateLinkCode,
+          updateProfile,
         },
       }}
     >
