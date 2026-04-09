@@ -193,6 +193,34 @@ export interface AiChatMessage {
   timestamp: string;
 }
 
+export interface DailyQuizQuestion {
+  id: number;
+  order: number;
+  text: string;
+  options: string[];
+}
+
+export interface DailyQuiz {
+  id: number;
+  title: string;
+  xp_reward: number;
+  questions: DailyQuizQuestion[];
+}
+
+export interface DailyQuizAnswerResult {
+  question_id: number;
+  correct: boolean;
+  correct_index: number;
+}
+
+export interface DailyQuizAnswerResponse {
+  quiz_id: number;
+  correct_count: number;
+  total_questions: number;
+  xp_earned: number;
+  results: DailyQuizAnswerResult[];
+}
+
 export const aiApi = {
   sendMessage: async (
     messages: { role: string; content: string }[],
@@ -232,6 +260,15 @@ export const gamesApi = {
       game_type: string;
       entries: { rank: number; user_id: number; username: string | null; first_name: string | null; best_score: number }[];
     }>(`/api/games/top?game_type=${encodeURIComponent(gameType)}&limit=${limit}`),
+};
+
+export const quizzesApi = {
+  getDaily: () => apiClient.get<DailyQuiz>('/api/quizzes/daily'),
+  answerDaily: (quizId: number, answers: { question_id: number; selected_index: number }[]) =>
+    apiClient.post<DailyQuizAnswerResponse>('/api/quizzes/answer', {
+      quiz_id: quizId,
+      answers,
+    }),
 };
 
 export const dictionaryApi = {

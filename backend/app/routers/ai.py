@@ -1,10 +1,10 @@
-import uuid
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.core.config import settings
 from app.core.deps import get_current_user
 from app.models.user import User
+from app.services.gigachat_service import gigachat_reply
 from pydantic import BaseModel, Field
 
 from app.schemas.ai import AIChatRequest, AIChatResponse
@@ -17,45 +17,6 @@ class HintBody(BaseModel):
     step_id: str = Field(alias="stepId")
 
     model_config = {"populate_by_name": True}
-
-
-async def _gigachat_reply(messages: list[dict]) -> str | None:
-    """Получить ответ от GigaChat. Возвращает None при любой ошибке."""
-    creds = settings.GIGACHAT_CREDENTIALS
-    if not creds:
-        return None
-    try:
-        # Шаг 1: получить access_token
-        async with httpx.AsyncClient(verify=False, timeout=15.0) as client:
-            token_resp = await client.post(
-                "https://ngw.devices.sberbank.ru:9443/api/v2/oauth",
-                headers={
-                    "Authorization": f"Basic {creds}",
-                    "RqUID": str(uuid.uuid4()),
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                data={"scope": "GIGACHAT_API_PERS"},
-            )
-            token_resp.raise_for_status()
-            access_token = token_resp.json()["access_token"]
-
-        # Шаг 2: отправить сообщение
-        async with httpx.AsyncClient(verify=False, timeout=30.0) as client:
-            chat_resp = await client.post(
-                "https://gigachat.devices.sberbank.ru/api/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {access_token}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": "GigaChat",
-                    "messages": messages,
-                },
-            )
-            chat_resp.raise_for_status()
-            return chat_resp.json()["choices"][0]["message"]["content"]
-    except Exception:
-        return None
 
 
 @router.post("/chat", response_model=AIChatResponse)
@@ -82,7 +43,7 @@ async def ai_chat(
             pass
 
     # 2. GigaChat
-    reply = await _gigachat_reply(messages)
+    reply = await gigachat_reply(messages)
     if reply:
         return AIChatResponse(reply=reply, model="GigaChat")
 
