@@ -27,17 +27,20 @@ services:
 
   api:
     build: .
+    restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+    # Переменные ниже переопределяют DATABASE_URL/REDIS_URL из .env — внутри Docker хост БД: db, не localhost.
     env_file: .env
     environment:
       DATABASE_URL: postgresql+asyncpg://postgres:password@db:5432/purplehack
       REDIS_URL: redis://redis:6379/0
     ports:
-      - "8000:8000"
+      # Если 8000 занят на Mac — задай в backend/.env: HOST_API_PORT=18000 (и VITE_DEV_API_PORT=18000 во frontend/.env)
+      - "${HOST_API_PORT:-8000}:8000"
     # Без bind-mount: на внешних дисках Docker Desktop иногда падает (mkdir … file exists).
     # Для hot-reload с хоста запускай uvicorn локально или добавь override: volumes: [.:/app]
     command: >

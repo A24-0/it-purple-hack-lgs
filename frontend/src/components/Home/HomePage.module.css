@@ -23,9 +23,12 @@
 }
 
 .appName {
-  font-size: 28px;
+  font-size: clamp(1.25rem, 5.5vw, 1.85rem);
   font-weight: 800;
   color: var(--text-white);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  word-break: break-word;
 }
 
 .profileBtn {
@@ -106,11 +109,27 @@
   border-radius: 0 4px 4px 0;
   transition: width 0.5s ease;
 }
+
+.barNeutral {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.emptyHint {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
 .statsRow {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-around;
-  padding: 20px var(--content-padding);
+  flex-wrap: wrap;
+  gap: 12px 8px;
+  padding: 18px var(--content-padding);
   background: var(--white);
 }
 
@@ -138,17 +157,37 @@
 
 .statDivider {
   width: 1px;
-  height: 40px;
+  min-height: 40px;
+  align-self: center;
   background: var(--gray-200);
+}
+
+@media (max-width: 400px) {
+  .statDivider {
+    display: none;
+  }
+
+  .statsRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px 8px;
+  }
+
+  .statItem {
+    min-width: 0;
+  }
+
+  .statLabel {
+    font-size: 11px;
+  }
 }
 .section {
   padding: 20px var(--content-padding);
 }
 
 .sectionTitle {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
-  text-transform: uppercase;
   color: var(--text-primary);
   margin-bottom: 16px;
 }
@@ -246,9 +285,12 @@
 .weeklyChart {
   display: flex;
   align-items: flex-end;
-  gap: 8px;
-  height: 140px;
+  gap: 6px;
+  height: 132px;
   padding: 8px 0;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .chartColumn {

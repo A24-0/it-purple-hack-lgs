@@ -15,12 +15,16 @@
 }
 
 .tab {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   background: none;
-  padding: 8px 16px;
+  padding: 8px 4px;
   transition: all 0.2s ease;
   color: var(--gray-500);
 }
@@ -35,10 +39,28 @@
 }
 
 .label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   color: var(--gray-500);
   transition: color 0.2s ease;
+  text-align: center;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 400px) {
+  .label {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 480px) {
+  .tab {
+    padding: 8px 12px;
+  }
 }
 
 .active .label {

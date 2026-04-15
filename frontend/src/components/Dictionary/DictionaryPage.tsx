@@ -14,7 +14,7 @@ export default function DictionaryPage() {
     dictionaryApi
       .getTerms()
       .then(setTerms)
-      .catch(() => setLoadError('Не удалось загрузить словарь. Проверь API.'));
+      .catch(() => setLoadError('Не удалось загрузить словарь. Проверь соединение с сервером.'));
   }, []);
 
   const categories = useMemo(

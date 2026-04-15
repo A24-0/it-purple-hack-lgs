@@ -64,9 +64,9 @@ const games: GameCard[] = [
   },
   {
     to: '/game/claim-detective',
-    title: 'Claim Detective',
+    title: 'Детектив убытков',
     desc: 'Кликабельная доска улик и вердикты по сложным страховым кейсам.',
-    tag: 'pro puzzle',
+    tag: 'логика',
     tone: 'violet',
   },
   {
@@ -87,7 +87,7 @@ const games: GameCard[] = [
     to: '/game/quiz-battle',
     title: 'Баттл с ботом',
     desc: 'Серия раундов: ты против бота, кто точнее и быстрее.',
-    tag: 'versus',
+    tag: 'дуэль',
     tone: 'slate',
   },
   {
@@ -108,8 +108,7 @@ export default function GamesHubPage() {
         <p className={styles.kicker}>Играй и разбирайся</p>
         <h1 className={styles.title}>Мини-игры</h1>
         <p className={styles.subtitle}>
-          Разные режимы: головоломки, кейсы, стратегии и квесты. Удобно и в браузере, и в
-          Telegram WebApp — один и тот же клиент.
+          Головоломки, кейсы, стратегии и квесты — учись играючи.
         </p>
       </header>
 
@@ -152,10 +151,6 @@ export default function GamesHubPage() {
             </button>
           ))}
         </div>
-      </section>
-
-      <section className={styles.tipBox}>
-        В Telegram открой мини-приложение бота — интерфейст тот же. Прогресс сохраняется на сервере после входа.
       </section>
     </div>
   );

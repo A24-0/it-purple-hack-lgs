@@ -29,6 +29,9 @@ export default function QuizGame({
 
   const card = cards[cardIndex];
   const total = cards.length;
+  const lastAnswerCorrect = selectedId
+    ? !!card.options.find((o) => o.id === selectedId)?.isCorrect
+    : false;
 
   const handleSelect = (optionId: string) => {
     if (selectedId) return;
@@ -60,7 +63,7 @@ export default function QuizGame({
           </p>
           <p className={styles.resultPercent}>{percent}% верных ответов</p>
           <div className={styles.resultRewards}>
-            <span className={styles.rewardBadge}>+{score * 15} XP</span>
+            <span className={styles.rewardBadge}>+{score * 15} оч.</span>
             <span className={styles.rewardBadge}>+{score * 5} ★</span>
           </div>
           <div className={styles.resultActions}>
@@ -121,6 +124,8 @@ export default function QuizGame({
               else if (opt.id === selectedId) cls += ` ${styles.incorrect}`;
               else cls += ` ${styles.dimmed}`;
             }
+            const showOk = !!selectedId && opt.isCorrect;
+            const showBad = !!selectedId && opt.id === selectedId && !opt.isCorrect;
             return (
               <button
                 key={opt.id}
@@ -129,18 +134,25 @@ export default function QuizGame({
                 onClick={() => handleSelect(opt.id)}
                 disabled={!!selectedId}
               >
-                {opt.text}
+                <span className={styles.optionText}>{opt.text}</span>
+                {showOk && <span className={styles.optionMarkOk}>Верно</span>}
+                {showBad && <span className={styles.optionMarkBad}>Неверно</span>}
               </button>
             );
           })}
         </div>
 
         {selectedId && (
-          <div className={styles.explanationCard}>
-            <p className={styles.explanationText}>{card.explanation}</p>
-            <button type="button" className={styles.nextBtn} onClick={handleNext}>
-              {cardIndex + 1 >= total ? 'Посмотреть результат' : 'Следующий вопрос →'}
-            </button>
+          <div
+            className={`${styles.explanationCard} ${lastAnswerCorrect ? styles.explanationCardSuccess : styles.explanationCardError}`}
+          >
+            <div className={styles.feedbackRibbon}>{lastAnswerCorrect ? 'Верно' : 'Неверно'}</div>
+            <div className={styles.explanationCardBody}>
+              <p className={styles.explanationText}>{card.explanation}</p>
+              <button type="button" className={styles.nextBtn} onClick={handleNext}>
+                {cardIndex + 1 >= total ? 'Посмотреть результат' : 'Следующий вопрос →'}
+              </button>
+            </div>
           </div>
         )}
       </div>

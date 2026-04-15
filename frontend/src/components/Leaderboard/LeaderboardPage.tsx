@@ -56,7 +56,7 @@ export default function LeaderboardPage() {
                 {top3[1].name[0]}
               </div>
               <span className={styles.podiumName}>{top3[1].name}</span>
-              <span className={styles.podiumXp}>{top3[1].xp} XP</span>
+              <span className={styles.podiumXp}>{top3[1].xp} оч.</span>
               <div className={`${styles.podiumBar} ${styles.barSilver}`}>
                 <span className={styles.podiumMedal}>{medals[1]}</span>
               </div>
@@ -67,7 +67,7 @@ export default function LeaderboardPage() {
                 {top3[0].name[0]}
               </div>
               <span className={styles.podiumName}>{top3[0].name}</span>
-              <span className={styles.podiumXp}>{top3[0].xp} XP</span>
+              <span className={styles.podiumXp}>{top3[0].xp} оч.</span>
               <div className={`${styles.podiumBar} ${styles.barGold}`}>
                 <span className={styles.podiumMedal}>{medals[0]}</span>
               </div>
@@ -78,7 +78,7 @@ export default function LeaderboardPage() {
                 {top3[2].name[0]}
               </div>
               <span className={styles.podiumName}>{top3[2].name}</span>
-              <span className={styles.podiumXp}>{top3[2].xp} XP</span>
+              <span className={styles.podiumXp}>{top3[2].xp} оч.</span>
               <div className={`${styles.podiumBar} ${styles.barBronze}`}>
                 <span className={styles.podiumMedal}>{medals[2]}</span>
               </div>
@@ -97,7 +97,7 @@ export default function LeaderboardPage() {
               <span className={styles.listLevel}>Уровень {entry.level}</span>
             </div>
             <div className={styles.listRight}>
-              <span className={styles.listXp}>{entry.xp} XP</span>
+              <span className={styles.listXp}>{entry.xp} оч.</span>
               <span className={styles.listScenarios}>
                 {entry.completedScenarios} сценариев
               </span>

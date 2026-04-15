@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../../store/AppContext';
+import { APP_NAME } from '../../config/app';
 import { scenariosApi, type ScenarioStartResponse } from '../../api/endpoints';
 import { telegramShareResult, isTelegramWebApp } from '../../api/telegram';
 import styles from './ScenarioWalkthrough.module.css';
@@ -74,7 +75,7 @@ export default function ScenarioWalkthrough() {
       if (res.completed) {
         setXpEarned(res.xp_earned);
         actions.completeScenario(String(scenarioIdNum));
-        await actions.loadProgress();
+        await actions.refreshSessionData();
         setPhase('completed');
         return;
       }
@@ -193,13 +194,13 @@ export default function ScenarioWalkthrough() {
 
         {phase === 'completed' && (
           <div className={styles.completedSection}>
-            <div className={styles.completedIcon}>OK</div>
+            <div className={styles.completedIcon}>✓</div>
             <h2 className={styles.completedTitle}>Сценарий пройден!</h2>
             <p className={styles.completedSubtitle}>{title}</p>
             <div className={styles.statsGrid}>
               <div className={styles.statBox}>
                 <span className={styles.statBoxValue}>{xpEarned}</span>
-                <span className={styles.statBoxLabel}>XP</span>
+                <span className={styles.statBoxLabel}>оч. опыта</span>
               </div>
             </div>
             <div className={styles.completedActions}>
@@ -207,7 +208,7 @@ export default function ScenarioWalkthrough() {
                 type="button"
                 className={styles.shareBtn}
                 onClick={() => {
-                  const text = `СтрахоГид\nПройден сценарий «${title}»\nПолучено: ${xpEarned} XP`;
+                  const text = `${APP_NAME}\nПройден сценарий «${title}»\nПолучено: ${xpEarned} оч. опыта`;
                   if (isTelegramWebApp()) telegramShareResult(text);
                   else {
                     void navigator.clipboard?.writeText(text);

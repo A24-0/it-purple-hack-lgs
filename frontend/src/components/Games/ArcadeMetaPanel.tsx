@@ -133,7 +133,7 @@ export default function ArcadeMetaPanel({ gameType, score, flawlessRun, comboPea
     <section className={styles.wrap}>
       <div className={`${styles.reward} ${pulse ? styles.pulse : ''}`}>
         <div className={styles.rewardTitle}>Награда серии</div>
-        <div className={styles.rewardValue}>{flawlessRun ? 'Flawless' : `Combo x${comboPeak}`}</div>
+        <div className={styles.rewardValue}>{flawlessRun ? 'Без ошибок' : `Серия ×${comboPeak}`}</div>
       </div>
 
       <div className={styles.block}>
@@ -142,7 +142,7 @@ export default function ArcadeMetaPanel({ gameType, score, flawlessRun, comboPea
         <ul className={styles.missions}>
           {current.map((m) => (
             <li key={m.label} className={m.done ? styles.done : ''}>
-              <span>{m.done ? 'OK' : 'TODO'}</span>
+              <span>{m.done ? '✓' : '○'}</span>
               {m.label}
             </li>
           ))}

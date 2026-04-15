@@ -1,9 +1,18 @@
 import { apiClient } from './client';
 import type { Scenario, UserProgress, Achievement, DictionaryTerm } from '../types';
 
+export interface UserMeResponse {
+  id: string;
+  name: string;
+  email: string;
+  telegram_linked: boolean;
+  avatar_url?: string | null;
+  profile_photos?: string[] | null;
+}
+
 interface WebAuthResponse {
   access_token: string;
-  user: { id: string; name: string; email: string; telegram_linked?: boolean };
+  user: UserMeResponse;
 }
 
 interface TokenResponse {
@@ -93,13 +102,13 @@ export const authApi = {
     return { token: res.access_token, user: res.user };
   },
 
-  me: () => apiClient.get<{ id: string; name: string; email: string; telegram_linked?: boolean }>('/api/auth/me'),
+  me: () => apiClient.get<UserMeResponse>('/api/auth/me'),
 
   telegramAuth: (initData: string) =>
     apiClient.post<TokenResponse>('/api/auth/telegram', { init_data: initData }),
 
   linkTelegram: (initData: string) =>
-    apiClient.post<{ id: string; name: string; email: string; telegram_linked?: boolean }>('/api/auth/link-telegram', {
+    apiClient.post<UserMeResponse>('/api/auth/link-telegram', {
       init_data: initData,
     }),
 
@@ -112,8 +121,8 @@ export const authApi = {
 };
 
 export const usersApi = {
-  updateProfile: (name: string) =>
-    apiClient.patch<{ id: string; name: string; email: string; telegram_linked: boolean }>('/api/users/me', { name }),
+  updateProfile: (payload: { name?: string; email?: string }) =>
+    apiClient.patch<UserMeResponse>('/api/users/me', payload),
 };
 
 export const scenariosApi = {
@@ -159,6 +168,9 @@ export const progressApi = {
 
   addReward: (xp: number, coins: number) =>
     apiClient.post<{ ok: boolean }>('/api/progress/reward', { xp, coins }),
+
+  /** Сброс сценариев, игр, таблицы лидеров и части полей пользователя на сервере. */
+  reset: () => apiClient.delete<{ ok: boolean }>('/api/progress/reset'),
 };
 
 export interface LeaderboardEntry {

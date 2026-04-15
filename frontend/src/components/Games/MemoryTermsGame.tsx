@@ -120,7 +120,7 @@ export default function MemoryTermsGame() {
     return (
       <div className={styles.page}>
         <div className={styles.resultSection}>
-          <div className={styles.resultIcon}>OK</div>
+          <div className={styles.resultIcon}>✓</div>
           <h2 className={styles.resultTitle}>Все пары найдены!</h2>
           <p className={styles.resultScore}>{score}</p>
           <p className={styles.resultPercent}>очков · ходов: {moves}</p>

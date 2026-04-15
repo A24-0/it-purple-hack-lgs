@@ -1,7 +1,7 @@
 {
-  "name": "СтрахоГид",
-  "short_name": "СтрахоГид",
-  "description": "Обучение страхованию: сценарии, игры, AI",
+  "name": "ИнгосстрахKids",
+  "short_name": "ИнгосстрахKids",
+  "description": "Страхование простыми словами: игры, сценарии и подсказки",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F5F7FA",

@@ -71,7 +71,7 @@ export default function BuildPolicyGame() {
           <p className={styles.resultScore}>{avgScore}%</p>
           <p className={styles.resultSubtitle}>среднее покрытие</p>
           <div className={styles.resultRewards}>
-            <span className={styles.rewardBadge}>+{Math.round(avgScore * 0.4)} XP</span>
+            <span className={styles.rewardBadge}>+{Math.round(avgScore * 0.4)} оч.</span>
             <span className={styles.rewardBadge}>+{Math.round(avgScore * 0.15)} ★</span>
           </div>
           <div className={styles.resultActions}>

@@ -147,11 +147,14 @@ async def bot_auth(
 
 def _user_me(user: User) -> UserMeOut:
     name = user.first_name or user.username or "Игрок"
+    photos = user.profile_photos if isinstance(user.profile_photos, list) else None
     return UserMeOut(
         id=str(user.id),
         name=name,
         email=user.email or "",
         telegram_linked=bool(user.telegram_id),
+        avatar_url=user.avatar_url,
+        profile_photos=photos,
     )
 
 

@@ -109,7 +109,7 @@ export default function LaneRushGame() {
 
           <div className={styles.optionsList}>
             {CASES.map((item) => (
-              <div key={item.id} className={styles.optionBtn} style={{ cursor: 'default' }}>
+              <div key={item.id} className={`${styles.optionBtn} ${styles.optionBtnStack}`} style={{ cursor: 'default' }}>
                 <div style={{ marginBottom: 6, fontWeight: 700 }}>{item.title}</div>
                 <div style={{ marginBottom: 10, fontSize: 13, color: 'var(--text-secondary)' }}>{item.context}</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -157,7 +157,7 @@ export default function LaneRushGame() {
             {CASES.map((item) => {
               const ok = answers[item.id] === item.right;
               return (
-                <div key={item.id} className={`${styles.optionBtn} ${ok ? styles.correct : styles.incorrect}`} style={{ cursor: 'default' }}>
+                <div key={item.id} className={`${styles.optionBtn} ${styles.optionBtnStack} ${ok ? styles.correct : styles.incorrect}`} style={{ cursor: 'default' }}>
                   <div style={{ fontWeight: 700, marginBottom: 6 }}>{item.title}</div>
                   <div style={{ fontSize: 13 }}>Твой ответ: {VERDICTS.find((v) => v.key === answers[item.id])?.label || '-'}</div>
                   <div style={{ fontSize: 13 }}>Верно: {VERDICTS.find((v) => v.key === item.right)?.label}</div>

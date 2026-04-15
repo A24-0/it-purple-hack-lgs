@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../store/AppContext';
+import { APP_NAME, APP_TAGLINE } from '../../config/app';
 import styles from './AuthPage.module.css';
 
 export default function AuthPage() {
@@ -34,9 +35,11 @@ export default function AuthPage() {
   return (
     <div className={styles.page}>
       <div className={styles.hero}>
-        <div className={styles.logo}>SG</div>
-        <h1 className={styles.appName}>СтрахоГид</h1>
-        <p className={styles.tagline}>Учись страхованию играючи</p>
+        <div className={styles.logo} aria-hidden>
+          ИК
+        </div>
+        <h1 className={styles.appName}>{APP_NAME}</h1>
+        <p className={styles.tagline}>{APP_TAGLINE}</p>
       </div>
 
       <div className={styles.formCard}>
@@ -92,10 +95,6 @@ export default function AuthPage() {
             {loading ? 'Загрузка...' : isLogin ? 'Войти' : 'Создать аккаунт'}
           </button>
         </form>
-
-        <p className={styles.hint}>
-          Нужен запущенный backend на порту <strong>8000</strong> и миграции БД (<code>alembic upgrade head</code>).
-        </p>
       </div>
     </div>
   );

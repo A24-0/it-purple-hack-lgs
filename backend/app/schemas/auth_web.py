@@ -6,6 +6,8 @@ class UserMeOut(BaseModel):
     name: str
     email: str
     telegram_linked: bool = False
+    avatar_url: str | None = None
+    profile_photos: list[str] | None = None
 
 
 class WebRegisterRequest(BaseModel):

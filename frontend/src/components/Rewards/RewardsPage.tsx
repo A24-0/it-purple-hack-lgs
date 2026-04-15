@@ -23,7 +23,7 @@ export default function RewardsPage() {
     if (!canClaim) return;
     actions.earnReward(DAILY_XP, DAILY_COINS);
     localStorage.setItem(STORAGE_KEY, todayKey());
-    setMsg(`Готово! +${DAILY_XP} XP и +${DAILY_COINS} монет`);
+    setMsg(`Готово! +${DAILY_XP} оч. опыта и +${DAILY_COINS} монет`);
     setTimeout(() => window.location.reload(), 500);
   };
 
@@ -40,7 +40,7 @@ export default function RewardsPage() {
         <h2 className={styles.cardTitle}>Ежедневный бонус</h2>
         <p className={styles.cardText}>Заходи каждый день и забирай бесплатные награды.</p>
         <button type="button" className={styles.primaryBtn} disabled={!canClaim} onClick={claimDaily}>
-          {canClaim ? `Забрать +${DAILY_XP} XP` : 'Бонус уже получен сегодня'}
+          {canClaim ? `Забрать +${DAILY_XP} оч.` : 'Бонус уже получен сегодня'}
         </button>
         {msg && <p className={styles.ok}>{msg}</p>}
       </div>
@@ -52,7 +52,9 @@ export default function RewardsPage() {
           <li>Пройди 1 сценарий</li>
           <li>Ответь верно на 5 вопросов</li>
         </ul>
-        <p className={styles.meta}>Текущий баланс: {state.progress.xp} XP и {state.progress.coins} монет.</p>
+        <p className={styles.meta}>
+          Сейчас: {state.progress.xp} оч. опыта, {state.progress.coins} монет.
+        </p>
       </div>
     </div>
   );

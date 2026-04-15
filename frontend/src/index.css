@@ -49,6 +49,13 @@
   --content-padding: 16px;
   --font-scale: 1;
   --sidebar-width: 0px;
+  --page-max: min(100%, 42rem);
+}
+
+@media (max-width: 380px) {
+  :root {
+    --content-padding: 12px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -124,6 +131,8 @@ body {
 #root {
   display: flex;
   justify-content: center;
+  width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--bg-secondary);

@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { APP_NAME } from '../../config/app';
 import styles from './Layout.module.css';
 import sidebarStyles from './Sidebar.module.css';
 import navStyles from './BottomNav.module.css';
@@ -13,9 +15,27 @@ const navItems = [
   { path: '/profile', Icon: IconUser, label: 'Профиль' },
 ];
 
+/** После первого кадра подгружаем частые разделы, чтобы переходы были без паузы. */
+function prefetchCommonRoutes() {
+  void import('../Games/GamesHubPage');
+  void import('../Progress/ProgressPage');
+  void import('../Profile/ProfilePage');
+  void import('../Dictionary/DictionaryPage');
+}
+
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const idle = window.requestIdleCallback;
+    if (typeof idle === 'function') {
+      const id = idle(() => prefetchCommonRoutes(), { timeout: 2500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(prefetchCommonRoutes, 400);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -24,7 +44,7 @@ export default function Layout() {
           <span className={sidebarStyles.logoIcon}>
             <IconShield size={26} />
           </span>
-          <span className={sidebarStyles.logoText}>СтрахоГид</span>
+          <span className={sidebarStyles.logoText}>{APP_NAME}</span>
         </div>
         <nav className={sidebarStyles.nav}>
           {navItems.map((item) => (
@@ -42,7 +62,7 @@ export default function Layout() {
           ))}
         </nav>
         <div className={sidebarStyles.bottomSection}>
-          <button type="button" className={sidebarStyles.navItem} onClick={() => navigate('/settings')}>
+          <button type="button" className={sidebarStyles.navItem} onClick={() => navigate('/profile?tab=settings')}>
             <span className={sidebarStyles.navIcon}>
               <IconSettings size={22} />
             </span>

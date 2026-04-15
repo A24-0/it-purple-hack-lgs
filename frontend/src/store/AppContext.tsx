@@ -19,6 +19,7 @@ import {
   gamesApi,
   usersApi,
 } from '../api/endpoints';
+import type { UserMeResponse } from '../api/endpoints';
 import { apiClient } from '../api/client';
 import { isTelegramWebApp, getTelegramInitData } from '../api/telegram';
 
@@ -28,14 +29,34 @@ const EMPTY_PROGRESS: UserProgress = {
   todayXp: 0,
   level: 1,
   streak: 0,
-  totalAnswers: 1,
+  totalAnswers: 0,
   correctAnswers: 0,
   completedScenarioIds: [],
 };
 
+export interface AppUser {
+  id: string;
+  name: string;
+  email: string;
+  telegramLinked?: boolean;
+  avatarUrl?: string | null;
+  profilePhotos?: string[] | null;
+}
+
+function mapUserFromApi(u: UserMeResponse): AppUser {
+  return {
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    telegramLinked: !!u.telegram_linked,
+    avatarUrl: u.avatar_url ?? null,
+    profilePhotos: u.profile_photos ?? null,
+  };
+}
+
 interface AppState {
   bootstrapped: boolean;
-  user: { id: string; name: string; email: string; telegramLinked?: boolean } | null;
+  user: AppUser | null;
   isAuthenticated: boolean;
   scenarios: Scenario[];
   scenariosLoading: boolean;
@@ -74,7 +95,7 @@ const initialState: AppState = {
 
 type Action =
   | { type: 'SET_BOOTSTRAPPED'; payload: boolean }
-  | { type: 'SET_USER'; payload: AppState['user'] }
+  | { type: 'SET_USER'; payload: AppUser | null }
   | { type: 'LOGOUT' }
   | { type: 'SET_SCENARIOS'; payload: Scenario[] }
   | { type: 'SET_SCENARIOS_LOADING'; payload: boolean }
@@ -166,39 +187,94 @@ interface AppContextType {
     loadAchievements: () => Promise<void>;
     sendChatMessage: (text: string, context?: string) => Promise<void>;
     getHint: (scenarioId: string, stepId: string) => Promise<string>;
-    earnReward: (xp: number, coins: number) => void;
+    earnReward: (xp: number, coins: number) => Promise<void>;
     completeScenario: (scenarioId: string) => void;
     saveGameResult: (gameType: string, score: number, metadata?: Record<string, unknown>) => Promise<void>;
     clearError: () => void;
     refreshSessionData: () => Promise<void>;
     linkTelegram: () => Promise<void>;
     generateLinkCode: () => Promise<{ code: string; expires_in: number }>;
-    updateProfile: (name: string) => Promise<void>;
+    updateProfile: (payload: { name?: string; email?: string }) => Promise<void>;
+    refreshUser: () => Promise<void>;
   };
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
-async function loadSessionData(dispatch: React.Dispatch<Action>) {
+type LoadSessionOpts = { skipUserFetch?: boolean };
+
+/** Один запрос профиля; при ошибке сбрасывает сессию. */
+async function fetchUserOrLogout(dispatch: React.Dispatch<Action>): Promise<boolean> {
+  if (!apiClient.isAuthenticated()) return false;
+  try {
+    const me = await authApi.me();
+    dispatch({ type: 'SET_USER', payload: mapUserFromApi(me) });
+    return true;
+  } catch {
+    apiClient.clearToken();
+    dispatch({ type: 'LOGOUT' });
+    return false;
+  }
+}
+
+/**
+ * Сценарии и прогресс — сразу (нужны главной). Достижения и подсказки — после,
+ * чтобы интерфейс открылся после одного round-trip к /me и пары запросов данных.
+ */
+async function loadSessionData(dispatch: React.Dispatch<Action>, opts?: LoadSessionOpts) {
+  if (!apiClient.isAuthenticated()) {
+    dispatch({ type: 'SET_SCENARIOS_LOADING', payload: false });
+    dispatch({ type: 'SET_PROGRESS_LOADING', payload: false });
+    return;
+  }
   dispatch({ type: 'SET_SCENARIOS_LOADING', payload: true });
   dispatch({ type: 'SET_PROGRESS_LOADING', payload: true });
   try {
-    const [sc, pr, ach, sug] = await Promise.all([
+    if (!opts?.skipUserFetch) {
+      const ok = await fetchUserOrLogout(dispatch);
+      if (!ok) return;
+    }
+    const [scR, prR] = await Promise.allSettled([
       scenariosApi.getAll(),
       progressApi.get(),
-      achievementsApi.getAll().catch(() => [] as Achievement[]),
-      aiApi.getSuggestions().catch(() => null),
     ]);
-    dispatch({ type: 'SET_SCENARIOS', payload: sc });
-    dispatch({ type: 'SET_PROGRESS', payload: pr });
-    dispatch({ type: 'SET_ACHIEVEMENTS', payload: ach });
-    if (sug?.length) dispatch({ type: 'SET_SUGGESTIONS', payload: sug });
+    const failed: string[] = [];
+    if (scR.status === 'fulfilled') {
+      dispatch({ type: 'SET_SCENARIOS', payload: scR.value });
+    } else {
+      failed.push('сценарии');
+    }
+    if (prR.status === 'fulfilled') {
+      dispatch({ type: 'SET_PROGRESS', payload: prR.value });
+    } else {
+      failed.push('прогресс');
+    }
+    if (failed.length) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: `Не удалось загрузить: ${failed.join(', ')}. Проверь сеть и обнови страницу.`,
+      });
+    }
   } catch (e) {
     dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
   } finally {
     dispatch({ type: 'SET_SCENARIOS_LOADING', payload: false });
     dispatch({ type: 'SET_PROGRESS_LOADING', payload: false });
   }
+
+  void (async () => {
+    if (!apiClient.isAuthenticated()) return;
+    const [achR, sugR] = await Promise.allSettled([
+      achievementsApi.getAll(),
+      aiApi.getSuggestions(),
+    ]);
+    if (achR.status === 'fulfilled') {
+      dispatch({ type: 'SET_ACHIEVEMENTS', payload: achR.value });
+    }
+    if (sugR.status === 'fulfilled' && sugR.value?.length) {
+      dispatch({ type: 'SET_SUGGESTIONS', payload: sugR.value });
+    }
+  })();
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
@@ -213,7 +289,46 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const sync = () => {
+      if (document.visibilityState === 'visible' && apiClient.isAuthenticated()) {
+        void loadSessionData(dispatchRef.current, { skipUserFetch: true });
+      }
+    };
+    const onOnline = () => {
+      if (apiClient.isAuthenticated()) void loadSessionData(dispatchRef.current, { skipUserFetch: true });
+    };
+    document.addEventListener('visibilitychange', sync);
+    window.addEventListener('online', onOnline);
+    return () => {
+      document.removeEventListener('visibilitychange', sync);
+      window.removeEventListener('online', onOnline);
+    };
+  }, []);
+
+  useEffect(() => {
     let dead = false;
+    let settled = false;
+    const BOOTSTRAP_TIMEOUT_MS = 20000;
+
+    const timer = setTimeout(() => {
+      if (dead || settled) return;
+      settled = true;
+      apiClient.clearToken();
+      dispatch({ type: 'LOGOUT' });
+      dispatch({
+        type: 'SET_ERROR',
+        payload: `Сервер не отвечает вовремя. Проверь, что API запущен (порт ${import.meta.env.VITE_DEV_API_PORT || '8000'}), сеть и попробуй обновить страницу.`,
+      });
+      dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
+    }, BOOTSTRAP_TIMEOUT_MS);
+
+    const finishBootstrap = () => {
+      if (dead || settled) return;
+      settled = true;
+      clearTimeout(timer);
+      dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
+    };
+
     (async () => {
       const tgInit = isTelegramWebApp() ? getTelegramInitData() : null;
       if (tgInit) {
@@ -221,59 +336,51 @@ export function AppProvider({ children }: { children: ReactNode }) {
           const res = await authApi.telegramAuth(tgInit);
           if (dead) return;
           apiClient.setToken(res.access_token);
-          const me = await authApi.me();
-          dispatch({ type: 'SET_USER', payload: mapUser(me) });
-          await loadSessionData(dispatch);
+          const ok = await fetchUserOrLogout(dispatch);
+          if (dead) return;
+          finishBootstrap();
+          if (ok) void loadSessionData(dispatch, { skipUserFetch: true });
         } catch {
           dispatch({
             type: 'SET_ERROR',
             payload: 'Не удалось войти через Telegram. Войди по email на сайте.',
           });
-        } finally {
-          if (!dead) dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
+          finishBootstrap();
         }
         return;
       }
 
       if (!apiClient.isAuthenticated()) {
-        if (!dead) dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
+        finishBootstrap();
         return;
       }
-      try {
-        const me = await authApi.me();
-        if (dead) return;
-        dispatch({ type: 'SET_USER', payload: mapUser(me) });
-        await loadSessionData(dispatch);
-      } catch {
-        apiClient.clearToken();
-        dispatch({ type: 'LOGOUT' });
-      } finally {
-        if (!dead) dispatch({ type: 'SET_BOOTSTRAPPED', payload: true });
-      }
+      if (dead) return;
+      const ok = await fetchUserOrLogout(dispatch);
+      if (dead) return;
+      finishBootstrap();
+      if (ok) void loadSessionData(dispatch, { skipUserFetch: true });
     })();
+
     return () => {
       dead = true;
+      clearTimeout(timer);
     };
   }, []);
 
-  const mapUser = (u: { id: string; name: string; email: string; telegram_linked?: boolean }) => ({
-    id: u.id,
-    name: u.name,
-    email: u.email,
-    telegramLinked: !!u.telegram_linked,
-  });
+  const refreshUser = useCallback(async () => {
+    const me = await authApi.me();
+    dispatch({ type: 'SET_USER', payload: mapUserFromApi(me) });
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await authApi.login(email, password);
     apiClient.setToken(res.token);
-    dispatch({ type: 'SET_USER', payload: mapUser(res.user) });
     await loadSessionData(dispatch);
   }, []);
 
   const register = useCallback(async (name: string, email: string, password: string) => {
     const res = await authApi.register(name, email, password);
     apiClient.setToken(res.token);
-    dispatch({ type: 'SET_USER', payload: mapUser(res.user) });
     await loadSessionData(dispatch);
   }, []);
 
@@ -283,17 +390,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
       dispatch({ type: 'SET_ERROR', payload: 'Открыть Telegram Mini App и повторить привязку' });
       return;
     }
-    const user = await authApi.linkTelegram(initData);
-    dispatch({ type: 'SET_USER', payload: mapUser(user) });
+    await authApi.linkTelegram(initData);
+    await loadSessionData(dispatch);
   }, []);
 
   const generateLinkCode = useCallback(async () => {
     return authApi.generateLinkCode();
   }, []);
 
-  const updateProfile = useCallback(async (name: string) => {
-    const user = await usersApi.updateProfile(name);
-    dispatch({ type: 'SET_USER', payload: { id: user.id, name: user.name, email: user.email, telegramLinked: user.telegram_linked } });
+  const updateProfile = useCallback(async (payload: { name?: string; email?: string }) => {
+    const user = await usersApi.updateProfile(payload);
+    dispatch({ type: 'SET_USER', payload: mapUserFromApi(user) });
   }, []);
 
   const logout = useCallback(() => {
@@ -375,9 +482,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return res.hint;
   }, []);
 
-  const earnReward = useCallback((xp: number, coins: number) => {
+  const earnReward = useCallback(async (xp: number, coins: number) => {
     dispatch({ type: 'EARN_REWARD', payload: { xp, coins } });
-    progressApi.addReward(xp, coins).catch(() => {});
+    try {
+      await progressApi.addReward(xp, coins);
+      await loadSessionData(dispatch, { skipUserFetch: true });
+    } catch {
+      try {
+        await loadSessionData(dispatch, { skipUserFetch: true });
+      } catch {
+        /* ignore */
+      }
+    }
   }, []);
 
   const completeScenario = useCallback((scenarioId: string) => {
@@ -387,11 +503,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const saveGameResult = useCallback(async (gameType: string, score: number, metadata?: Record<string, unknown>) => {
     try {
       await gamesApi.saveResult(gameType, score, metadata);
-      await loadProgress();
+      await loadSessionData(dispatch, { skipUserFetch: true });
     } catch (e) {
       dispatch({ type: 'SET_ERROR', payload: (e as Error).message });
     }
-  }, [loadProgress]);
+  }, []);
 
   const clearError = useCallback(() => {
     dispatch({ type: 'SET_ERROR', payload: null });
@@ -419,6 +535,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           linkTelegram,
           generateLinkCode,
           updateProfile,
+          refreshUser,
         },
       }}
     >

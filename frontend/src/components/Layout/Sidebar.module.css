@@ -64,9 +64,11 @@
 }
 
 .logoText {
-  font-size: 20px;
+  font-size: clamp(15px, 1.1vw, 20px);
   font-weight: 800;
   color: var(--primary);
+  line-height: 1.2;
+  word-break: break-word;
 }
 
 @media (min-width: 1920px) {

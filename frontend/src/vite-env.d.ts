@@ -6,5 +6,5 @@ declare module '*.module.css' {
 }
 
 interface ImportMetaEnv {
-  readonly VITE_TM_MODEL_URL?: string;
+  readonly VITE_API_URL?: string;
 }

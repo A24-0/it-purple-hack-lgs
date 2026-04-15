@@ -2,19 +2,35 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../store/AppContext';
 import { isTelegramWebApp } from '../../api/telegram';
+import { progressApi } from '../../api/endpoints';
+import { APP_NAME, APP_TAGLINE, APP_DESCRIPTION } from '../../config/app';
+import { loadAppPrefs, saveAppPrefs } from '../../utils/appPreferences';
 import styles from './SettingsPage.module.css';
 
-export default function SettingsPage() {
+type SettingsPageProps = { embedded?: boolean };
+
+type ModalId = 'language' | 'about' | 'privacy' | 'reset' | null;
+
+const PRIVACY_TEXT = `Мы обрабатываем только те данные, которые ты указываешь при регистрации и использовании приложения (имя, email, прогресс обучения, опционально Telegram при привязке).
+
+Данные хранятся на сервере проекта в рамках хакатона и используются для работы игр, сценариев и личного кабинета. Мы не продаём персональные данные третьим лицам.
+
+Выход из аккаунта и сброс прогресса описаны в настройках. По вопросам обращайся к организаторам демо-версии.`;
+
+export default function SettingsPage({ embedded = false }: SettingsPageProps) {
   const navigate = useNavigate();
   const { state, actions } = useApp();
   const userProgress = state.progress;
   const [notifications, setNotifications] = useState(true);
   const [dailyReminder, setDailyReminder] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
+  const [modal, setModal] = useState<ModalId>(null);
+  const [resetBusy, setResetBusy] = useState(false);
 
   // Profile edit
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editName, setEditName] = useState(state.user?.name || '');
+  const [editEmail, setEditEmail] = useState(state.user?.email || '');
   const [savingProfile, setSavingProfile] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -30,14 +46,22 @@ export default function SettingsPage() {
   useEffect(() => {
     if (isEditingProfile) {
       setEditName(state.user?.name || '');
+      setEditEmail(state.user?.email || '');
       setTimeout(() => nameInputRef.current?.focus(), 50);
     }
-  }, [isEditingProfile, state.user?.name]);
+  }, [isEditingProfile, state.user?.name, state.user?.email]);
 
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
+  }, []);
+
+  useEffect(() => {
+    const p = loadAppPrefs();
+    setNotifications(p.pushNotifications);
+    setDailyReminder(p.dailyReminder);
+    setSoundEffects(p.soundEffects);
   }, []);
 
   const startCodeTimer = (seconds: number) => {
@@ -57,11 +81,15 @@ export default function SettingsPage() {
 
   const handleSaveProfile = async () => {
     const name = editName.trim();
-    if (!name) return;
+    const email = editEmail.trim();
+    const payload: { name?: string; email?: string } = {};
+    if (name) payload.name = name;
+    if (email) payload.email = email;
+    if (Object.keys(payload).length === 0) return;
     setSavingProfile(true);
     setProfileError(null);
     try {
-      await actions.updateProfile(name);
+      await actions.updateProfile(payload);
       setIsEditingProfile(false);
     } catch (e) {
       setProfileError((e as Error).message);
@@ -93,6 +121,45 @@ export default function SettingsPage() {
     }
   };
 
+  const handleLogout = () => {
+    actions.logout();
+    navigate('/login', { replace: true });
+  };
+
+  const handleExportProgress = () => {
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      app: APP_NAME,
+      user: state.user,
+      progress: state.progress,
+      achievements: state.achievements,
+      note: 'Копия для просмотра. Импорт этого файла в приложение не предусмотрен.',
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ingoskids-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const confirmResetProgress = async () => {
+    setResetBusy(true);
+    try {
+      await progressApi.reset();
+      await actions.refreshSessionData();
+      setModal(null);
+    } catch (e) {
+      window.alert((e as Error).message || 'Не удалось сбросить прогресс');
+    } finally {
+      setResetBusy(false);
+    }
+  };
+
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
@@ -100,24 +167,26 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.hero}>
-        <div className={styles.heroTop}>
-          <button className={styles.backBtn} onClick={() => navigate(-1)}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M15 18L9 12L15 6"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          <h1 className={styles.title}>Настройки</h1>
-          <div style={{ width: 44 }} />
+    <div className={`${styles.page} ${embedded ? styles.embedded : ''}`}>
+      {!embedded && (
+        <div className={styles.hero}>
+          <div className={styles.heroTop}>
+            <button className={styles.backBtn} onClick={() => navigate(-1)}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M15 18L9 12L15 6"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <h1 className={styles.title}>Настройки</h1>
+            <div style={{ width: 44 }} />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Profile card */}
       <div className={styles.profileCard}>
@@ -131,8 +200,11 @@ export default function SettingsPage() {
         </div>
         <div className={styles.profileInfo}>
           <span className={styles.profileName}>{state.user?.name || 'Игрок'}</span>
+          {state.user?.email ? (
+            <span className={styles.profileEmail}>{state.user.email}</span>
+          ) : null}
           <span className={styles.profileLevel}>
-            Уровень {userProgress.level} · {userProgress.xp} XP
+            Уровень {userProgress.level} · {userProgress.xp} оч. опыта
           </span>
         </div>
         {!isEditingProfile && (
@@ -159,13 +231,25 @@ export default function SettingsPage() {
             onKeyDown={(e) => { if (e.key === 'Enter') void handleSaveProfile(); if (e.key === 'Escape') setIsEditingProfile(false); }}
             maxLength={128}
             placeholder="Твоё имя"
+            autoComplete="name"
+          />
+          <p className={styles.editProfileLabel}>Email</p>
+          <input
+            className={styles.editProfileInput}
+            type="email"
+            value={editEmail}
+            onChange={(e) => setEditEmail(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') void handleSaveProfile(); if (e.key === 'Escape') setIsEditingProfile(false); }}
+            maxLength={255}
+            placeholder="email@example.com"
+            autoComplete="email"
           />
           {profileError && <p className={styles.editProfileError}>{profileError}</p>}
           <div className={styles.editProfileActions}>
             <button
               className={styles.saveBtn}
               onClick={() => void handleSaveProfile()}
-              disabled={savingProfile || !editName.trim()}
+              disabled={savingProfile || (!editName.trim() && !editEmail.trim())}
             >
               {savingProfile ? 'Сохраняю...' : 'Сохранить'}
             </button>
@@ -184,7 +268,7 @@ export default function SettingsPage() {
           <div className={styles.settingsGroup}>
             <div className={styles.settingRow}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>T</span>
+                <span className={styles.settingIcon}>Т</span>
                 <div>
                   <span className={styles.settingTitle}>Telegram</span>
                   <span className={styles.settingDesc}>
@@ -200,7 +284,7 @@ export default function SettingsPage() {
                   disabled={linkingTg}
                   title="Привязать Telegram"
                 >
-                  {linkingTg ? '...' : 'Link'}
+                  {linkingTg ? '...' : 'Привязать'}
                 </button>
               )}
             </div>
@@ -211,7 +295,7 @@ export default function SettingsPage() {
                 <div className={styles.divider} />
                 <div className={styles.settingRow} style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
                   <div className={styles.settingInfo}>
-                    <span className={styles.settingIcon}>🔗</span>
+                    <span className={styles.settingIcon}>К</span>
                     <div>
                       <span className={styles.settingTitle}>Привязать через код</span>
                       <span className={styles.settingDesc}>
@@ -255,9 +339,9 @@ export default function SettingsPage() {
             )}
 
             <div className={styles.divider} />
-            <button className={styles.settingRow} onClick={() => navigate('/telegram')}>
+            <button type="button" className={styles.settingRow} onClick={() => navigate('/telegram')}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>G</span>
+                <span className={styles.settingIcon}>Г</span>
                 <div>
                   <span className={styles.settingTitle}>Гид по Telegram</span>
                   <span className={styles.settingDesc}>Пошагово: бот, mini app и привязка</span>
@@ -272,7 +356,7 @@ export default function SettingsPage() {
           <div className={styles.settingsGroup}>
             <div className={styles.settingRow}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>N</span>
+                <span className={styles.settingIcon}>У</span>
                 <div>
                   <span className={styles.settingTitle}>Push-уведомления</span>
                   <span className={styles.settingDesc}>
@@ -284,7 +368,11 @@ export default function SettingsPage() {
                 <input
                   type="checkbox"
                   checked={notifications}
-                  onChange={() => setNotifications(!notifications)}
+                  onChange={() => {
+                    const v = !notifications;
+                    setNotifications(v);
+                    saveAppPrefs({ pushNotifications: v });
+                  }}
                 />
                 <span className={styles.slider} />
               </label>
@@ -294,7 +382,7 @@ export default function SettingsPage() {
 
             <div className={styles.settingRow}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>R</span>
+                <span className={styles.settingIcon}>Д</span>
                 <div>
                   <span className={styles.settingTitle}>Ежедневное напоминание</span>
                   <span className={styles.settingDesc}>
@@ -306,7 +394,11 @@ export default function SettingsPage() {
                 <input
                   type="checkbox"
                   checked={dailyReminder}
-                  onChange={() => setDailyReminder(!dailyReminder)}
+                  onChange={() => {
+                    const v = !dailyReminder;
+                    setDailyReminder(v);
+                    saveAppPrefs({ dailyReminder: v });
+                  }}
                 />
                 <span className={styles.slider} />
               </label>
@@ -319,7 +411,7 @@ export default function SettingsPage() {
           <div className={styles.settingsGroup}>
             <div className={styles.settingRow}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>S</span>
+                <span className={styles.settingIcon}>З</span>
                 <div>
                   <span className={styles.settingTitle}>Звуковые эффекты</span>
                   <span className={styles.settingDesc}>
@@ -331,7 +423,11 @@ export default function SettingsPage() {
                 <input
                   type="checkbox"
                   checked={soundEffects}
-                  onChange={() => setSoundEffects(!soundEffects)}
+                  onChange={() => {
+                    const v = !soundEffects;
+                    setSoundEffects(v);
+                    saveAppPrefs({ soundEffects: v });
+                  }}
                 />
                 <span className={styles.slider} />
               </label>
@@ -339,9 +435,9 @@ export default function SettingsPage() {
 
             <div className={styles.divider} />
 
-            <button className={styles.settingRow}>
+            <button type="button" className={styles.settingRow} onClick={() => setModal('language')}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>L</span>
+                <span className={styles.settingIcon}>Я</span>
                 <div>
                   <span className={styles.settingTitle}>Язык</span>
                   <span className={styles.settingDesc}>Русский</span>
@@ -363,9 +459,9 @@ export default function SettingsPage() {
         <div className={styles.settingsSection}>
           <h3 className={styles.sectionLabel}>Данные</h3>
           <div className={styles.settingsGroup}>
-            <button className={styles.settingRow}>
+            <button type="button" className={styles.settingRow} onClick={handleExportProgress}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>D</span>
+                <span className={styles.settingIcon}>Э</span>
                 <div>
                   <span className={styles.settingTitle}>Экспорт прогресса</span>
                   <span className={styles.settingDesc}>
@@ -380,9 +476,9 @@ export default function SettingsPage() {
 
             <div className={styles.divider} />
 
-            <button className={styles.settingRow}>
+            <button type="button" className={styles.settingRow} onClick={() => setModal('reset')}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>X</span>
+                <span className={styles.settingIcon}>С</span>
                 <div>
                   <span className={styles.settingTitle}>Сбросить прогресс</span>
                   <span className={styles.settingDesc}>
@@ -400,11 +496,11 @@ export default function SettingsPage() {
         <div className={styles.settingsSection}>
           <h3 className={styles.sectionLabel}>О приложении</h3>
           <div className={styles.settingsGroup}>
-            <button className={styles.settingRow}>
+            <button type="button" className={styles.settingRow} onClick={() => setModal('about')}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>I</span>
+                <span className={styles.settingIcon}>О</span>
                 <div>
-                  <span className={styles.settingTitle}>О СтрахоГиде</span>
+                  <span className={styles.settingTitle}>Приложение {APP_NAME}</span>
                   <span className={styles.settingDesc}>Версия 1.0.0</span>
                 </div>
               </div>
@@ -415,9 +511,9 @@ export default function SettingsPage() {
 
             <div className={styles.divider} />
 
-            <button className={styles.settingRow}>
+            <button type="button" className={styles.settingRow} onClick={() => setModal('privacy')}>
               <div className={styles.settingInfo}>
-                <span className={styles.settingIcon}>P</span>
+                <span className={styles.settingIcon}>П</span>
                 <div>
                   <span className={styles.settingTitle}>
                     Политика конфиденциальности
@@ -433,10 +529,120 @@ export default function SettingsPage() {
             </button>
           </div>
         </div>
+
+        <div className={styles.settingsSection}>
+          <h3 className={styles.sectionLabel}>Аккаунт</h3>
+          <div className={styles.settingsGroup}>
+            <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
+              Выйти из аккаунта
+            </button>
+          </div>
+        </div>
       </div>
 
+      {modal && (
+        <div
+          className={styles.modalOverlay}
+          role="presentation"
+          onClick={() => {
+            if (!resetBusy) setModal(null);
+          }}
+        >
+          <div
+            className={styles.modalBox}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-modal-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {modal === 'language' && (
+              <>
+                <h2 id="settings-modal-title" className={styles.modalTitle}>
+                  Язык интерфейса
+                </h2>
+                <p className={styles.modalBody}>
+                  Сейчас доступен только <strong>русский</strong>. Другие языки можно добавить в следующих версиях.
+                </p>
+                <div className={styles.modalActions}>
+                  <button type="button" className={styles.modalBtnGhost} onClick={() => setModal(null)}>
+                    Понятно
+                  </button>
+                </div>
+              </>
+            )}
+            {modal === 'about' && (
+              <>
+                <h2 id="settings-modal-title" className={styles.modalTitle}>
+                  {APP_NAME}
+                </h2>
+                <p className={styles.modalBody}>
+                  Версия <strong>1.0.0</strong>
+                  <br />
+                  <br />
+                  {APP_TAGLINE}
+                  <br />
+                  <br />
+                  {APP_DESCRIPTION}
+                </p>
+                <div className={styles.modalActions}>
+                  <button type="button" className={styles.modalBtnPrimary} onClick={() => setModal(null)}>
+                    Закрыть
+                  </button>
+                </div>
+              </>
+            )}
+            {modal === 'privacy' && (
+              <>
+                <h2 id="settings-modal-title" className={styles.modalTitle}>
+                  Политика конфиденциальности
+                </h2>
+                <p className={styles.modalBody} style={{ whiteSpace: 'pre-line' }}>
+                  {PRIVACY_TEXT}
+                </p>
+                <div className={styles.modalActions}>
+                  <button type="button" className={styles.modalBtnPrimary} onClick={() => setModal(null)}>
+                    Закрыть
+                  </button>
+                </div>
+              </>
+            )}
+            {modal === 'reset' && (
+              <>
+                <h2 id="settings-modal-title" className={styles.modalTitle}>
+                  Сбросить прогресс?
+                </h2>
+                <p className={styles.modalBody}>
+                  На сервере будут удалены пройденные сценарии, результаты мини-игр и позиция в таблице лидеров. Монеты
+                  и серия дней обнулятся. Отменить это действие нельзя.
+                </p>
+                <div className={styles.modalActions}>
+                  <button
+                    type="button"
+                    className={styles.modalBtnGhost}
+                    disabled={resetBusy}
+                    onClick={() => setModal(null)}
+                  >
+                    Отмена
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.modalBtnDanger}
+                    disabled={resetBusy}
+                    onClick={() => void confirmResetProgress()}
+                  >
+                    {resetBusy ? 'Сбрасываю…' : 'Сбросить'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className={styles.footer}>
-        <p>СтрахоГид v1.0.0</p>
+        <p>
+          {APP_NAME} v1.0.0
+        </p>
         <p>IT Purple Hack 2026</p>
       </div>
     </div>

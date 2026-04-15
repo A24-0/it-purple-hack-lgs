@@ -123,7 +123,7 @@ export default function CatchPoliciesGame() {
               <button
                 key={p.id}
                 type="button"
-                className={`${styles.optionBtn} ${active ? styles.correct : ''}`}
+                className={`${styles.optionBtn} ${styles.optionBtnStack} ${active ? styles.correct : ''}`}
                 onClick={() => toggle(p.id)}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>

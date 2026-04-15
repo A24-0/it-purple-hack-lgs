@@ -100,7 +100,7 @@ export default function DailyQuizGame() {
     );
   }
 
-  if (result) {
+  if (result && quiz) {
     const percent = Math.round((result.correct_count / Math.max(result.total_questions, 1)) * 100);
     return (
       <div className={styles.page}>
@@ -112,8 +112,42 @@ export default function DailyQuizGame() {
           </p>
           <p className={styles.resultPercent}>{percent}% верных ответов</p>
           <div className={styles.resultRewards}>
-            <span className={styles.rewardBadge}>+{result.xp_earned} XP</span>
+            <span className={styles.rewardBadge}>+{result.xp_earned} оч.</span>
           </div>
+
+          <div className={styles.reviewSection}>
+            <h3 className={styles.reviewHeading}>Разбор ответов</h3>
+            {quiz.questions.map((q) => {
+              const r = result.results.find((x) => x.question_id === q.id);
+              const a = answers.find((x) => x.question_id === q.id);
+              if (!r) return null;
+              const ok = r.correct;
+              const userIdx = a?.selected_index;
+              const userLabel =
+                userIdx !== undefined && q.options[userIdx] !== undefined ? q.options[userIdx] : '—';
+              const correctLabel =
+                q.options[r.correct_index] !== undefined ? q.options[r.correct_index] : '—';
+              return (
+                <div
+                  key={q.id}
+                  className={`${styles.reviewRow} ${ok ? styles.reviewRowOk : styles.reviewRowBad}`}
+                >
+                  <div className={styles.reviewBadge}>{ok ? 'Верно' : 'Ошибка'}</div>
+                  <p className={styles.reviewQ}>{q.text}</p>
+                  <div className={styles.reviewMeta}>
+                    Твой ответ: <strong>{userLabel}</strong>
+                    {!ok && (
+                      <>
+                        <br />
+                        Верный вариант: <strong>{correctLabel}</strong>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           {error && <p className={styles.resultPercent}>{error}</p>}
           <div className={styles.resultActions}>
             <button
@@ -141,7 +175,7 @@ export default function DailyQuizGame() {
 
   return (
     <div className={styles.page}>
-      <InstructionBadge text="Блиц-квиз дня: отвечай быстро и получай XP за правильные ответы." />
+      <InstructionBadge text="Блиц-квиз дня: отвечай быстро и получай очки опыта за верные ответы." />
 
       <div className={styles.header}>
         <button type="button" className={styles.backBtn} onClick={() => navigate('/games')} aria-label="Назад">
@@ -170,24 +204,33 @@ export default function DailyQuizGame() {
           {currentQuestion.options.map((opt, idx) => {
             let cls = styles.optionBtn;
             if (isAnswered) {
-              if (idx === selectedIndex) cls += ` ${styles.correct}`;
+              if (idx === selectedIndex) cls += ` ${styles.optionSelected}`;
               else cls += ` ${styles.dimmed}`;
             }
             return (
               <button key={`${currentQuestion.id}-${idx}`} type="button" className={cls} onClick={() => handleSelect(idx)} disabled={isAnswered}>
-                {opt}
+                <span className={styles.optionText}>{opt}</span>
               </button>
             );
           })}
         </div>
 
         {isAnswered && (
-          <div className={styles.explanationCard}>
-            <p className={styles.explanationText}>Ответ сохранен. Переходим к следующему вопросу.</p>
-            {error && <p className={styles.explanationText}>{error}</p>}
-            <button type="button" className={styles.nextBtn} onClick={() => void handleNext()} disabled={submitting}>
-              {submitting ? 'Отправляем...' : step + 1 >= quiz.questions.length ? 'Посмотреть результат' : 'Следующий вопрос →'}
-            </button>
+          <div className={`${styles.explanationCard} ${styles.explanationCardPending}`}>
+            <div className={styles.feedbackRibbon}>
+              {step + 1 >= quiz.questions.length ? 'Готово к проверке' : 'Ответ выбран'}
+            </div>
+            <div className={styles.explanationCardBody}>
+              <p className={styles.explanationText}>
+                {step + 1 >= quiz.questions.length
+                  ? 'Нажми кнопку ниже — мы проверим ответы и покажем результат с разбором.'
+                  : 'Переходи к следующему вопросу, когда будешь готов.'}
+              </p>
+              {error && <p className={styles.explanationText}>{error}</p>}
+              <button type="button" className={styles.nextBtn} onClick={() => void handleNext()} disabled={submitting}>
+                {submitting ? 'Отправляем...' : step + 1 >= quiz.questions.length ? 'Проверить ответы' : 'Следующий вопрос →'}
+              </button>
+            </div>
           </div>
         )}
       </div>

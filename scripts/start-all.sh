@@ -88,6 +88,7 @@ if [[ "$QUICK_REUSE" == "1" ]]; then
 fi
 
 if [[ "$backend_all_running" != "1" ]]; then
+  echo "==> Подсказка: ошибка «port is already allocated» (8000/5432) — cd backend && docker compose down, затем повтори запуск."
   if [[ "$SKIP_BOT" == "1" ]]; then
     echo "==> Поднимаю backend без bot (Postgres, Redis, API)…"
     docker compose -f "$ROOT/backend/docker-compose.yml" "${COMPOSE_UP[@]}" db redis api

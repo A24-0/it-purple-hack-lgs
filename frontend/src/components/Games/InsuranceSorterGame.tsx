@@ -76,7 +76,7 @@ export default function InsuranceSorterGame() {
         </div>
         <div className={styles.optionsList}>
           {ITEMS.map((it) => (
-            <div key={it.id} className={styles.optionBtn} style={{ cursor: 'default' }}>
+            <div key={it.id} className={`${styles.optionBtn} ${styles.optionBtnStack}`} style={{ cursor: 'default' }}>
               <div style={{ marginBottom: 10 }}>{it.text}</div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button

@@ -92,6 +92,31 @@ class ApiClient {
       throw wrapNetworkError(e);
     }
   }
+
+  async delete<T>(path: string): Promise<T> {
+    try {
+      const h: Record<string, string> = {};
+      if (this.token) h['Authorization'] = `Bearer ${this.token}`;
+      const res = await fetch(`${BASE_URL}${path}`, { method: 'DELETE', headers: h });
+      if (!res.ok) throw new Error(await readApiError(res));
+      return res.json();
+    } catch (e) {
+      throw wrapNetworkError(e);
+    }
+  }
+
+  /** multipart/form-data — без Content-Type, чтобы браузер подставил boundary */
+  async postForm<T>(path: string, form: FormData): Promise<T> {
+    try {
+      const h: Record<string, string> = {};
+      if (this.token) h['Authorization'] = `Bearer ${this.token}`;
+      const res = await fetch(`${BASE_URL}${path}`, { method: 'POST', headers: h, body: form });
+      if (!res.ok) throw new Error(await readApiError(res));
+      return res.json();
+    } catch (e) {
+      throw wrapNetworkError(e);
+    }
+  }
 }
 
 export const apiClient = new ApiClient();

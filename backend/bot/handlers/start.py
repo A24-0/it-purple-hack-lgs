@@ -5,7 +5,7 @@ import logging
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from aiogram.types import CallbackQuery, Message
 
 from bot.api_client import backend
 from bot.keyboards.quiz import main_menu_keyboard
@@ -19,24 +19,9 @@ HELP_TEXT = (
     "/help — эта справка\n"
     "/daily_quiz — квиз дня (1–3 вопроса)\n"
     "/streak — мой текущий стрик\n"
-    "/app — открыть полное приложение\n"
     "/link &lt;код&gt; — привязать аккаунт приложения к Telegram\n\n"
     "Отвечай на вопросы, зарабатывай XP и прокачивай стрик! 🔥"
 )
-
-
-def _app_keyboard() -> InlineKeyboardMarkup:
-    from bot.config import bot_settings
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text="Открыть мини-приложение",
-                    web_app=WebAppInfo(url=bot_settings.WEBAPP_URL),
-                )
-            ]
-        ]
-    )
 
 
 @router.message(Command("start"))
@@ -67,15 +52,6 @@ async def cmd_start(message: Message, state: FSMContext):
 @router.message(Command("help"))
 async def cmd_help(message: Message):
     await message.answer(HELP_TEXT, parse_mode="HTML")
-
-
-@router.message(Command("app"))
-async def cmd_app(message: Message):
-    from bot.config import bot_settings
-    if not bot_settings.WEBAPP_URL or not bot_settings.WEBAPP_URL.startswith("http"):
-        await message.answer("WEBAPP_URL не настроен. Добавь https URL в backend/.env и перезапусти bot.")
-        return
-    await message.answer("Открывай мини-приложение:", reply_markup=_app_keyboard())
 
 
 # ── menu callbacks ──────────────────────────────────────────────────────────

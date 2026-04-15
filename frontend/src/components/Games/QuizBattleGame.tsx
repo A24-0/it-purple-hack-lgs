@@ -27,6 +27,7 @@ export default function QuizBattleGame() {
 
   const q = QUESTIONS[idx];
   const rounds = QUESTIONS.length;
+  const lastRoundCorrect = picked !== null && picked === q.correct;
 
   const status = useMemo(() => {
     if (playerPts > botPts) return 'Ты лидируешь';
@@ -106,20 +107,29 @@ export default function QuizBattleGame() {
               else if (i === picked) cls += ` ${styles.incorrect}`;
               else cls += ` ${styles.dimmed}`;
             }
+            const showOk = picked !== null && i === q.correct;
+            const showBad = picked !== null && i === picked && i !== q.correct;
             return (
               <button key={o} type="button" className={cls} onClick={() => choose(i)} disabled={picked !== null}>
-                {o}
+                <span className={styles.optionText}>{o}</span>
+                {showOk && <span className={styles.optionMarkOk}>Верно</span>}
+                {showBad && <span className={styles.optionMarkBad}>Неверно</span>}
               </button>
             );
           })}
         </div>
 
         {picked !== null && (
-          <div className={styles.explanationCard}>
-            <p className={styles.explanationText}>{q.tip}</p>
-            <button type="button" className={styles.nextBtn} onClick={() => void next()}>
-              {idx + 1 >= rounds ? 'Завершить дуэль' : 'Следующий раунд'}
-            </button>
+          <div
+            className={`${styles.explanationCard} ${lastRoundCorrect ? styles.explanationCardSuccess : styles.explanationCardError}`}
+          >
+            <div className={styles.feedbackRibbon}>{lastRoundCorrect ? 'Верно' : 'Неверно'}</div>
+            <div className={styles.explanationCardBody}>
+              <p className={styles.explanationText}>{q.tip}</p>
+              <button type="button" className={styles.nextBtn} onClick={() => void next()}>
+                {idx + 1 >= rounds ? 'Завершить дуэль' : 'Следующий раунд'}
+              </button>
+            </div>
           </div>
         )}
       </div>
